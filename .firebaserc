@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ingatlan-szakdolgozat": {
+      "hosting": {
+        "ingatlan": [
+          "ingatlan-szakdolgozat"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ingatlan-szakdolgozat"
+  }
+}
