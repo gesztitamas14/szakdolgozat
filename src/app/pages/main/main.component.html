@@ -1,4 +1,13 @@
-<div class="main_component">
-    <p>main works!</p>
+<div class="property-container">
+  <div *ngFor="let property of properties" class="property-item" (click)="viewPropertyDetails(property.propertyID)">
+    <div class="property-details">
+      <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="property-image">
+      <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="property-icon">home</mat-icon>
+      <p><strong>Cím:</strong> {{ property.address }}</p>
+      <p><strong>Ár:</strong> {{ property.price }} Ft</p>
+      <p><strong>Méret:</strong> {{ property.size }} m²</p>
+      <p><strong>Leírás:</strong> {{ property.description }}</p>
+      <p><strong>Státusz:</strong> {{ property.status }}</p>
+    </div>
+  </div>
 </div>
-

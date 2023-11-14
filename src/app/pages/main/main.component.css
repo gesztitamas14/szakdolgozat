@@ -12,3 +12,43 @@ div {
 span {
     padding: 5px 5px 5px 5px;
 }
+
+.property-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    width: 300px;
+    display: inline-block;
+  }
+  
+  .property-card:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+
+  /* main.component.css */
+.property-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  
+  .property-item {
+    width: 45%; /* A blokkok szélessége */
+    margin: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .property-details {
+    text-align: center;
+  }
+  
+  .property-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  

@@ -16,11 +16,11 @@
                     <li><a routerLink="/main">Főoldal</a></li>
                     <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
                     <li *ngIf="(loggedInUser)"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
-                    <li><a routerLink="/registration">Regisztráció</a></li>
-                    <li><a routerLink="/profile">Profil</a></li>
-                    <li><a routerLink="/post-ad">Hirdetés feladása</a></li>
-                    <li><a routerLink="/favorites">Kedvencek</a></li>
-                    <li><a routerLink="/calculator">Pénzügyi kalkulátor</a></li>
+                    <li *ngIf="(!loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
+                    <li *ngIf="(loggedInUser)"><a routerLink="/profile">Profil</a></li>
+                    <li *ngIf="(loggedInUser)"><a routerLink="/post-ad">Hirdetés feladása</a></li>
+                    <li *ngIf="(loggedInUser)"><a routerLink="/favorites">Kedvencek</a></li>
+                    <li *ngIf="(loggedInUser)"><a routerLink="/calculator">Pénzügyi kalkulátor</a></li>
                 </ul>
             </div>
         </mat-toolbar>

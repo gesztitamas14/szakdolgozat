@@ -5,3 +5,25 @@ div {
     text-align: center;
     height: 100vh;
 }
+.property-details-container {
+    padding: 20px;
+  }
+  
+.property-details {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+.property-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+.buttons{
+    padding: 5px;
+}
+
+button{
+    width: 120px;
+}

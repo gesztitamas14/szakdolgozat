@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
     canActivate: [AuthGuard]
   },
-  { path: 'property-details', loadChildren: () => import('./pages/property-details/property-details.module').then(m => m.PropertyDetailsModule) },
+  { path: 'property-details/:propertyID', loadChildren: () => import('./pages/property-details/property-details.module').then(m => m.PropertyDetailsModule) },
   { path: 'not-found', loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundModule) },
   { 
     path: '',

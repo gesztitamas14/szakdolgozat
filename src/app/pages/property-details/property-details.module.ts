@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PropertyDetailsRoutingModule } from './property-details-routing.module';
 import { PropertyDetailsComponent } from './property-details.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { PropertyDetailsComponent } from './property-details.component';
   ],
   imports: [
     CommonModule,
-    PropertyDetailsRoutingModule
+    PropertyDetailsRoutingModule,
+    MatIconModule
   ]
 })
 export class PropertyDetailsModule { }
