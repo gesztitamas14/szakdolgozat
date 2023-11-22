@@ -5,9 +5,9 @@
     <h1>Regisztrálj be</h1>
     <form [formGroup]="signUpForm" (ngSubmit)="onSignup()">
       <!-- Email -->
-      <mat-form-field>
-        <mat-label for="email">Email cím</mat-label>
-        <input matInput type="email" id="email" formControlName="email" >
+      <mat-form-field floatLabel="auto">
+        <mat-label>Email cím</mat-label>
+        <input matInput type="email" formControlName="email">
       </mat-form-field>
     
       <mat-form-field>

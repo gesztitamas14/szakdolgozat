@@ -1,1 +1,45 @@
-<div><p>profile works!</p></div>
+<div class="profile-container" *ngIf="currentUser">
+    <h2>Profil</h2>
+    <table class="profile-table">
+      <tr>
+        <td>Név:</td>
+        <td>{{ currentUser.name.firstname }} {{ currentUser.name.lastname }}</td>
+      </tr>
+      <tr>
+        <td>Felhasználónév:</td>
+        <td>{{ currentUser.username }}</td>
+      </tr>
+      <tr>
+        <td>Email:</td>
+        <td>{{ currentUser.email }}</td>
+      </tr>
+    </table>
+    <form (ngSubmit)="changePassword()">
+        <div>
+          <label for="newPassword">Új jelszó</label><br>
+          <input type="password" id="newPassword" [(ngModel)]="newPassword"
+                 name="newPassword" 
+                 (focus)="showTooltip = true" 
+                 (blur)="showTooltip = false" 
+                 (ngModelChange)="onPasswordInput()">
+        <div class="tooltip" [class.visible]="showTooltip">
+            <p *ngIf="!passwordStrength.hasLength">Legalább 8 karakter.</p>
+            <p *ngIf="!passwordStrength.hasUpperCase">Legalább egy nagybetű.</p>
+            <p *ngIf="!passwordStrength.hasNumbers">Legalább egy szám.</p>
+          </div>
+        </div>
+        <div>
+            <label for="confirmPassword">Jelszó megerősítése</label><br>
+            <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" 
+                   name="confirmPassword"
+                   (focus)="showConfirmTooltip = true" 
+                   (blur)="showConfirmTooltip = false"
+                   (ngModelChange)="onConfirmPasswordInput()">
+            <div class="tooltip" [class.visible]="showConfirmTooltip">
+              <p *ngIf="!passwordsMatch">A jelszavak nem egyeznek meg.</p>
+            </div>
+          </div>
+        <button type="submit">Jelszó megváltoztatása</button>
+    </form>
+  </div>
+  

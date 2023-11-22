@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { PostAdRoutingModule } from './post-ad-routing.module';
 import { PostAdComponent } from './post-ad.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +13,10 @@ import { PostAdComponent } from './post-ad.component';
   ],
   imports: [
     CommonModule,
-    PostAdRoutingModule
+    PostAdRoutingModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class PostAdModule { }

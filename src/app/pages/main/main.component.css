@@ -1,54 +1,77 @@
-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    height: 100%;
-}
-
-.main_component { 
-    height: 100vh;
-}
-span {
-    padding: 5px 5px 5px 5px;
-}
-
-.property-card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    width: 300px;
-    display: inline-block;
-  }
-  
-  .property-card:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-
-  /* main.component.css */
 .property-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: flex-start;
-  }
-  
-  .property-item {
-    width: 45%; /* A blokkok szélessége */
-    margin: 10px;
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .property-details {
-    text-align: center;
-  }
-  
-  .property-image {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+.property-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.property-image-container {
+  flex: 0 0 150px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.property-image, .property-icon {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.property-content {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.property-price {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.property-price-per-sqm {
+  font-size: 14px;
+  color: #888;
+}
+
+.property-address {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.property-details {
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+}
+
+.property-details strong {
+  font-weight: normal;
+  color: #888;
+}
+
+.property-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  transition: box-shadow 0.3s;
+  padding: 10px;
+}
+
+.favorite-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.favorite-button mat-icon {
+  color: #f0c040;
+}

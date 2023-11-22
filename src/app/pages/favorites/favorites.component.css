@@ -1,7 +1,49 @@
-div {
+.favorites-container {
+    min-height: 100vh;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .favorite-item {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+  
+  .favorite-item h3 {
+    margin-top: 0;
+  }
+  
+  .property-photos {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    height: 100vh;
-}
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .property-photos img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .property-actions {
+    margin-top: 15px;
+  }
+  
+  .property-actions button {
+    margin-right: 10px;
+  }
+  
+  .remove-button {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+  }
+  
+  .remove-button:hover {
+    background-color: #ff5252;
+  }

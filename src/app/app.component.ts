@@ -3,7 +3,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService } from './shared/services/auth.service';
-
+import { MediaObserver, MediaChange } from '@angular/flex-layout';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +14,17 @@ import { AuthService } from './shared/services/auth.service';
 })
 export class AppComponent implements OnInit{
   page=""
+  isHandset$: Observable<boolean> | any;
   routes: Array<string> = [];
   loggedInUser?: firebase.default.User | null;
 
-  constructor(private router: Router, private authService: AuthService){}
+  constructor(private router: Router, private authService: AuthService, private mediaObserver: MediaObserver){
+    this.isHandset$ = this.mediaObserver.asObservable().pipe(
+      map(changes =>
+        changes.some(change => change.mqAlias === 'xs' || change.mqAlias === 'sm')
+      )
+    );
+  }
 
   ngOnInit(){
     this.routes = this.router.config.map(conf => conf.path) as string[];

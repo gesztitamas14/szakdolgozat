@@ -31,7 +31,7 @@ export class PropertyDetailsComponent implements OnInit {
             this.selectedProperty = property;
             this.userService.getUserById(property.uploaderID).subscribe((user) => {
               if (user) {
-                this.uploaderFullName = `${user.name.firstname} ${user.name.lastname}`; // Teljes név létrehozása
+                this.uploaderFullName = `${user.name.firstname} ${user.name.lastname}`;
               }
             });
           } else {

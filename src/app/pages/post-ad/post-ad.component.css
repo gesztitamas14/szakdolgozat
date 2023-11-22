@@ -1,7 +1,58 @@
-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    height: 100vh;
-}
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+  }
+  
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Biztosítja, hogy a padding és border nem növeli a szélességet */
+  }
+  
+  textarea {
+    height: 100px;
+    resize: vertical; /* Lehetővé teszi, hogy a felhasználó állítsa be a magasságát */
+  }
+  
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  button[type="submit"]:disabled {
+    background-color: #ccc;
+    cursor: default;
+  }
+  
+  input[type="file"] {
+    border: 1px solid #ccc;
+    display: block;
+    padding: 5px;
+  }
+  

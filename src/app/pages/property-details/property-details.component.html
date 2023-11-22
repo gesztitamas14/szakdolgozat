@@ -1,9 +1,8 @@
 
 <div class="property-details-container">
-    <h2>Property Details</h2>
     <div *ngIf="selectedProperty" class="property-details">
-      <img *ngIf="selectedProperty.photos && selectedProperty.photos.length > 0" [src]="selectedProperty.photos[0]" alt="Property Image" class="property-image">
-      <mat-icon *ngIf="selectedProperty.photos.length === 0">image</mat-icon>
+      <img *ngIf="selectedProperty.photos && selectedProperty.photos.length > 0 && selectedProperty.photos[0] !== ''" [src]="selectedProperty.photos[0]" alt="Property Image" class="property-image">
+      <mat-icon *ngIf="!selectedProperty.photos || selectedProperty.photos.length === 0 || selectedProperty.photos[0] === ''" class="centered-icon">image_not_supported</mat-icon>
       <p><strong>Cím:</strong> {{ selectedProperty.address }}</p>
       <p><strong>Ár:</strong> {{ selectedProperty.price }} Ft</p>
       <p><strong>Méret:</strong> {{ selectedProperty.size }} m²</p>

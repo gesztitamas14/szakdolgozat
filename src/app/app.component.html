@@ -1,30 +1,31 @@
-
-<mat-sidenav-container>
-    <mat-sidenav #sidenav>
-        <app-menu (selectedPage)="changePage($event)" [currentPage]="page" *ngIf="page" (onCloseSidenav)="onClose($event,sidenav)" [loggedInUser]="loggedInUser" (onLogOut)="logout($event)"></app-menu>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <mat-toolbar color="primary">
-            <div fxHide.gt-xs>
-            <button (click)="onToggleSidenav(sidenav)" mat-icon-button >
-                <mat-icon >menu</mat-icon>
-            </button>
-            </div>
-            <div>Ingatlan keresés</div>
-            <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
-                <ul fxLayout fxLayoutGap="10px" class="navigation-items">
-                    <li><a routerLink="/main">Főoldal</a></li>
-                    <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
-                    <li *ngIf="(loggedInUser)"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
-                    <li *ngIf="(!loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
-                    <li *ngIf="(loggedInUser)"><a routerLink="/profile">Profil</a></li>
-                    <li *ngIf="(loggedInUser)"><a routerLink="/post-ad">Hirdetés feladása</a></li>
-                    <li *ngIf="(loggedInUser)"><a routerLink="/favorites">Kedvencek</a></li>
-                    <li *ngIf="(loggedInUser)"><a routerLink="/calculator">Pénzügyi kalkulátor</a></li>
-                </ul>
-            </div>
-        </mat-toolbar>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+    <mat-sidenav-container>
+        <mat-sidenav #sidenav>
+            <app-menu (selectedPage)="changePage($event)" [currentPage]="page" *ngIf="page" (onCloseSidenav)="onClose($event,sidenav)" [loggedInUser]="loggedInUser" (onLogOut)="logout($event)"></app-menu>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <div class="content-wrapper">
+                <mat-toolbar>
+                    <button *ngIf="isHandset$ | async" (click)="sidenav.toggle()" mat-icon-button>
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <div fxFlex>
+                        <span class="toolbar-title">Ingatlanradar</span>
+                    </div>
+                    <div class="toolbar-content" *ngIf="!(isHandset$ | async)">
+                        <ul fxLayout fxLayoutGap="10px" class="navigation-items">
+                        <li><a routerLink="/main">Főoldal</a></li>
+                        <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
+                        <li *ngIf="(loggedInUser)"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
+                        <li *ngIf="(!loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
+                        <li *ngIf="(loggedInUser)"><a routerLink="/profile">Profil</a></li>
+                        <li *ngIf="(loggedInUser)"><a routerLink="/post-ad">Hirdetés feladása</a></li>
+                        <li *ngIf="(loggedInUser)"><a routerLink="/favorites">Kedvencek</a></li>
+                        <li *ngIf="(loggedInUser)"><a routerLink="/calculator">Pénzügyi kalkulátor</a></li>
+                    </ul>
+                </div>
+            </mat-toolbar>
+            <router-outlet></router-outlet>
+        </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 

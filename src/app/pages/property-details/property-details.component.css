@@ -20,6 +20,15 @@ div {
     height: auto;
   }
 
+  .centered-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 48px;
+    width: 100px;
+    height: 100px;
+  }
+
 .buttons{
     padding: 5px;
 }

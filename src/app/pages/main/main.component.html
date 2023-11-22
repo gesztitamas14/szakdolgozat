@@ -1,13 +1,21 @@
 <div class="property-container">
   <div *ngFor="let property of properties" class="property-item" (click)="viewPropertyDetails(property.propertyID)">
-    <div class="property-details">
-      <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="property-image">
-      <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="property-icon">home</mat-icon>
-      <p><strong>Cím:</strong> {{ property.address }}</p>
-      <p><strong>Ár:</strong> {{ property.price }} Ft</p>
-      <p><strong>Méret:</strong> {{ property.size }} m²</p>
-      <p><strong>Leírás:</strong> {{ property.description }}</p>
-      <p><strong>Státusz:</strong> {{ property.status }}</p>
+    <div class="property-image-container">
+      <img *ngIf="property.photos && property.photos.length > 0 && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property Image" class="property-image">
+      <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
+    </div>
+    <div class="property-content">
+      <p class="property-price">{{ formatPrice(property.price) }}
+        <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+      </p>
+      <p class="property-address">{{ property.address }}</p>
+      <div class="property-details">
+        <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
+        <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
+      </div>
+      <button mat-icon-button class="favorite-button" (click)="addToFavorites(property.propertyID)">
+        <mat-icon>star_border</mat-icon>
+      </button>
     </div>
   </div>
 </div>

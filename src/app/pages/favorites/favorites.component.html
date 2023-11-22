@@ -1,2 +1,17 @@
-
-<div><p>favorites works!</p></div>
+<div class="favorites-container">
+  <h2>Kedvencek</h2>
+  <div *ngFor="let property of favoritePropertyDetails" class="favorite-item">
+    <h3>{{ property.address }}</h3>
+    <p>Ár: {{ property.price | currency:'HUF' }}</p>
+    <p>Alapterület: {{ property.size }} m²</p>
+    <p>Leírás: {{ property.description }}</p>
+    <div class="property-photos">
+      <img *ngIf="property.photos && property.photos[0] && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property photo">
+      <mat-icon *ngIf="!property.photos || !property.photos[0] || property.photos[0] === ''">image_not_supported</mat-icon>
+    </div>
+    <div class="property-actions">
+      <button (click)="viewDetails(property.propertyID)">Részletek</button>
+      <button (click)="removeFromFavorites(property.propertyID)" class="remove-button">Eltávolítás</button>
+    </div>
+  </div>
+</div>

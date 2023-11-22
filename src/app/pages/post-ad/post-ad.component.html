@@ -1,1 +1,56 @@
-<div><p>post-ad works!</p></div>
+<form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="address">Cím:</label>
+      <input type="text" id="address" formControlName="address" required>
+    </div>
+    <div>
+      <label for="price">Ár:</label>
+      <input type="number" id="price" formControlName="price" required>
+    </div>
+    <div>
+      <label for="size">Méret:</label>
+      <input type="number" id="size" formControlName="size" required>
+    </div>
+    <div>
+      <label for="description">Leírás:</label>
+      <textarea id="description" formControlName="description" required></textarea>
+    </div>
+    <div formGroupName="features">
+      <div>
+        <label for="type">Ingatlan típusa:</label>
+        <select id="type" formControlName="type" required>
+          <option value="lakas">Lakás</option>
+          <option value="haz">Ház</option>
+          <option value="telek">Telek</option>
+          <option value="iroda">Iroda</option>
+          <option value="uzlet">Üzlet</option>
+          <option value="garazs">Garázs</option>
+          <option value="szallashely">Szálláshely</option>
+          <option value="ipari">Ipari és Raktárterület</option>
+          <option value="egyeb">Egyéb</option>
+        </select>
+      </div>
+        <div>
+          <label for="numberOfRooms">Hálószobák száma:</label>
+          <input type="number" id="numberOfRooms" formControlName="numberOfRooms" required>
+        </div>
+        <div>
+          <label for="numberOfBathrooms">Fürdőszobák száma:</label>
+          <input type="number" id="numberOfBathrooms" formControlName="numberOfBathrooms" required>
+        </div>
+      </div>
+    <div>
+      <label for="status">Státusz:</label>
+      <input type="text" id="status" formControlName="status" required>
+    </div>
+    <div>
+      <label for="location">Elhelyezkedés:</label>
+      <input type="text" id="location" formControlName="location" required>
+    </div>
+    <div>
+      <label for="photos">Fotók:</label>
+      <input type="file" id="photos" (change)="onFileSelected()" multiple>
+    </div>
+    <button type="submit" [disabled]="!propertyForm.valid">Hirdetés Feladása</button>
+  </form>
+  

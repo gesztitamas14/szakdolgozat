@@ -36,7 +36,6 @@ export class UserService {
       )
       .valueChanges()
       .pipe(
-        // Az első elemet választjuk ki, vagy undefined-t adunk vissza, ha nincs találat
         map((users:any) => (users.length > 0 ? users[0] : undefined))
       );
   }

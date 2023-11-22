@@ -23,4 +23,9 @@ export class AuthService {
   isUserLoggedIn(){
     return this.auth.user;
   }
+  changePassword(newPassword: string) {
+    const user = this.auth.currentUser;
+    return user.then(u => u?.updatePassword(newPassword));
+  }
+
 }

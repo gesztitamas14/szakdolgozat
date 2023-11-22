@@ -1,30 +1,80 @@
-/* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.loading-indicator{
-    position: fixed;
-    z-index: 999;
-    height: 1em;
-    width: 1em;
-    overflow: show;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+/* Definiáljuk a színpalettát */
+:root {
+    --color-primary: #f5f5f5; /* Világos szürke alapszín */
+    --color-secondary: #e0e0e0; /* Középszürke másodlagos szín */
+    --color-accent: #009688; /* Türkiz kiémlítő szín */
+    --color-dark-accent: #00796b; /* Sötét türkiz sötétebb akcentus szín */
+    --color-warm-accent: #ff9800; /* Narancs meleg akcentus szín */
+    --color-contrast: #333333; /* Sötétszürke kontraszt szín */
+  }
+/* Alapvető HTML és test beállítások */
+html, body {
+  height: 100%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--color-primary); /* Háttérszín beállítása */
+  color: var(--color-contrast); /* Alap szövegszín */
 }
 
-.loading-indicator::before{
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+/* Betöltés jelző stílusai */
+.loading-indicator {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Doboz árnyék hozzáadása */
+  color: var(--color-accent);
+}
+
+.loading-indicator::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Globális link stílusok */
+a {
+  color: var(--color-accent);
+  text-decoration: none; /* Eltávolítjuk az aláhúzást */
+}
+
+a:hover {
+  color: var(--color-dark-accent);
+  text-decoration: underline; /* Aláhúzás hozzáadása hover hatásra */
+}
+
+/* Globális gomb stílusok */
+button {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--color-dark-accent);
+}
+mat-sidenav {
+    background-color: var(--color-secondary);
+  }
+
+  mat-toolbar {
+    background-color: var(--color-secondary);
 }
