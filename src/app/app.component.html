@@ -25,6 +25,44 @@
                 </div>
             </mat-toolbar>
             <router-outlet></router-outlet>
+            <!-- Chat ikon -->
+            <button mat-icon-button class="chat-icon" (click)="toggleChat()">
+                <mat-icon>chat</mat-icon>
+            </button>
+        
+            <!-- Chat ablak -->
+            <div class="chat-window" *ngIf="showChat">
+                <button mat-icon-button class="close-chat" (click)="toggleChat()">
+                <mat-icon>close</mat-icon>
+                </button>
+            
+                <div class="chat-partners" *ngIf="!selectedPartner">
+                    <ul>
+                      <li *ngFor="let partnerId of chatPartners" (click)="selectChatPartner(partnerId)">
+                        {{ chatPartnerNames[partnerId] || 'Ismeretlen felhasználó' }}
+                      </li>
+                    </ul>
+                  </div>
+
+            
+                <div class="selected-chat" *ngIf="selectedPartner">
+                    <button (click)="backToChatPartners()"><mat-icon>arrow_back</mat-icon></button>
+                    <div class="messages">
+                        <div *ngFor="let message of filteredMessages" class="message" 
+                        [ngClass]="{'sent': message.senderId === loggedInUser?.uid, 'received': message.senderId !== loggedInUser?.uid}">
+                     <div class="message-header">
+                       {{ userCache[message.senderId].name.firstname || 'Ismeretlen felhasználó' }}
+                     </div>
+                     <div class="message-content">{{message.message}}</div>
+                   </div>
+                </div>
+                    <form class="send-message-form" (ngSubmit)="sendMessage()">
+                        <input type="text" [(ngModel)]="newMessage" name="messageInput" placeholder="Írj üzenetet...">
+                        <button type="submit">Küldés</button>
+                    </form>
+                </div>
+            </div>
+            
         </div>
         </mat-sidenav-content>
     </mat-sidenav-container>

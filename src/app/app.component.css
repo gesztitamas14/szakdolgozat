@@ -1,13 +1,13 @@
 /* Eszköztár (Toolbar) stílusai */
 mat-toolbar {
-    background-color: var(--color-secondary); /* Kívánt háttérszín */
-    color: var(--color-contrast); /* Szövegszín */
-    min-height: 64px; /* Növeld a magasságot igény szerint */
+    background-color: var(--color-secondary);
+    color: var(--color-contrast);
+    min-height: 64px;
     display: flex;
-    align-items: center; /* Elemek középre igazítása */
-    padding: 0 10px; /* Oldalsó padding */
+    align-items: center;
+    padding: 0 10px;
     justify-content: space-between;
-    width: 100%; /* Teljes szélesség */
+    width: 100%;
   }
   mat-sidenav {
     background-color: #e0e0e0;
@@ -61,3 +61,90 @@ button {
     color: var(--color-accent);
     margin-left: 18%;
   }
+
+  .chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: var(--color-secondary);
+  }
+  
+  .chat-window {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .close-chat {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: var(--color-secondary);
+  }
+
+.chat-partners {
+  margin-bottom: 20px;
+}
+
+.chat-partners ul {
+  list-style: none;
+  padding: 0;
+}
+
+.chat-partners li {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.selected-chat {
+  overflow-y: auto;
+  flex-grow: 1;
+  margin-bottom: 60px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+}
+.message {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.message.sent {
+  background-color: #e0f7fa;
+  align-self: flex-end;
+}
+
+.message.received {
+  background-color: #f0f4c3;
+  align-self: flex-start;
+}
+
+.send-message-form {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.send-message-form input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+  

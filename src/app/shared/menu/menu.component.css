@@ -2,16 +2,16 @@ mat-sidenav {
   width: 250px;
   background-color: var(--color-secondary);
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Teljes magasság */
-  display: flex; /* Flexbox használata */
-  flex-direction: column; /* Függőleges irány */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 mat-nav-list {
-  flex-grow: 1; /* Engedélyezi a növekedést a rendelkezésre álló hely szerint */
-  display: flex; /* Flexbox használata */
-  flex-direction: column; /* Függőleges irány */
-  justify-content: space-around; /* Térközök egyenletes elosztása */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -33,4 +33,5 @@ a.mat-list-item:hover {
 
 mat-icon {
   margin-right: 10px;
+  background-color: var(--color-secondary);
 }
