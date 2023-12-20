@@ -1,4 +1,6 @@
 <div class="favorites-container">
+  
+  <div *ngIf="favoritePropertyDetails.length > 0; else emptyFavorites">
   <h2>Kedvencek</h2>
   <div *ngFor="let property of favoritePropertyDetails" class="favorite-item">
     <h3>{{ property.address }}</h3>
@@ -11,7 +13,16 @@
     </div>
     <div class="property-actions">
       <button (click)="viewDetails(property.propertyID)">Részletek</button>
-      <button (click)="removeFromFavorites(property.propertyID)" class="remove-button">Eltávolítás</button>
+      <button (click)="removeFromFavorites(property.propertyID); $event.stopPropagation();" class="remove-button">Eltávolítás</button>
     </div>
   </div>
+  </div>
+  <ng-template #emptyFavorites>
+    <div class="empty-favorites-message">
+      <mat-icon>favorite_border</mat-icon>
+      <h3>Nincsenek kedvencek</h3>
+      <p>Úgy tűnik, még nincsenek kedvenc ingatlanjai. Fedezzen fel új ingatlanokat most!</p>
+      <button (click)="browseProperties()">Böngéssz ingatlanokat</button>
+    </div>
+  </ng-template>
 </div>

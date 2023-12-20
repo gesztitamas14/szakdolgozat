@@ -13,9 +13,9 @@
         <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
         <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
       </div>
-      <button mat-icon-button class="favorite-button" (click)="addToFavorites(property.propertyID)">
-        <mat-icon>star_border</mat-icon>
-      </button>
     </div>
+    <button mat-icon-button class="favorite-button" (click)="$event.stopPropagation(); addToFavorites(property.propertyID)">
+      <mat-icon>{{ isFavorite(property.propertyID) ? 'star' : 'star_border' }}</mat-icon>
+    </button>
   </div>
 </div>

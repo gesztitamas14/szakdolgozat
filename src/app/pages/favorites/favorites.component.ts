@@ -62,25 +62,32 @@ export class FavoritesComponent implements OnInit {
   }
 
   removeFromFavorites(propertyId: string) {
-    if (!this.loggedInUser?.uid) {
-      console.error('No logged in user.');
-      return;
-    }
-  
-    this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favoriteProperties => {
-      const existingFavorite = favoriteProperties[0];
-  
-      if (existingFavorite && existingFavorite.propertyIDs.includes(propertyId)) {
-        const updatedPropertyIDs = existingFavorite.propertyIDs.filter(id => id !== propertyId);
-        existingFavorite.propertyIDs = updatedPropertyIDs;
-  
-        this.favoritesService.updateFavoriteProperty(existingFavorite).then(() => {
-          console.log('Property removed from favorites successfully.');
-          this.loadFavoriteProperties();
-        }).catch((error: any) => {
-          console.error('Error updating favorites:', error);
-        });
+    if (this.router.url === '/favorites') {
+      if (!this.loggedInUser?.uid) {
+        console.error('No logged in user.');
+        return;
       }
-    });
+    
+      this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favoriteProperties => {
+        const existingFavorite = favoriteProperties[0];
+    
+        if (existingFavorite && existingFavorite.propertyIDs.includes(propertyId)) {
+          const updatedPropertyIDs = existingFavorite.propertyIDs.filter(id => id !== propertyId);
+          existingFavorite.propertyIDs = updatedPropertyIDs;
+          if (this.router.url === '/favorites') {
+          this.favoritesService.updateFavoriteProperty(existingFavorite).then(() => {
+            console.log('Property removed from favorites successfully.');
+            console.log(this.router.url)
+            this.loadFavoriteProperties();
+          }).catch((error: any) => {
+            console.error('Error updating favorites:', error);
+          });
+        }
+        }
+      });
+    }
+  }
+  browseProperties(){
+    this.router.navigate(['/main']);
   }
 }

@@ -7,6 +7,7 @@ import { FavoriteProperty } from '../../shared/models/Favorites';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main',
@@ -16,6 +17,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class MainComponent implements OnInit {
   properties: Property[] = [];
   loggedInUser?: firebase.default.User | null;
+  favoritePropertyIDs: string[] = [];
 
 
   constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
@@ -27,6 +29,11 @@ export class MainComponent implements OnInit {
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
+      if (this.loggedInUser?.uid) {
+        this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favorites => {
+          this.favoritePropertyIDs = favorites.length > 0 ? favorites[0].propertyIDs : [];
+        });
+      }
     }, (error: any)=>{
       console.error(error);
       localStorage.setItem('user',JSON.stringify('null'))
@@ -87,33 +94,53 @@ export class MainComponent implements OnInit {
       console.error('No logged in user.');
       return;
     }
+
+    if (this.favoritePropertyIDs.includes(propertyID)) {
+      console.log('Property is already in favorites.');
+      return;
+    }
   
-    this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favorites => {
-      const existingFavorite = favorites[0]; // Feltételezve, hogy minden felhasználónak legfeljebb egy kedvence van
-      if (existingFavorite) {
-        if (!existingFavorite.propertyIDs.includes(propertyID)) {
-          existingFavorite.propertyIDs.push(propertyID);
-          this.favoritesService.updateFavoriteProperty(existingFavorite).then(() => {
+    this.favoritePropertyIDs.push(propertyID);
+    console.log(this.favoritePropertyIDs)
+
+
+    if (this.router.url === '/main') {
+      this.favoritesService.getFavoriteProperties(this.loggedInUser.uid)
+      .pipe(first())
+      .subscribe(favorites => {
+      let userFavorites = favorites.find(fav => fav.userID === this.loggedInUser!.uid);
+        let existingFavorites = favorites[0];
+        
+        if (existingFavorites) {
+          existingFavorites.propertyIDs.push(propertyID);
+          this.favoritesService.updateFavoriteProperty(existingFavorites).then(() => {
             console.log('Property added to existing favorites successfully.');
           }).catch((error: any) => {
             console.error('Error updating favorites:', error);
+            this.favoritePropertyIDs.pop();
+          });
+        } else {
+          console.log("asdads")
+          const newFavorite: FavoriteProperty = {
+            favoriteID: this.afs.createId(),
+            userID: this.loggedInUser?.uid as any,
+            propertyIDs: [propertyID]
+          };
+    
+          this.favoritesService.addFavoriteProperty(newFavorite).then(() => {
+            console.log('New favorite created successfully.');
+          }).catch(error => {
+            console.error('Error creating new favorite:', error);
+            this.favoritePropertyIDs.pop();
           });
         }
-      } else {
-        const newFavorite: FavoriteProperty = {
-          favoriteID: this.afs.createId(),
-          userID: this.loggedInUser?.uid as any,
-          propertyIDs: [propertyID]
-        };
-  
-        this.favoritesService.addFavoriteProperty(newFavorite).then(() => {
-          console.log('New favorite created successfully.');
-        }).catch(error => {
-          console.error('Error creating new favorite:', error);
-        });
-      }
-    });
+      });
   }
+  }
+  isFavorite(propertyID: string): boolean {
+    return this.favoritePropertyIDs.includes(propertyID);
+  }
+  
   
   
 }

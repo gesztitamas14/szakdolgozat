@@ -5,6 +5,7 @@ import { Property } from '../../shared/models/Properties';
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-post-ad',
@@ -15,7 +16,7 @@ export class PostAdComponent implements OnInit{
   propertyForm: FormGroup | any;
   photos: string[] = [];
   loggedInUser?: firebase.default.User | null;
-  constructor(private fb: FormBuilder, private propertyService: PropertyService, private authService: AuthService, private userService: UserService, private router: Router) {}
+  constructor(private fb: FormBuilder, private propertyService: PropertyService, private authService: AuthService, private userService: UserService, private router: Router,private storage: AngularFireStorage) {}
 
   ngOnInit() {
     this.propertyForm = this.fb.group({
@@ -43,9 +44,19 @@ export class PostAdComponent implements OnInit{
     })
   }
   
-  onFileSelected() {
-    // Ide jöhet a képfeltöltés logikája
-    // A képek elérési útvonalait tárold a this.photos tömbben
+  onFileSelected(event: any) {
+    const files = event.target.files as FileList;
+    if (files && files.length) {
+      Array.from(files).forEach((file: File) => { // Itt adjuk hozzá a File típust
+        const path = `properties/${new Date().getTime()}_${file.name}`;
+        const fileRef = this.storage.ref(path);
+        this.storage.upload(path, file).then(() => {
+          fileRef.getDownloadURL().subscribe(url => {
+            this.photos.push(url);
+          });
+        });
+      });
+    }
   }
   
   onSubmit() {
@@ -56,7 +67,7 @@ export class PostAdComponent implements OnInit{
       this.userService.getUserById(uploaderID).subscribe((user) => {
         const newProperty: Property = {
           ...this.propertyForm.value,
-          photos: this.photos.length > 0 ? this.photos : [''],
+          photos: this.photos,
           uploaderID: uploaderID,
           uploaderFullName: user ? `${user.name.firstname} ${user.name.lastname}` : 'Ismeretlen felhasználó'
         };

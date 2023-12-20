@@ -1,8 +1,18 @@
 
 <div class="property-details-container">
     <div *ngIf="selectedProperty" class="property-details">
-      <img *ngIf="selectedProperty.photos && selectedProperty.photos.length > 0 && selectedProperty.photos[0] !== ''" [src]="selectedProperty.photos[0]" alt="Property Image" class="property-image">
-      <mat-icon *ngIf="!selectedProperty.photos || selectedProperty.photos.length === 0 || selectedProperty.photos[0] === ''" class="centered-icon">image_not_supported</mat-icon>
+      <div *ngIf="selectedProperty?.photos && selectedProperty.photos.length > 0" class="image-carousel">
+        <img [src]="selectedProperty.photos[currentImageIndex]" alt="Property Image" class="property-image">
+        
+        <div class="arrow left-arrow" (click)="previousImage()" *ngIf="currentImageIndex > 0">
+          <mat-icon>chevron_left</mat-icon>
+        </div>
+      
+        <div class="arrow right-arrow" (click)="nextImage()" *ngIf="currentImageIndex < selectedProperty.photos.length - 1">
+          <mat-icon>chevron_right</mat-icon>
+        </div>
+      </div>
+      <mat-icon *ngIf="!selectedProperty?.photos || selectedProperty.photos.length === 0" class="centered-icon">image_not_supported</mat-icon>
       <p><strong>Cím:</strong> {{ selectedProperty.address }}</p>
       <p><strong>Ár:</strong> {{ selectedProperty.price }} Ft</p>
       <p><strong>Méret:</strong> {{ selectedProperty.size }} m²</p>
@@ -12,6 +22,11 @@
       <p><strong>Fürdőszobák száma:</strong> {{ selectedProperty.features.numberOfBathrooms }}</p>
       <p><strong>Hálószobák száma:</strong> {{ selectedProperty.features.numberOfRooms }}</p>
       <p><strong>Hirdető neve:</strong> {{ uploaderFullName }}</p>
+      <p>
+        <button *ngIf="loggedInUser" mat-icon-button (click)="toggleFavorite()">
+          {{ isFavorite ? 'Eltávolítás a kedvencek közül' : 'Kedvenc' }}
+        </button>
+      </p>
     </div>
     <div>
       <span class="buttons"><button mat-raised-button color="primary" (click)="goBack()">Vissza</button></span>

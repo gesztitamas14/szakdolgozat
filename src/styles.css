@@ -1,21 +1,20 @@
-/* Definiáljuk a színpalettát */
 :root {
-    --color-primary: #f5f5f5; /* Világos szürke alapszín */
-    --color-secondary: #e0e0e0; /* Középszürke másodlagos szín */
-    --color-accent: #009688; /* Türkiz kiémlítő szín */
-    --color-dark-accent: #00796b; /* Sötét türkiz sötétebb akcentus szín */
-    --color-warm-accent: #ff9800; /* Narancs meleg akcentus szín */
-    --color-contrast: #333333; /* Sötétszürke kontraszt szín */
+    --color-primary: #f5f5f5;
+    --color-secondary: #e0e0e0;
+    --color-accent: #009688;
+    --color-dark-accent: #00796b;
+    --color-warm-accent: #ff9800;
+    --color-contrast: #333333;
   }
-/* Alapvető HTML és test beállítások */
+
 html, body {
   height: 100%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: var(--color-primary); /* Háttérszín beállítása */
-  color: var(--color-contrast); /* Alap szövegszín */
+  background-color: var(--color-primary);
+  color: var(--color-contrast);
 }
 
-/* Betöltés jelző stílusai */
+
 .loading-indicator {
   position: fixed;
   z-index: 999;
@@ -29,7 +28,7 @@ html, body {
   right: 0;
   background-color: var(--color-primary);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Doboz árnyék hozzáadása */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   color: var(--color-accent);
 }
 
@@ -46,18 +45,16 @@ html, body {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Globális link stílusok */
 a {
   color: var(--color-accent);
-  text-decoration: none; /* Eltávolítjuk az aláhúzást */
+  text-decoration: none;
 }
 
 a:hover {
   color: var(--color-dark-accent);
-  text-decoration: underline; /* Aláhúzás hozzáadása hover hatásra */
+  text-decoration: underline;
 }
 
-/* Globális gomb stílusok */
 button {
   background-color: var(--color-accent);
   color: var(--color-primary);
