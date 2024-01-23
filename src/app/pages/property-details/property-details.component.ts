@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyService } from '../../shared/services/property.service';
 import { Property } from '../../shared/models/Properties';
 import { Location } from '@angular/common';
@@ -9,6 +9,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { FavoriteProperty } from '../../shared/models/Favorites';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { first } from 'rxjs/operators';
+import { ChatService } from '../../shared/services/chat.service';
 
 @Component({
   selector: 'app-property-details',
@@ -30,7 +31,9 @@ export class PropertyDetailsComponent implements OnInit {
     private userService: UserService,
     private favoritesService: FavoritesService,
     private authService: AuthService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private router: Router,
+    private chatService: ChatService,
   ) {}
 
   ngOnInit() {
@@ -111,6 +114,11 @@ export class PropertyDetailsComponent implements OnInit {
       this.currentImageIndex--;
     }
   }
+
+  openMessageDialog(uploaderId: string, propertyId: string) {
+    this.chatService.startChatWithUserWithProperty(uploaderId, propertyId);
+  }
+
 
   goBack() {
     this.location.back();

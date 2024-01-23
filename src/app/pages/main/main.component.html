@@ -8,7 +8,7 @@
       <p class="property-price">{{ formatPrice(property.price) }}
         <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
       </p>
-      <p class="property-address">{{ property.address }}</p>
+      <p class="property-address">{{ property.location }}</p>
       <div class="property-details">
         <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
         <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>

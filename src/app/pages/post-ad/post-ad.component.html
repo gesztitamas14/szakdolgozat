@@ -1,7 +1,7 @@
 <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
     <div>
-      <label for="address">Cím:</label>
-      <input type="text" id="address" formControlName="address" required>
+      <label for="location">Elhelyezkedés:</label>
+      <input type="text" id="location" #locationInput formControlName="location" required>
     </div>
     <div>
       <label for="price">Ár:</label>
@@ -43,13 +43,12 @@
       <label for="status">Státusz:</label>
       <input type="text" id="status" formControlName="status" required>
     </div>
-    <div>
-      <label for="location">Elhelyezkedés:</label>
-      <input type="text" id="location" formControlName="location" required>
-    </div>
-    <div>
-      <label for="photos">Fotók:</label>
-      <input type="file" id="photos" (change)="onFileSelected($event)" multiple>
+    <div class="upload-container">
+      <input type="file" id="photos" (change)="onFileSelected($event)" multiple hidden>
+      <label for="photos" class="drag-drop-box">
+        Húzd ide a fotókat vagy kattints ide a kiválasztáshoz
+      </label>
+      <div class="image-preview-container"></div>
     </div>
     <button type="submit" [disabled]="!propertyForm.valid">Hirdetés Feladása</button>
   </form>

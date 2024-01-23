@@ -13,7 +13,7 @@
         </div>
       </div>
       <mat-icon *ngIf="!selectedProperty?.photos || selectedProperty.photos.length === 0" class="centered-icon">image_not_supported</mat-icon>
-      <p><strong>Cím:</strong> {{ selectedProperty.address }}</p>
+      <p><strong>Cím:</strong> {{ selectedProperty.location }}</p>
       <p><strong>Ár:</strong> {{ selectedProperty.price }} Ft</p>
       <p><strong>Méret:</strong> {{ selectedProperty.size }} m²</p>
       <p><strong>Leírás:</strong> {{ selectedProperty.description }}</p>
@@ -22,6 +22,11 @@
       <p><strong>Fürdőszobák száma:</strong> {{ selectedProperty.features.numberOfBathrooms }}</p>
       <p><strong>Hálószobák száma:</strong> {{ selectedProperty.features.numberOfRooms }}</p>
       <p><strong>Hirdető neve:</strong> {{ uploaderFullName }}</p>
+      <p>
+        <button *ngIf="loggedInUser?.uid && selectedProperty?.uploaderID !== loggedInUser?.uid" mat-raised-button (click)="openMessageDialog(selectedProperty.uploaderID, selectedProperty.propertyID)">
+          Üzenet küldése
+        </button>
+    </p>
       <p>
         <button *ngIf="loggedInUser" mat-icon-button (click)="toggleFavorite()">
           {{ isFavorite ? 'Eltávolítás a kedvencek közül' : 'Kedvenc' }}

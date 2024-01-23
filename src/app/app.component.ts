@@ -11,6 +11,7 @@ import { UserService } from './shared/services/user.service';
 import { MessagesService } from './shared/services/messages.service';
 import * as firebase from 'firebase/compat';
 import { User } from './shared/models/User';
+import { ChatService } from './shared/services/chat.service';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class AppComponent implements OnInit{
   
 
 
-  constructor(private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService){
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService){
     this.isHandset$ = this.mediaObserver.asObservable().pipe(
       map(changes =>
         changes.some(change => change.mqAlias === 'xs' || change.mqAlias === 'sm' || change.mqAlias === 'md')
@@ -43,6 +44,17 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
+    this.chatService.openChatWithUser.subscribe(userId => {
+      this.selectChatPartner(userId);
+      this.showChat = true;
+    });
+    this.chatService.openChatWithUserWithProperty.subscribe(data => {
+      this.showChat = true;
+      this.selectChatPartner(data.userId);
+      if (!this.hasExistingConversation(data.userId)) {
+        this.prepopulateMessageWithPropertyLink(data.propertyId);
+      }
+    });
     this.routes = this.router.config.map(conf => conf.path) as string[];
 
     this.router.events.pipe(filter(event=> event instanceof NavigationEnd)).subscribe((evts: any) =>{
@@ -65,10 +77,20 @@ export class AppComponent implements OnInit{
   changePage(selectedPage: string){
     this.router.navigateByUrl(selectedPage)
   }
-
+  prepopulateMessageWithPropertyLink(propertyId: string) {
+    const propertyLink = `localhost:4200/property-details/${propertyId}`;
+    this.newMessage = `Érdeklődöm a következő ingatlan iránt: ${propertyLink}.`;
+  }
+  hasExistingConversation(partnerId: string): boolean {
+    return this.messages.some(message => 
+      (message.senderId === this.loggedInUser?.uid && message.receiverId === partnerId) ||
+      (message.receiverId === this.loggedInUser?.uid && message.senderId === partnerId)
+    );
+  }
   onToggleSidenav(sidenav: MatSidenav){
     sidenav.toggle();
   }
+
 
   onClose(event: any, sidenav: MatSidenav){
     if (event===true){

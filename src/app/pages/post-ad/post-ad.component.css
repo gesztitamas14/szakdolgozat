@@ -1,58 +1,120 @@
 form {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f3f3f3;
-    border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+form div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333333;
+}
+
+input[type="text"],
+input[type="number"],
+textarea, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+input[type="file"] {
+  display: none;
+}
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus, select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+
+/* Kiegészítő Stílusok */
+.select-wrapper {
+position: relative;
+}
+
+select {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+padding-right: 30px;
+}
+
+.select-wrapper::after {
+content: "";
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+pointer-events: none;
+}
+.upload-container {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.drag-drop-box {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+}
+
+.image-preview-container {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-preview-container img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+}
+
+
+@media (max-width: 768px) {
+  form {
+  width: 90%;
+  margin: 20px auto;
   }
-  
-  form div {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input[type="text"],
-  input[type="number"],
-  textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* Biztosítja, hogy a padding és border nem növeli a szélességet */
-  }
-  
-  textarea {
-    height: 100px;
-    resize: vertical; /* Lehetővé teszi, hogy a felhasználó állítsa be a magasságát */
-  }
-  
-  button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  
-  button[type="submit"]:disabled {
-    background-color: #ccc;
-    cursor: default;
-  }
-  
-  input[type="file"] {
-    border: 1px solid #ccc;
-    display: block;
-    padding: 5px;
-  }
-  
+}
