@@ -1,6 +1,6 @@
     <mat-sidenav-container>
         <mat-sidenav #sidenav>
-            <app-menu (selectedPage)="changePage($event)" [currentPage]="page" *ngIf="page" (onCloseSidenav)="onClose($event,sidenav)" [loggedInUser]="loggedInUser" (onLogOut)="logout($event)"></app-menu>
+            <app-menu (selectedPage)="changePage($event)" [currentPage]="page" *ngIf="page" (onCloseSidenav)="onClose($event,sidenav)" [loggedInUser]="loggedInUser"></app-menu>
         </mat-sidenav>
         <mat-sidenav-content>
             <div class="content-wrapper">
@@ -9,14 +9,12 @@
                         <mat-icon>menu</mat-icon>
                     </button>
                     <div fxFlex>
-                        <span class="toolbar-title">Ingatlanradar</span>
+                        <span class="toolbar-title"><a routerLink="/main">Ingatlanradar</a></span>
                     </div>
                     <div class="toolbar-content" *ngIf="!(isHandset$ | async)">
                         <ul fxLayout fxLayoutGap="10px" class="navigation-items">
                         <li><a routerLink="/main">Főoldal</a></li>
-                        <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés</a></li>
-                        <li *ngIf="(loggedInUser)"><a routerLink="/login" (click)="logout()">Kijelentkezés</a></li>
-                        <li *ngIf="(!loggedInUser)"><a routerLink="/registration">Regisztráció</a></li>
+                        <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés/Regisztráció</a></li>
                         <li *ngIf="(loggedInUser)"><a routerLink="/profile">Profil</a></li>
                         <li *ngIf="(loggedInUser)"><a routerLink="/post-ad">Hirdetés feladása</a></li>
                         <li *ngIf="(loggedInUser)"><a routerLink="/favorites">Kedvencek</a></li>

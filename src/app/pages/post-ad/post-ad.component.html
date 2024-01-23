@@ -13,36 +13,39 @@
     </div>
     <div>
       <label for="description">Leírás:</label>
-      <textarea id="description" formControlName="description" required></textarea>
+      <textarea id="description" formControlName="description"></textarea>
     </div>
     <div formGroupName="features">
       <div>
         <label for="type">Ingatlan típusa:</label>
         <select id="type" formControlName="type" required>
-          <option value="lakas">Lakás</option>
-          <option value="haz">Ház</option>
+          <option value="lakás">Lakás</option>
+          <option value="ház">Ház</option>
           <option value="telek">Telek</option>
           <option value="iroda">Iroda</option>
-          <option value="uzlet">Üzlet</option>
-          <option value="garazs">Garázs</option>
-          <option value="szallashely">Szálláshely</option>
+          <option value="üzlet">Üzlet</option>
+          <option value="garázs">Garázs</option>
+          <option value="szálláshely">Szálláshely</option>
           <option value="ipari">Ipari és Raktárterület</option>
-          <option value="egyeb">Egyéb</option>
+          <option value="egyéb">Egyéb</option>
         </select>
       </div>
         <div>
           <label for="numberOfRooms">Hálószobák száma:</label>
-          <input type="number" id="numberOfRooms" formControlName="numberOfRooms" required>
+          <input type="number" id="numberOfRooms" formControlName="numberOfRooms">
         </div>
         <div>
           <label for="numberOfBathrooms">Fürdőszobák száma:</label>
-          <input type="number" id="numberOfBathrooms" formControlName="numberOfBathrooms" required>
+          <input type="number" id="numberOfBathrooms" formControlName="numberOfBathrooms">
         </div>
       </div>
-    <div>
-      <label for="status">Státusz:</label>
-      <input type="text" id="status" formControlName="status" required>
-    </div>
+      <div>
+        <label for="status">Státusz:</label>
+        <select id="status" formControlName="status" required>
+          <option value="Eladó">Eladó</option>
+          <option value="Kiadó">Kiadó</option>
+        </select>
+      </div>
     <div class="upload-container">
       <input type="file" id="photos" (change)="onFileSelected($event)" multiple hidden>
       <label for="photos" class="drag-drop-box">

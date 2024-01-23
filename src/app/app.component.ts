@@ -98,13 +98,6 @@ export class AppComponent implements OnInit{
     }
   }
 
-  logout(_?:boolean){
-    this.authService.logout().then(()=>{
-      console.log('Logged out successfully.');
-    }).catch(error=>{
-      console.error(error);
-    });
-  }
   toggleChat() {
     this.showChat = !this.showChat;
   }

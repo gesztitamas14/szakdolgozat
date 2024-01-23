@@ -75,3 +75,52 @@
 .favorite-button mat-icon {
   color: #f0c040;
 }
+
+.filters-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Biztosítja, hogy az elemek szükség esetén tördeljenek */
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.radio-buttons-container {
+  display: flex;
+  flex-direction: column; /* Oszlopos elrendezés */
+  justify-content: space-between; /* Az elemek közötti tér kitöltése */
+  height: 100px; /* Az összes rádiógomb magasságának beállítása */
+  margin-right: 10px;
+  width: 90px;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-container input {
+  padding: 10px;
+  margin-right: 5px;
+  width: 300px; /* A szövegdoboz szélességének növelése */
+  height: 50px; /* A szövegdoboz magasságának beállítása */
+  border: 1px solid #ccc;
+}
+
+.search-container button {
+  padding: 10px 20px;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Kijelölt rádiógomb belső köre */
+body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__inner-circle {
+  background-color: var(--color-accent); /* Kívánt szín */
+}
+
+/* Kijelölt rádiógomb külső köre */
+body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__outer-circle {
+  border-color: var(--color-dark-accent); /* Kívánt szín */
+}
+

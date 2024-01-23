@@ -43,8 +43,8 @@ export class PostAdComponent implements OnInit{
       location: ['', Validators.required],
       features: this.fb.group({
         type: ['', Validators.required],
-        numberOfRooms: ['', [Validators.required, Validators.min(0)]],
-        numberOfBathrooms: ['', [Validators.required, Validators.min(0)]],
+        numberOfRooms: [''],
+        numberOfBathrooms: [''],
       }),
       photos: this.photos.length > 0 ? this.photos : [''],
       uploaderID: this.loggedInUser?.uid
@@ -52,7 +52,6 @@ export class PostAdComponent implements OnInit{
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
-      console.log(this.loggedInUser?.uid)
     }, (error: any)=>{
       console.error(error);
       localStorage.setItem('user',JSON.stringify('null'))
@@ -62,7 +61,6 @@ export class PostAdComponent implements OnInit{
     const autocomplete = new google.maps.places.Autocomplete(this.locationInput?.nativeElement);
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
-      console.log(place);
     });
   }
   private uploadImages(files: FileList) {

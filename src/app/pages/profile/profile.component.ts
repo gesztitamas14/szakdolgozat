@@ -60,4 +60,13 @@ export class ProfileComponent implements OnInit{
     this.passwordsMatch = this.newPassword === this.confirmPassword;
     this.showConfirmTooltip = !this.passwordsMatch;
   }
+
+  logout(_?:boolean){
+    this.authService.logout().then(()=>{
+      console.log('Logged out successfully.');
+    }).catch(error=>{
+      console.error(error);
+    });
+  }
+
 }

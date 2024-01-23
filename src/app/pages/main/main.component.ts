@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { PropertyService } from '../../shared/services/property.service';
 import { Property } from '../../shared/models/Properties';
 import { Router } from '@angular/router';
@@ -7,25 +7,26 @@ import { FavoriteProperty } from '../../shared/models/Favorites';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MainComponent implements OnInit {
   properties: Property[] = [];
   loggedInUser?: firebase.default.User | null;
   favoritePropertyIDs: string[] = [];
-
+  filteredProperties: Property[] = [];
+  searchTerm: string = '';
+  propertyStatus: string = '';
 
   constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.propertyService.getProperties().subscribe(properties => {
-      this.properties = properties;
-    });
+    this.loadProperties();
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
@@ -38,6 +39,37 @@ export class MainComponent implements OnInit {
       console.error(error);
       localStorage.setItem('user',JSON.stringify('null'))
     })
+  }
+
+  onSearchTermChange() {
+    if (!this.searchTerm) {
+      // Ha az input mező üres, akkor automatikusan betölti az összes ingatlant
+      this.loadProperties();
+    } else {
+      // Ellenkező esetben alkalmazza a szűrést a keresési feltétel alapján
+      this.applyFilter();
+    }
+  }  
+
+  loadProperties() {
+    this.propertyService.getProperties().subscribe(properties => {
+      this.properties = properties;
+      this.filteredProperties = properties; // Frissítse a szűrt tulajdonságokat is
+    });
+  }
+
+    // Keresési feltétel alapján szűri a tulajdonságokat
+    searchProperties() {
+      this.applyFilter();
+    }
+  
+  // A szűrési logika külön metódusban
+  applyFilter() {
+    // Itt szűrje a tulajdonságokat a searchTerm és a propertyStatus alapján
+    this.filteredProperties = this.properties.filter(property => {
+      return (!this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
+              (!this.propertyStatus || property.status === this.propertyStatus);
+    });
   }
 
   addProperty() {

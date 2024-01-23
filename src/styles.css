@@ -75,3 +75,13 @@ mat-sidenav {
   mat-toolbar {
     background-color: var(--color-secondary);
 }
+
+/* Kijelölt rádiógomb belső köre */
+body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__inner-circle {
+  background-color: var(--color-accent); /* Kívánt szín */
+}
+
+/* Kijelölt rádiógomb külső köre */
+body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__outer-circle {
+  border-color: var(--color-dark-accent); /* Kívánt szín */
+}
