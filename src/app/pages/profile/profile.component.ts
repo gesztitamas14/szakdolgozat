@@ -3,6 +3,8 @@ import { PropertyService } from '../../shared/services/property.service';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { User } from '../../shared/models/User';
+import { Property } from '../../shared/models/Properties';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -18,21 +20,51 @@ export class ProfileComponent implements OnInit{
   showTooltip: boolean = false;
   passwordsMatch: boolean = false;
   showConfirmTooltip: boolean = false;
+  userProperties: Property[] = [];
+  viewedUser?: User;
 
-  constructor(private userService: UserService,private authService: AuthService){}
+  constructor(private userService: UserService,private authService: AuthService, private propertyService: PropertyService, private route: ActivatedRoute, private router: Router){}
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user => {
       this.loggedInUser = user;
-      if (this.loggedInUser?.uid) {
-        this.userService.getUserById(this.loggedInUser.uid).subscribe(userData => {
-          this.currentUser = userData as any;
-        });
-      }
-      localStorage.setItem('user', JSON.stringify(this.loggedInUser));
-    }, (error: any) => {
+  
+      this.route.paramMap.subscribe(params => {
+        const userId = params.get('userId');
+        if (userId) {
+          this.userService.getUserById(userId).subscribe(userData => {
+            this.currentUser = userData as User;
+            this.loadUserProperties(userId);
+          });
+        } else if (this.loggedInUser?.uid) {
+          this.userService.getUserById(this.loggedInUser.uid).subscribe(userData => {
+            this.currentUser = userData as User;
+          });
+        }
+      });
+    }, error => {
       console.error(error);
       localStorage.setItem('user', JSON.stringify('null'));
     });
+  }
+
+  viewPropertyDetails(propertyID: string) {
+    this.router.navigate(['/property-details', propertyID]);
+  }
+  
+  loadUserProperties(userId: string) {
+    this.propertyService.getUserProperties(userId).subscribe(properties => {
+      this.userProperties = properties as any;
+    });
+  }
+  formatPrice(price: number): string {
+    if (price % 1000000 === 0) {
+      return `${price / 1000000}M Ft`;
+    } else {
+      return `${price} Ft`;
+    }
+  }
+  calculatePricePerSqm(price: number, size: number): string {
+    return (price / size).toFixed(1);
   }
   changePassword() {
     if (this.newPassword !== this.confirmPassword) {
@@ -67,6 +99,14 @@ export class ProfileComponent implements OnInit{
     }).catch(error=>{
       console.error(error);
     });
+  }
+
+  markAsSold(propertyID: string) {
+    this.propertyService.updatePropertyAsSold(propertyID);
+  }
+  
+  deleteProperty(propertyID: string) {
+    this.propertyService.deleteProperty(propertyID);
   }
 
 }

@@ -9,7 +9,7 @@
     margin: 20px auto;
 
   }
-  .profile-container h2 {
+  h2 {
     color: var(--color-accent);
     margin-bottom: 20px;
     font-weight: bold;
@@ -118,3 +118,126 @@
     color: var(--color-primary);
     text-decoration: none;
   }
+
+  .profile-page-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+.profile-container {
+  flex: 1 1 600px;
+  max-width: 600px;
+  margin: 10px;
+}
+
+.properties-container {
+  flex: 2 1 60%;
+  margin: 10px;
+}
+
+@media (max-width: 768px) {
+  .profile-page-container {
+    flex-direction: column;
+  }
+
+  .profile-container, .properties-container {
+    max-width: 100%;
+    flex: none;
+  }
+}
+
+.property-container {
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+
+.property-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.property-image-container {
+  flex: 0 0 150px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.property-image, .property-icon {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.property-content {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.property-price {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.property-price-per-sqm {
+  font-size: 14px;
+  color: #888;
+}
+
+.property-address {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.property-details {
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+}
+
+.property-details strong {
+  font-weight: normal;
+  color: #888;
+}
+
+.property-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  transition: box-shadow 0.3s;
+  padding: 10px;
+}
+
+.property-item button {
+  margin-right: 10px; /* Jobb margó minden gombhoz */
+  min-height: 36px; /* Azonos magasság a gombok számára */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+#mat-button{
+  background: transparent;
+  padding: 5px;
+}
+
+.property-item button:last-child {
+  margin-right: 0; /* Nincs jobb margó az utolsó gombnak */
+}
+
+.property-item button mat-icon {
+  font-size: 30px; /* Ikon méretének beállítása */
+  color: red; /* Ikon színének beállítása */
+}
+
+
+  

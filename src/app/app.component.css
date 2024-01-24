@@ -16,6 +16,17 @@ mat-toolbar {
   mat-toolbar {
     background-color: #e0e0e0;
 }
+mat-toolbar mat-icon {
+  vertical-align: middle;
+  height: 30px;
+  width: 30px; /* Állítsa be a szélességet, hogy illeszkedjen a magassághoz */
+  font-size: 30px;
+  line-height: 1; /* A vonalmagasság beállítása */
+  display: inline-flex; /* Flex megjelenítés használata az ikon számára */
+  align-items: center; /* Középre igazítás a flex konténeren belül */
+  justify-content: center; /* Középre igazítás vízszintesen */
+}
+
 button {
     background-color: var(--color-dark-accent);
   }

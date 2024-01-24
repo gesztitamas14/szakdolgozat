@@ -6,6 +6,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { take } from 'rxjs/operators';
 
 declare var google: any;
 
@@ -18,6 +19,7 @@ export class PostAdComponent implements OnInit{
   @ViewChild('locationInput') locationInput: ElementRef | undefined;
   propertyForm: FormGroup | any;
   photos: string[] = [];
+  uploading = false;
   loggedInUser?: firebase.default.User | null;
   constructor(private fb: FormBuilder, private propertyService: PropertyService, private authService: AuthService, private userService: UserService, private router: Router,private storage: AngularFireStorage) {}
 
@@ -47,7 +49,8 @@ export class PostAdComponent implements OnInit{
         numberOfBathrooms: [''],
       }),
       photos: this.photos.length > 0 ? this.photos : [''],
-      uploaderID: this.loggedInUser?.uid
+      uploaderID: this.loggedInUser?.uid,
+      sold: false
     });
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
@@ -106,11 +109,12 @@ export class PostAdComponent implements OnInit{
     });
   }
   onSubmit() {
-    if (this.propertyForm?.valid) {
+    if (this.propertyForm?.valid && !this.uploading && this.loggedInUser) {
+      this.uploading = true;
       const uploaderID = this.loggedInUser?.uid ?? 'defaultUploaderID';
-
+  
       // Lekérjük a felhasználó adatait az ID alapján
-      this.userService.getUserById(uploaderID).subscribe((user) => {
+      this.userService.getUserById(uploaderID).pipe(take(1)).subscribe((user) => {
         const newProperty: Property = {
           ...this.propertyForm.value,
           photos: this.photos,
@@ -119,10 +123,12 @@ export class PostAdComponent implements OnInit{
         };
         this.propertyService.addProperty(newProperty).then(() => {
           console.log('Property added successfully');
+          this.uploading = false;
           this.router.navigateByUrl('/main');
         });
       });
     }
   }
+  
 
 }

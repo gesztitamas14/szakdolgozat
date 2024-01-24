@@ -21,14 +21,14 @@
       <p><strong>Ingatlan típusa:</strong> {{ selectedProperty.features.type }}</p>
       <p><strong>Fürdőszobák száma:</strong> {{ selectedProperty.features.numberOfBathrooms }}</p>
       <p><strong>Hálószobák száma:</strong> {{ selectedProperty.features.numberOfRooms }}</p>
-      <p><strong>Hirdető neve:</strong> {{ uploaderFullName }}</p>
+      <p><strong>Hirdető neve:</strong> <span (click)="viewUserProfile(selectedProperty.uploaderID)" class="uploader-name">{{ uploaderFullName }}</span></p>
       <p>
         <button *ngIf="loggedInUser?.uid && selectedProperty?.uploaderID !== loggedInUser?.uid" mat-raised-button (click)="openMessageDialog(selectedProperty.uploaderID, selectedProperty.propertyID)">
           Üzenet küldése
         </button>
     </p>
       <p>
-        <button *ngIf="loggedInUser" mat-icon-button (click)="toggleFavorite()">
+        <button *ngIf="loggedInUser && loggedInUser?.uid && selectedProperty?.uploaderID !== loggedInUser?.uid" mat-icon-button (click)="toggleFavorite()">
           {{ isFavorite ? 'Eltávolítás a kedvencek közül' : 'Kedvenc' }}
         </button>
       </p>

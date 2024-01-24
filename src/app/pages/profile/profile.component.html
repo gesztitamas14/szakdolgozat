@@ -1,4 +1,5 @@
-<div class="profile-container" *ngIf="currentUser">
+<div class="profile-page-container" *ngIf="loggedInUser && currentUser">
+  <div class="profile-container">
     <h2>Profil</h2>
     <table class="profile-table">
       <tr>
@@ -9,12 +10,12 @@
         <td>Felhasználónév:</td>
         <td>{{ currentUser.username }}</td>
       </tr>
-      <tr>
+      <tr *ngIf="loggedInUser.uid === currentUser.id">
         <td>Email:</td>
         <td>{{ currentUser.email }}</td>
       </tr>
     </table>
-    <form (ngSubmit)="changePassword()">
+    <form (ngSubmit)="changePassword()" *ngIf="loggedInUser.uid === currentUser.id">
         <div>
           <label for="newPassword">Új jelszó</label><br>
           <input type="password" id="newPassword" [(ngModel)]="newPassword"
@@ -41,8 +42,33 @@
           </div>
         <button type="submit">Jelszó megváltoztatása</button>
     </form>
-    <div class="logout-container">
+    <div class="logout-container" *ngIf="loggedInUser.uid === currentUser.id">
       <a routerLink="/login" (click)="logout()">Kijelentkezés</a>
     </div>    
   </div>
+
+  <div class="properties-container">
+    <h2>Hirdetett Ingatlanok</h2>
+    <div *ngFor="let property of userProperties" class="property-item" (click)="viewPropertyDetails(property.propertyID)">
+      <div class="property-image-container">
+        <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="property-image">
+        <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="property-icon">image_not_supported</mat-icon>
+      </div>
+      <div class="property-content">
+        <p class="property-price">{{ formatPrice(property.price) }}
+          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+        </p>
+        <p class="property-address">{{ property.location }}</p>
+        <div class="property-details">
+          <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
+          <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
+        </div>
+      </div>
+      <button mat-button (click)="$event.stopPropagation(); markAsSold(property.propertyID)" *ngIf="loggedInUser.uid === currentUser.id && !property.sold">Eladottnak nyílvánít</button>
+      <button id="mat-button" mat-button (click)="$event.stopPropagation(); deleteProperty(property.propertyID)" *ngIf="loggedInUser.uid === currentUser.id">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
   

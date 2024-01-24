@@ -32,4 +32,13 @@ export class PropertyService {
       .doc(propertyID)
       .valueChanges();
   }
+  getUserProperties(userID: string): Observable<Property[]> {
+    return this.afs
+      .collection<Property>(this.collectionName, ref => ref.where('uploaderID', '==', userID))
+      .valueChanges();
+  }
+  updatePropertyAsSold(propertyID: string) {
+    return this.afs.
+    collection<Property>(this.collectionName).doc(propertyID).update({ sold: true });
+  }
 }

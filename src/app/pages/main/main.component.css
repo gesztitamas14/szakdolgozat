@@ -108,19 +108,7 @@
 
 .search-container button {
   padding: 10px 20px;
-  background-color: var(--color-accent);
   color: white;
   border: none;
   cursor: pointer;
 }
-
-/* Kijelölt rádiógomb belső köre */
-body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__inner-circle {
-  background-color: var(--color-accent); /* Kívánt szín */
-}
-
-/* Kijelölt rádiógomb külső köre */
-body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__outer-circle {
-  border-color: var(--color-dark-accent); /* Kívánt szín */
-}
-

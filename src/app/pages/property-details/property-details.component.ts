@@ -119,6 +119,9 @@ export class PropertyDetailsComponent implements OnInit {
     this.chatService.startChatWithUserWithProperty(uploaderId, propertyId);
   }
 
+  viewUserProfile(userId: any) {
+    this.router.navigate(['/profile', userId]);
+  }  
 
   goBack() {
     this.location.back();

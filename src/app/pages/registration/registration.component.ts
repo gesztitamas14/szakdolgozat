@@ -12,6 +12,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit{
+  passwordStrength = { hasLength: false, hasUpperCase: false, hasNumbers: false };
+  passwordsMatch = false;
+  validEmail = false;
 
   signUpForm= new FormGroup({
     email: new FormControl(''),
@@ -30,6 +33,18 @@ export class RegistrationComponent implements OnInit{
   onSignup() {
     const email = this.signUpForm.get('email')?.value;
     const password = this.signUpForm.get('password')?.value;
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    this.passwordStrength = this.checkPasswordStrength(password as any);
+    this.passwordsMatch = this.signUpForm.get('password')?.value === this.signUpForm.get('rePassword')?.value;
+    if (!(this.passwordStrength.hasLength && this.passwordStrength.hasUpperCase && this.passwordStrength.hasNumbers)) {
+      alert("A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell nagybetűt és számot.");
+    }
+    else if (!emailRegex.test(email as any)) {
+      alert("Az e-mail cím formátuma nem helyes.");
+    }
+    else if (!this.passwordsMatch) {
+      alert("A két jelszó nem egyezik.");
+    }
   
     if (email && password) {
       this.authService.signup(email, password).then((cred) => {
@@ -55,5 +70,19 @@ export class RegistrationComponent implements OnInit{
 
   goBack() {
     this.location.back();
+  }
+  checkPasswordStrength(password: string) {
+    const hasLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    return { hasLength, hasUpperCase, hasNumbers };
+  }
+
+  onEmailInput() {
+    const email = this.signUpForm.get('email')?.value;
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    if (!emailRegex.test(email as any)) {
+      alert("Az e-mail cím formátuma nem helyes.");
+    }
   }
 }

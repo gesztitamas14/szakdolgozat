@@ -13,17 +13,16 @@
                     </div>
                     <div class="toolbar-content" *ngIf="!(isHandset$ | async)">
                         <ul fxLayout fxLayoutGap="10px" class="navigation-items">
-                        <li><a routerLink="/main">Főoldal</a></li>
                         <li *ngIf="!(loggedInUser)"><a routerLink="/login">Bejelentkezés/Regisztráció</a></li>
-                        <li *ngIf="(loggedInUser)"><a routerLink="/profile">Profil</a></li>
                         <li *ngIf="(loggedInUser)"><a routerLink="/post-ad">Hirdetés feladása</a></li>
                         <li *ngIf="(loggedInUser)"><a routerLink="/favorites">Kedvencek</a></li>
                         <li *ngIf="(loggedInUser)"><a routerLink="/calculator">Pénzügyi kalkulátor</a></li>
+                        <li *ngIf="loggedInUser"><a [routerLink]="['/profile', loggedInUser.uid]"><mat-icon>account_box</mat-icon></a></li>
                     </ul>
                 </div>
             </mat-toolbar>
             <router-outlet></router-outlet>
-            <button mat-icon-button class="chat-icon" (click)="toggleChat()">
+            <button *ngIf="loggedInUser" mat-icon-button class="chat-icon" (click)="toggleChat()">
                 <mat-icon>chat</mat-icon>
             </button>
         

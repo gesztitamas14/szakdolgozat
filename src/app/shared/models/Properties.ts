@@ -13,4 +13,5 @@ export interface Property {
     status: string;
     uploaderID: string;
     location: string;
+    sold: boolean;
   }

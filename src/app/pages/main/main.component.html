@@ -10,7 +10,8 @@
   </div>
 </div>
 <div class="property-container">
-  <div *ngFor="let property of filteredProperties" class="property-item" (click)="viewPropertyDetails(property.propertyID)">
+  <div *ngFor="let property of filteredProperties">
+    <div class="property-item" *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid || !loggedInUser" (click)="viewPropertyDetails(property.propertyID)">
     <div class="property-image-container">
       <img *ngIf="property.photos && property.photos.length > 0 && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property Image" class="property-image">
       <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
@@ -25,8 +26,9 @@
         <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
       </div>
     </div>
-    <button mat-icon-button class="favorite-button" (click)="$event.stopPropagation(); addToFavorites(property.propertyID)">
+    <button *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid" mat-icon-button class="favorite-button" (click)="$event.stopPropagation(); addToFavorites(property.propertyID)">
       <mat-icon>{{ isFavorite(property.propertyID) ? 'star' : 'star_border' }}</mat-icon>
     </button>
   </div>
+</div>
 </div>
