@@ -6,29 +6,71 @@
     </mat-radio-group>
   </div>
   <div class="search-container">
-    <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()" placeholder="Keresés hely alapján..." class="search-input">
-  </div>
+    <input type="text"
+           [(ngModel)]="searchTerm"
+           (ngModelChange)="onSearchTermChange()"
+           [matAutocomplete]="auto"
+           placeholder="Keresés hely alapján..."
+           class="search-input">
+  
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let city of filteredCities" [value]="city">
+        {{ city }}
+      </mat-option>
+    </mat-autocomplete>
+  </div>  
 </div>
 <div class="property-container">
-  <div *ngFor="let property of filteredProperties">
-    <div class="property-item" *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid || !loggedInUser" (click)="viewPropertyDetails(property.propertyID)">
-    <div class="property-image-container">
-      <img *ngIf="property.photos && property.photos.length > 0 && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property Image" class="property-image">
-      <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
-    </div>
-    <div class="property-content">
-      <p class="property-price">{{ formatPrice(property.price) }}
-        <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
-      </p>
-      <p class="property-address">{{ property.location }}</p>
-      <div class="property-details">
-        <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
-        <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
+  <!-- Bal oldali oszlop -->
+  <div class="property-column">
+    <div *ngFor="let property of leftColumnProperties;">
+        <div class="property-item" *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid || !loggedInUser" (click)="viewPropertyDetails(property.propertyID)">
+          <div class="property-image-container">
+            <img *ngIf="property.photos && property.photos.length > 0 && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property Image" class="property-image">
+            <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
+          </div>
+          <div class="property-content">
+            <p *ngIf="property.status==='Kiadó'" class="property-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó</p>
+            <p *ngIf="property.status==='Eladó'" class="property-price">{{ formatPrice(property.price) }}
+              <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+            </p>
+            <p class="property-address">{{ property.location }}</p>
+            <div class="property-details">
+              <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
+              <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
+            </div>
+          </div>
+          <button *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid" mat-icon-button class="favorite-button" (click)="$event.stopPropagation(); addToFavorites(property.propertyID)">
+            <mat-icon>{{ isFavorite(property.propertyID) ? 'star' : 'star_border' }}</mat-icon>
+          </button>
+        </div>
+      </div>
+  </div>
+
+  <!-- Jobb oldali oszlop -->
+  <div class="property-column">
+    <div *ngFor="let property of rightColumnProperties;">
+      <div class="property-item" *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid || !loggedInUser" (click)="viewPropertyDetails(property.propertyID)">
+          <div class="property-image-container">
+            <img *ngIf="property.photos && property.photos.length > 0 && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property Image" class="property-image">
+            <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
+          </div>
+          <div class="property-content">
+            <p *ngIf="property.status==='Kiadó'" class="property-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó</p>
+            <p *ngIf="property.status==='Eladó'" class="property-price">{{ formatPrice(property.price) }}
+              <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+            </p>
+            <p class="property-address">{{ property.location }}</p>
+            <div class="property-details">
+              <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
+              <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
+            </div>
+          </div>
+          <button *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid" mat-icon-button class="favorite-button" (click)="$event.stopPropagation(); addToFavorites(property.propertyID)">
+            <mat-icon>{{ isFavorite(property.propertyID) ? 'star' : 'star_border' }}</mat-icon>
+          </button>
       </div>
     </div>
-    <button *ngIf="loggedInUser?.uid && property?.uploaderID !== loggedInUser?.uid" mat-icon-button class="favorite-button" (click)="$event.stopPropagation(); addToFavorites(property.propertyID)">
-      <mat-icon>{{ isFavorite(property.propertyID) ? 'star' : 'star_border' }}</mat-icon>
-    </button>
   </div>
 </div>
-</div>
+

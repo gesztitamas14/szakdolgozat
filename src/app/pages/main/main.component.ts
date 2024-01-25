@@ -22,6 +22,10 @@ export class MainComponent implements OnInit {
   filteredProperties: Property[] = [];
   searchTerm: string = '';
   propertyStatus: string = '';
+  leftColumnProperties: Property[] = [];
+  rightColumnProperties: Property[] = [];
+  filteredCities: string[] = [];
+  allCities: string[] = [];
 
   constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
@@ -41,26 +45,45 @@ export class MainComponent implements OnInit {
     })
   }
 
+
+  divideProperties() {
+    this.leftColumnProperties = this.filteredProperties.filter((_, index) => index % 2 === 0);
+    this.rightColumnProperties = this.filteredProperties.filter((_, index) => index % 2 === 1);
+  }
+
+
   onSearchTermChange() {
     if (!this.searchTerm) {
-      // Ha az input mező üres, akkor automatikusan betölti az összes ingatlant
       this.loadProperties();
+      this.filteredCities = this.allCities.slice(0, 5); // Korlátozza az elemek számát 5-re
     } else {
-      // Ellenkező esetben alkalmazza a szűrést a keresési feltétel alapján
+      this.filteredCities = this.allCities.filter(city =>
+        city.toLowerCase().includes(this.searchTerm.toLowerCase())
+      ).slice(0, 5); // Csak az első 5 találatot mutatja
+  
+      // Alkalmazza a szűrést a keresési feltétel alapján
       this.applyFilter();
+      this.divideProperties();
     }
   }  
+  
 
   loadProperties() {
     this.propertyService.getProperties().subscribe(properties => {
       this.properties = properties;
-      this.filteredProperties = properties; // Frissítse a szűrt tulajdonságokat is
+      this.filteredProperties = properties;
+      this.divideProperties();
+  
+      // Összegyűjti az összes várost
+      const cities = properties.map(property => property.location);
+      this.allCities = Array.from(new Set(cities)); // Eltávolítja a duplikátumokat
     });
   }
 
     // Keresési feltétel alapján szűri a tulajdonságokat
     searchProperties() {
       this.applyFilter();
+      this.divideProperties();
     }
   
   // A szűrési logika külön metódusban
@@ -70,6 +93,7 @@ export class MainComponent implements OnInit {
       return (!this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
               (!this.propertyStatus || property.status === this.propertyStatus);
     });
+    this.divideProperties();
   }
 
   viewPropertyDetails(propertyID: string) {
@@ -86,6 +110,10 @@ export class MainComponent implements OnInit {
   
   calculatePricePerSqm(price: number, size: number): string {
     return (price / size).toFixed(1);
+  }
+
+  calculateRentPrice(price: number){
+    return (price / 1000).toFixed(0);
   }
 
   addToFavorites(propertyID: string) {

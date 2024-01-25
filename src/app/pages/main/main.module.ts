@@ -6,6 +6,8 @@ import { MainComponent } from './main.component';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { MatRadioModule } from '@angular/material/radio';
     MainRoutingModule,
     MatIconModule,
     FormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatOptionModule,
+    MatAutocompleteModule,
   ]
 })
 export class MainModule { }

@@ -149,7 +149,7 @@
   }
 }
 
-.property-container {
+.profileprofileProperty-container {
   max-width: 80%;
   margin: 0 auto;
   display: flex;
@@ -158,11 +158,11 @@
 }
 
 
-.property-item:hover {
+.profileProperty-item:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.property-image-container {
+.profileProperty-image-container {
   flex: 0 0 150px;
   height: 100px;
   display: flex;
@@ -170,44 +170,44 @@
   align-items: center;
 }
 
-.property-image, .property-icon {
+.profileProperty-image, .profileProperty-icon {
   max-width: 100%;
   max-height: 100%;
 }
 
-.property-content {
+.profileProperty-content {
   flex: 1;
   padding: 0 10px;
 }
 
-.property-price {
+.profileProperty-price {
   font-size: 24px;
   font-weight: bold;
   margin: 0;
 }
 
-.property-price-per-sqm {
+.profileProperty-price-per-sqm {
   font-size: 14px;
   color: #888;
 }
 
-.property-address {
+.profileProperty-address {
   font-size: 18px;
   margin-top: 5px;
 }
 
-.property-details {
+.profileProperty-details {
   font-size: 16px;
   color: #333;
   margin-top: 5px;
 }
 
-.property-details strong {
+.profileProperty-details strong {
   font-weight: normal;
   color: #888;
 }
 
-.property-item {
+.profileProperty-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -217,7 +217,7 @@
   padding: 10px;
 }
 
-.property-item button {
+.profileProperty-item button {
   margin-right: 10px; /* Jobb margó minden gombhoz */
   min-height: 36px; /* Azonos magasság a gombok számára */
   align-items: center;
@@ -230,11 +230,11 @@
   padding: 5px;
 }
 
-.property-item button:last-child {
+.profileProperty-item button:last-child {
   margin-right: 0; /* Nincs jobb margó az utolsó gombnak */
 }
 
-.property-item button mat-icon {
+.profileProperty-item button mat-icon {
   font-size: 30px; /* Ikon méretének beállítása */
   color: red; /* Ikon színének beállítása */
 }

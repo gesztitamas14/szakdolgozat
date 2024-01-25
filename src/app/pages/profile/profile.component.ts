@@ -22,6 +22,8 @@ export class ProfileComponent implements OnInit{
   showConfirmTooltip: boolean = false;
   userProperties: Property[] = [];
   viewedUser?: User;
+  inactiveProperties: Property[] = [];
+  activeProperties: Property[] = [];
 
   constructor(private userService: UserService,private authService: AuthService, private propertyService: PropertyService, private route: ActivatedRoute, private router: Router){}
   ngOnInit() {
@@ -53,7 +55,8 @@ export class ProfileComponent implements OnInit{
   
   loadUserProperties(userId: string) {
     this.propertyService.getUserProperties(userId).subscribe(properties => {
-      this.userProperties = properties as any;
+      this.inactiveProperties = properties.filter(property => property.sold === true);
+      this.activeProperties = properties.filter(property => property.sold === false);
     });
   }
   formatPrice(price: number): string {

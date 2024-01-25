@@ -47,11 +47,14 @@ button{
 }
 
 .image-carousel {
-position: relative;
-display: flex;
-justify-content: center;
-align-items: center;
-margin-bottom: 5px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  overflow: hidden;
+  width: 100%; /* A kép konténer szélessége megegyezik a keret szélességével */
+  height: 300px; /* Fix magasság a képek számára */
 }
 
 .property-image {
@@ -65,27 +68,27 @@ margin-bottom: 5px;
 
 
 .arrow {
-position: absolute;
-top: 50%;
-transform: translateY(-50%);
-font-size: 24px;
-color: white;
-cursor: pointer;
-background-color: rgba(0, 0, 0, 0.5);
-padding: 10px;
-display: none;
-align-items: center;
-justify-content: center;
-z-index: 10;
-border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 50%;
 }
 
 .left-arrow {
-left: 30%;
+left: 36%;
 }
 
 .right-arrow {
-right: 30%;
+right: 36%;
 }
 
 .image-carousel:hover .arrow {
