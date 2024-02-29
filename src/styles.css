@@ -76,12 +76,24 @@ mat-sidenav {
     background-color: var(--color-secondary);
 }
 
-/* Kijelölt rádiógomb belső köre */
 body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__inner-circle {
-  background-color: var(--color-accent); /* Kívánt szín */
+  background-color: var(--color-accent);
 }
 
-/* Kijelölt rádiógomb külső köre */
 body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__outer-circle {
-  border-color: var(--color-dark-accent); /* Kívánt szín */
+  border-color: var(--color-dark-accent);
+}
+
+html {
+  height: 100%;
+  /* Overflow-t itt hagyhatja az alapértelmezett értéken, vagy beállíthatja hidden-re, ha biztos benne, hogy nem lesz szükség görgetésre */
+}
+
+body {
+  min-height: 100%;
+  margin: 0; /* Ez biztosítja, hogy nincsenek extra külső margók */
+  padding: 0; /* Ez eltávolítja a belső margókat */
+  /* Overflow-t itt állítsa be szükség szerint */
+  overflow-x: hidden; /* Eltávolítja a vízszintes görgőt, ha nincs szükség rá */
+  overflow-y: auto; /* Automatikusan jelenít meg görgőt, ha szükség van rá */
 }

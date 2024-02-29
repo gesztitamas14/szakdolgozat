@@ -29,7 +29,10 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 
-import {AngularFireModule} from '@angular/fire/compat'
+import {AngularFireModule} from '@angular/fire/compat';
+import { ForgotPasswordDialogComponent } from './pages/forgot-password-dialog/forgot-password-dialog.component'
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 MatListModule
 @NgModule({
@@ -44,7 +47,8 @@ MatListModule
     //CalculatorComponent,
     //PropertyDetailsComponent,
     //ContactComponent,
-    MenuComponent
+    MenuComponent,
+    ForgotPasswordDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,8 @@ MatListModule
     MatIconModule,
     FlexLayoutModule,
     MatListModule,
+    MatDialogModule,
+    MatFormFieldModule,
     AngularFireModule.initializeApp(environment.firebase),
     //provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { LoginRoutingModule } from './login-routing.module';
-import { LoginComponent } from './login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ForgotPasswordDialogComponent } from './forgot-password-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
   declarations: [
-    LoginComponent
+    ForgotPasswordDialogComponent
   ],
   imports: [
     CommonModule,
-    LoginRoutingModule,
-    ReactiveFormsModule,
+    FormsModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatButtonModule
   ]
 })
-export class LoginModule { }
+export class ForgotPasswordDialogModule { }

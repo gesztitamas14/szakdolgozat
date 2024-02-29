@@ -27,5 +27,8 @@ export class AuthService {
     const user = this.auth.currentUser;
     return user.then(u => u?.updatePassword(newPassword));
   }
+  async resetPassword(email: string): Promise<void> {
+    return this.auth.sendPasswordResetEmail(email);
+  }
 
 }

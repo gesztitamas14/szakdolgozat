@@ -1,8 +1,7 @@
-/* Eszköztár (Toolbar) stílusai */
 mat-toolbar {
     background-color: var(--color-secondary);
     color: var(--color-contrast);
-    min-height: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     padding: 0 10px;
@@ -19,12 +18,12 @@ mat-toolbar {
 mat-toolbar mat-icon {
   vertical-align: middle;
   height: 30px;
-  width: 30px; /* Állítsa be a szélességet, hogy illeszkedjen a magassághoz */
+  width: 30px;
   font-size: 30px;
-  line-height: 1; /* A vonalmagasság beállítása */
-  display: inline-flex; /* Flex megjelenítés használata az ikon számára */
-  align-items: center; /* Középre igazítás a flex konténeren belül */
-  justify-content: center; /* Középre igazítás vízszintesen */
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button {
@@ -158,4 +157,3 @@ button {
   flex-grow: 1;
   margin-right: 10px;
 }
-  

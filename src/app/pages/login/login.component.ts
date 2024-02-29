@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { FakeLoadingService } from '../../shared/services/fake-loading.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ForgotPasswordDialogComponent } from '../forgot-password-dialog/forgot-password-dialog.component';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
 
 @Component({
   selector: 'app-login',
@@ -14,40 +18,45 @@ export class LoginComponent implements OnInit, OnDestroy{
   email = new FormControl('')
   password = new FormControl('')
   loadingSubscription?: Subscription;
-
   loading: boolean = false;
+  loginError: string | null = null;
+  storage = getStorage();
+  imageRef = ref(this.storage, 'signup/signup.jpg');
 
-  constructor(private router: Router, private loadingService: FakeLoadingService, private authService : AuthService) {}
+  constructor(private router: Router, private loadingService: FakeLoadingService, private authService : AuthService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     
   }
-  async login(){
+  async login() {
+    this.loginError = null; // Hibaüzenet törlése
     const emailValue: string = this.email.value || '';
     const passwordValue: string = this.password.value || '';
-    this.loading=true;
-    //Observable
-    /*this.loadingSubscription = this.loadingService.loadingWithObservable(emailValue, passwordValue)
-          .subscribe({
-               next: (data: boolean)=>{
-              this.router.navigateByUrl('/main');
-            }, error: (error)=>{
-              console.log(error)
-              this.loading=false;
-            },complete: () =>{
-              this.loading=false;
-            }
-          });*/
+    this.loading = true;
 
-      this.authService.login(emailValue, passwordValue).then(cred =>{
-        console.log(cred)
-        this.router.navigateByUrl('/main');
-        this.loading = false;
-      }).catch(error=>{
-        console.error(error);
-      });
+    this.authService.login(emailValue, passwordValue).then(cred => {
+      console.log(cred);
+      this.router.navigateByUrl('/main');
+      this.loading = false;
+    }).catch(error => {
+      this.loginError = 'Hiba a bejelentkezés során. Kérjük, ellenőrizze az adatait!'; // Hibaüzenet beállítása
+      this.loading = false;
+      console.error(error);
+    });
   }
   ngOnDestroy(){
     this.loadingSubscription?.unsubscribe();
   }
+  openForgotPasswordDialog(): void {
+    const dialogRef = this.dialog.open(ForgotPasswordDialogComponent, {
+      width: '250px',
+      data: { /* adatok, ha szükséges */ }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('A dialog bezárult');
+      // Itt kezeld le az esetleges visszaállítási eredményt
+    });
+  }
+
 }

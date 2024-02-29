@@ -26,15 +26,16 @@ export class MainComponent implements OnInit {
   rightColumnProperties: Property[] = [];
   filteredCities: string[] = [];
   allCities: string[] = [];
+  userProperties: string[] = [];
 
   constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.loadProperties();
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
       if (this.loggedInUser?.uid) {
+        this.loadUserProperties();
         this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favorites => {
           this.favoritePropertyIDs = favorites.length > 0 ? favorites[0].propertyIDs : [];
         });
@@ -43,9 +44,19 @@ export class MainComponent implements OnInit {
       console.error(error);
       localStorage.setItem('user',JSON.stringify('null'))
     })
+    this.loadProperties();
   }
 
-
+  loadUserProperties() {
+    if (this.loggedInUser?.uid) {
+      this.propertyService.getUserProperties(this.loggedInUser.uid)
+        .subscribe(properties => {
+          this.userProperties = properties.map(p => p.uploaderID);
+          console.log(this.userProperties);
+          this.applyFilter();
+        });
+    }
+  }
   divideProperties() {
     this.leftColumnProperties = this.filteredProperties.filter((_, index) => index % 2 === 0);
     this.rightColumnProperties = this.filteredProperties.filter((_, index) => index % 2 === 1);
@@ -86,15 +97,14 @@ export class MainComponent implements OnInit {
       this.divideProperties();
     }
   
-  // A szűrési logika külön metódusban
-  applyFilter() {
-    // Itt szűrje a tulajdonságokat a searchTerm és a propertyStatus alapján
-    this.filteredProperties = this.properties.filter(property => {
-      return (!this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
-              (!this.propertyStatus || property.status === this.propertyStatus);
-    });
-    this.divideProperties();
-  }
+    applyFilter() {
+      this.filteredProperties = this.properties.filter(property => {
+        return (!this.userProperties.includes(property.uploaderID)) && // Kizárja a felhasználó saját ingatlanjait
+               (!this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
+               (!this.propertyStatus || property.status === this.propertyStatus);
+      });
+      this.divideProperties();
+    }
 
   viewPropertyDetails(propertyID: string) {
     this.router.navigate(['/property-details', propertyID]);
@@ -167,4 +177,6 @@ export class MainComponent implements OnInit {
   isFavorite(propertyID: string): boolean {
     return this.favoritePropertyIDs.includes(propertyID);
   }
+
+  
 }

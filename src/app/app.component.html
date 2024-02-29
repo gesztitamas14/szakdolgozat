@@ -26,7 +26,7 @@
                 <mat-icon>chat</mat-icon>
             </button>
         
-            <div class="chat-window" *ngIf="showChat">
+            <div class="chat-window" *ngIf="showChat && loggedInUser">
                 <button mat-icon-button class="close-chat" (click)="toggleChat()">
                 <mat-icon>close</mat-icon>
                 </button>
