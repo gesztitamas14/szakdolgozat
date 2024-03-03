@@ -20,6 +20,23 @@
     </mat-autocomplete>
   </div>  
 </div>
+<div class="pagination">
+  <div class="pagination-button" *ngIf="currentPage > 1; else prevPlaceholder">
+    <button (click)="previousPage()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+  <ng-template #prevPlaceholder><div class="pagination-placeholder"></div></ng-template>
+  
+  <span>Oldal {{ currentPage }} / {{ totalPages }}</span>
+
+  <div class="pagination-button" *ngIf="currentPage < totalPages; else nextPlaceholder">
+    <button (click)="nextPage()">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+  <ng-template #nextPlaceholder><div class="pagination-placeholder"></div></ng-template>
+</div>
 <div class="property-container">
   <!-- Bal oldali oszlop -->
   <div class="property-column">
@@ -30,7 +47,9 @@
             <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
           </div>
           <div class="property-content">
-            <p *ngIf="property.status==='Kiadó'" class="property-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó</p>
+            <p *ngIf="property.status==='Kiadó'" class="property-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó
+              <span class="property-price-per-sqm"></span>
+            </p>
             <p *ngIf="property.status==='Eladó'" class="property-price">{{ formatPrice(property.price) }}
               <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
             </p>
@@ -56,7 +75,9 @@
             <mat-icon *ngIf="!property.photos || property.photos.length === 0 || property.photos[0] === ''" class="property-icon">image_not_supported</mat-icon>
           </div>
           <div class="property-content">
-            <p *ngIf="property.status==='Kiadó'" class="property-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó</p>
+            <p *ngIf="property.status==='Kiadó'" class="property-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó
+              <span class="property-price-per-sqm"></span>
+            </p>
             <p *ngIf="property.status==='Eladó'" class="property-price">{{ formatPrice(property.price) }}
               <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
             </p>

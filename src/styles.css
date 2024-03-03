@@ -86,14 +86,12 @@ body .mat-mdc-radio-button.mat-accent.mat-mdc-radio-checked .mdc-radio__outer-ci
 
 html {
   height: 100%;
-  /* Overflow-t itt hagyhatja az alapértelmezett értéken, vagy beállíthatja hidden-re, ha biztos benne, hogy nem lesz szükség görgetésre */
 }
 
 body {
   min-height: 100%;
-  margin: 0; /* Ez biztosítja, hogy nincsenek extra külső margók */
-  padding: 0; /* Ez eltávolítja a belső margókat */
-  /* Overflow-t itt állítsa be szükség szerint */
-  overflow-x: hidden; /* Eltávolítja a vízszintes görgőt, ha nincs szükség rá */
-  overflow-y: auto; /* Automatikusan jelenít meg görgőt, ha szükség van rá */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit, OnDestroy{
     this.loading = true;
 
     this.authService.login(emailValue, passwordValue).then(cred => {
-      console.log(cred);
       this.router.navigateByUrl('/main');
       this.loading = false;
     }).catch(error => {
@@ -49,14 +48,11 @@ export class LoginComponent implements OnInit, OnDestroy{
   }
   openForgotPasswordDialog(): void {
     const dialogRef = this.dialog.open(ForgotPasswordDialogComponent, {
-      width: '250px',
-      data: { /* adatok, ha szükséges */ }
+      width: '100px',
+      data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('A dialog bezárult');
-      // Itt kezeld le az esetleges visszaállítási eredményt
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
 }

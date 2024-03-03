@@ -1,15 +1,16 @@
 .property-container {
   max-width: 60%;
-  margin: 20px auto; /* A külső margó biztosítja, hogy a tartalom ne érjen a szülő széleihez */
+  margin: 20px auto;
   display: flex;
-  flex-wrap: wrap; /* Több oszlop engedélyezése */
-  justify-content: flex-start; /* Az elemek balról jobbra rendezése */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  height: calc(100vh - 273px);
 }
 
 .property-column {
-  flex: 1; /* Mindkét oszlop egyforma méretű lesz */
-  max-width: calc(50% - 20px); /* Számolja ki a megfelelő szélességet a margók levonásával */
-  margin: 10px; /* Margó az oszlopok között */
+  flex: 1;
+  max-width: calc(50% - 20px);
+  margin: 10px;
   padding: 0 10px;
 }
 
@@ -19,40 +20,40 @@
 }
 
 .property-image-container {
-  width: 100%; /* A kép konténer szélessége megegyezik a keret szélességével */
-  height: 200px; /* Fix magasság a képek számára */
+  width: 100%;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
-  overflow: hidden; /* Ha a kép nagyobb, azt levágja */
+  overflow: hidden;
 }
 
 .property-item {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Középre igazítja a tartalmat */
-  width: 100%; /* A keret szélessége megegyezik az oszlop szélességével */
-  margin-bottom: 20px; /* Térköz az ingatlanok között */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Árnyék hozzáadása a kerethez */
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
 .property-image, .property-icon {
-  width: 100%; /* Teljes szélesség, de a kép nem nyúlik szét */
-  height: auto; /* Megőrzi a kép eredeti arányait */
+  width: 100%;
+  height: auto;
   display: block;
 }
 
 .property-image {
-  width: 100%; /* A kép szélessége megegyezik a konténer szélességével */
-  height: 100%; /* A kép magassága megegyezik a konténer magasságával */
-  object-fit: cover; /* A kép kitölti a konténert torzulás nélkül */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .property-content {
-  width: 100%; /* A leírás szélessége megegyezik a keret szélességével */
-  padding: 15px; /* Padding hozzáadása a tartalomhoz */
+  width: 100%;
+  padding: 15px;
 }
 .property-price {
   font-size: 24px;
@@ -101,8 +102,7 @@
 
 .favorite-button:hover,
 .favorite-button:focus {
-  background-color: transparent; /* Átlátszó hátteret állít be */
-  /* Itt adhatunk meg további stílusokat, ha szükséges */
+  background-color: transparent;
 }
 
 .favorite-button mat-icon {
@@ -112,16 +112,16 @@
 .filters-container {
   display: flex;
   align-items: center;
-  flex-wrap: wrap; /* Biztosítja, hogy az elemek szükség esetén tördeljenek */
+  flex-wrap: wrap;
   margin-top: 10px;
   justify-content: center;
 }
 
 .radio-buttons-container {
   display: flex;
-  flex-direction: column; /* Oszlopos elrendezés */
-  justify-content: space-between; /* Az elemek közötti tér kitöltése */
-  height: 100px; /* Az összes rádiógomb magasságának beállítása */
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
   margin-right: 10px;
   width: 90px;
 }
@@ -147,7 +147,40 @@
 }
 
 .mat-autocomplete-panel .mat-option {
-  padding: 10px; /* Növeld a padding méretét a jobb láthatóság érdekében */
-  margin-bottom: 5px; /* Kis térköz minden opció között */
+  padding: 10px;
+  margin-bottom: 5px;
   border: 1px black;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.pagination-button,
+.pagination-placeholder {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination-button button {
+  min-width: 64px;
+}
+
+
+.pagination button {
+  background-color: #fafafa;
+  border: none; 
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Stílus az ikonhoz a gombon belül */
+.pagination button mat-icon {
+  background-color: transparent;
+  color: var(--color-dark-accent);
+
 }

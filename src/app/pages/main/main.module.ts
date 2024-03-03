@@ -8,20 +8,23 @@ import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CeilPipe } from '../../shared/pipes/ceil.pipe';
+
 
 
 @NgModule({
-  declarations: [
-    MainComponent
-  ],
-  imports: [
-    CommonModule,
-    MainRoutingModule,
-    MatIconModule,
-    FormsModule,
-    MatRadioModule,
-    MatOptionModule,
-    MatAutocompleteModule,
-  ]
+    declarations: [
+        MainComponent,
+        CeilPipe
+    ],
+    imports: [
+        CommonModule,
+        MainRoutingModule,
+        MatIconModule,
+        FormsModule,
+        MatRadioModule,
+        MatOptionModule,
+        MatAutocompleteModule,
+    ]
 })
 export class MainModule { }

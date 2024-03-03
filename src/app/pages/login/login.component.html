@@ -10,11 +10,11 @@
             <mat-label for="password">Password:</mat-label>
             <input matInput type="password" [formControl]="password"/>
         </mat-form-field><br>
+        <p *ngIf="loginError" class="login-error">
+            {{ loginError }}
+        </p>
         <button mat-raised-button color="primary" (click)="login()">Bejelentkezés</button>
         <a (click)="openForgotPasswordDialog()" class="forgot-password-link">Elfelejtett jelszó?</a>
-        <div *ngIf="loginError" class="login-error">
-            {{ loginError }}
-        </div>
     </div>
     <div class="registration-section">
         <h2>Nincs még fiókod?</h2>

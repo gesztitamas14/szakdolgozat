@@ -4,7 +4,6 @@ div {
     justify-content: center;
     text-align: center;
     height: 100%;
-    overflow-y: hidden; /* Ha biztos vagy benne, hogy nincs szükség görgőre */
 }
 
 .main_component {
@@ -14,7 +13,6 @@ div {
     align-items: center;
     height: calc(100vh - 64px);
     margin-top: 0px;
-    overflow-y: hidden;
 }
 
 .login-section {
@@ -87,7 +85,6 @@ button {
 
 .login-error {
     color: red;
-    margin-top: 10px;
 }
 
 @media (max-width: 768px) {
@@ -100,23 +97,19 @@ button {
     .login-section,
     .registration-section {
         width: 100%;
-        /* Teljes szélesség kisebb eszközökön */
         flex: none;
     }
 
     .registration-section {
         order: -1;
-        /* A regisztrációs szekció jön először mobil nézetben */
     }
 }
 
 .registration-section h2,
 .registration-section button {
-    font-size: 1.5em; /* Válaszd ki azt a méretet, ami megfelelőnek tűnik */
+    font-size: 1.5em;
 }
 
-/* Továbbá, ha a gomb magasságát is egyeztetni szeretnéd a h2 szövegméretével: */
 .registration-section button {
-    padding: 10px 20px; /* Állítsd be a paddingot, hogy a gomb magassága és szélessége megfelelő legyen */
-    /* Más stílusok, amik szükségesek lehetnek a gomb megjelenésének finomhangolásához */
+    padding: 10px 20px;
 }

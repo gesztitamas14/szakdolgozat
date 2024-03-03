@@ -44,7 +44,7 @@
                     <button (click)="backToChatPartners()"><mat-icon>arrow_back</mat-icon></button>
                     <div class="messages">
                         <div *ngFor="let message of filteredMessages" class="message" 
-                        [ngClass]="{'sent': message.senderId === loggedInUser?.uid, 'received': message.senderId !== loggedInUser?.uid}">
+                        [ngClass]="{'sent': message.senderId === loggedInUser.uid, 'received': message.senderId !== loggedInUser.uid}">
                      <div class="message-header">
                        {{ userCache[message.senderId].name.firstname || 'Ismeretlen felhasználó' }}
                      </div>

@@ -49,14 +49,22 @@
 
   <div class="properties-container">
     <h2 *ngIf="activeProperties && activeProperties.length>0">Aktív hirdetések</h2>
+    <div class="pagination-controls">
+      <button (click)="previousActivePage()" [disabled]="activePage === 1" *ngIf="activePage > 1"><mat-icon>arrow_back</mat-icon></button>
+      <span>{{ activePage }} / {{ totalActivePages }}</span>
+      <button (click)="nextActivePage()" [disabled]="activePage === totalActivePages" *ngIf="activePage < totalActivePages"><mat-icon>arrow_forward</mat-icon></button>
+    </div>
     <div *ngFor="let property of activeProperties" class="profileProperty-item" (click)="viewPropertyDetails(property.propertyID)">
       <div class="profileProperty-image-container">
         <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="profileProperty-image">
         <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="profileProperty-icon">image_not_supported</mat-icon>
       </div>
       <div class="profileProperty-content">
-        <p class="profileProperty-price">{{ formatPrice(property.price) }}
-          <span class="profileProperty-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+        <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó
+          <span class="property-price-per-sqm"></span>
+        </p>
+        <p *ngIf="property.status==='Eladó'" class="profileProperty-price">{{ formatPrice(property.price) }}
+          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
         </p>
         <p class="profileProperty-address">{{ property.location }}</p>
         <div class="profileProperty-details">
@@ -70,14 +78,22 @@
       </button>
     </div>
     <h2 *ngIf="inactiveProperties && inactiveProperties.length>0">Inaktív hirdetések</h2>
+      <div class="pagination-controls">
+        <button (click)="previousInactivePage()" *ngIf="inactivePage > 1"><mat-icon>arrow_back</mat-icon></button>
+        <span>{{ inactivePage }} / {{ totalInactivePages }}</span>
+        <button (click)="nextInactivePage()" *ngIf="inactivePage < totalInactivePages"><mat-icon>arrow_forward</mat-icon></button>
+      </div>
     <div *ngFor="let property of inactiveProperties" class="profileProperty-item" (click)="viewPropertyDetails(property.propertyID)">
       <div class="profileProperty-image-container">
         <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="profileProperty-image">
         <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="profileProperty-icon">image_not_supported</mat-icon>
       </div>
       <div class="profileProperty-content">
-        <p class="profileProperty-price">{{ formatPrice(property.price) }}
-          <span class="profileProperty-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+        <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó
+          <span class="property-price-per-sqm"></span>
+        </p>
+        <p *ngIf="property.status==='Eladó'" class="profileProperty-price">{{ formatPrice(property.price) }}
+          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
         </p>
         <p class="profileProperty-address">{{ property.location }}</p>
         <div class="profileProperty-details">

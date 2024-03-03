@@ -1,5 +1,5 @@
 .favorites-container {
-    min-height: 100vh;
+    height: calc(100vh - 104px);
     width: 100%;
     max-width: 800px;
     margin: auto;
@@ -54,7 +54,7 @@
   
   .empty-favorites-message mat-icon {
     font-size: 48px;
-    color: var(--color-warm-accent);;
+    color: var(--color-warm-accent);
   }
   
   .empty-favorites-message h3 {
@@ -68,7 +68,7 @@
   }
   
   .empty-favorites-message button {
-    background-color: var(--color-warm-accent);;
+    background-color: var(--color-warm-accent);
     color: white;
     border: none;
     padding: 10px 20px;

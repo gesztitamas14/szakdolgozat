@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit{
+export class ProfileComponent implements OnInit {
   newPassword: string = '';
   confirmPassword: string = '';
   loggedInUser?: firebase.default.User | null;
@@ -24,12 +24,28 @@ export class ProfileComponent implements OnInit{
   viewedUser?: User;
   inactiveProperties: Property[] = [];
   activeProperties: Property[] = [];
+  // Az aktív/inaktív ingatlanok listájának jelenlegi oldalszáma.
+  activePage: number = 1;
+  inactivePage: number = 1;
 
-  constructor(private userService: UserService,private authService: AuthService, private propertyService: PropertyService, private route: ActivatedRoute, private router: Router){}
+  // Az egy oldalon megjelenítendő aktív/inaktív ingatlanok száma.
+  activePageSize: number = 2;
+  inactivePageSize: number = 2;
+
+  // Az összes lehetséges oldal száma az aktív/inaktív ingatlanok listájában.
+  totalActivePages: number = 0;
+  totalInactivePages: number = 0;
+
+  // Az összes elérhető aktív/inaktív ingatlanok teljes listája.
+  // Ez a lista nem változik a lapozás során, így mindig az eredeti, teljes listából tudunk kiválasztani.
+  originalActiveProperties: Property[] = [];
+  originalInactiveProperties: Property[] = [];
+
+  constructor(private userService: UserService, private authService: AuthService, private propertyService: PropertyService, private route: ActivatedRoute, private router: Router) { }
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user => {
       this.loggedInUser = user;
-  
+
       this.route.paramMap.subscribe(params => {
         const userId = params.get('userId');
         if (userId) {
@@ -52,12 +68,60 @@ export class ProfileComponent implements OnInit{
   viewPropertyDetails(propertyID: string) {
     this.router.navigate(['/property-details', propertyID]);
   }
-  
+
   loadUserProperties(userId: string) {
     this.propertyService.getUserProperties(userId).subscribe(properties => {
-      this.inactiveProperties = properties.filter(property => property.sold === true);
-      this.activeProperties = properties.filter(property => property.sold === false);
+      this.originalInactiveProperties = properties.filter(property => property.sold === true);
+      this.originalActiveProperties = properties.filter(property => property.sold === false);
+
+      // Oldalszámok kiszámítása
+      this.totalActivePages = Math.ceil(this.originalActiveProperties.length / this.activePageSize);
+      this.totalInactivePages = Math.ceil(this.originalInactiveProperties.length / this.inactivePageSize);
+
+      // Lapozás
+      this.updateActivePropertiesView();
+      this.updateInactivePropertiesView();
     });
+  }
+  updateActivePropertiesView() {
+    const start = (this.activePage - 1) * this.activePageSize;
+    const end = start + this.activePageSize;
+    this.activeProperties = this.originalActiveProperties.slice(start, end);
+  }
+
+  updateInactivePropertiesView() {
+    const start = (this.inactivePage - 1) * this.inactivePageSize;
+    const end = start + this.inactivePageSize;
+    this.inactiveProperties = this.originalInactiveProperties.slice(start, end);
+  }
+
+  // Lapozás metódusok
+  nextActivePage() {
+    if (this.activePage < this.totalActivePages) {
+      this.activePage++;
+      this.updateActivePropertiesView();
+    }
+  }
+
+  previousActivePage() {
+    if (this.activePage > 1) {
+      this.activePage--;
+      this.updateActivePropertiesView();
+    }
+  }
+
+  nextInactivePage() {
+    if (this.inactivePage < this.totalInactivePages) {
+      this.inactivePage++;
+      this.updateInactivePropertiesView();
+    }
+  }
+
+  previousInactivePage() {
+    if (this.inactivePage > 1) {
+      this.inactivePage--;
+      this.updateInactivePropertiesView();
+    }
   }
   formatPrice(price: number): string {
     if (price % 1000000 === 0) {
@@ -96,10 +160,10 @@ export class ProfileComponent implements OnInit{
     this.showConfirmTooltip = !this.passwordsMatch;
   }
 
-  logout(_?:boolean){
-    this.authService.logout().then(()=>{
+  logout(_?: boolean) {
+    this.authService.logout().then(() => {
       console.log('Logged out successfully.');
-    }).catch(error=>{
+    }).catch(error => {
       console.error(error);
     });
   }
@@ -107,9 +171,13 @@ export class ProfileComponent implements OnInit{
   markAsSold(propertyID: string) {
     this.propertyService.updatePropertyAsSold(propertyID);
   }
-  
+
   deleteProperty(propertyID: string) {
     this.propertyService.deleteProperty(propertyID);
+  }
+
+  calculateRentPrice(price: number) {
+    return (price / 1000).toFixed(0);
   }
 
 }
