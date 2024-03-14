@@ -162,7 +162,7 @@ export class ProfileComponent implements OnInit {
 
   logout(_?: boolean) {
     this.authService.logout().then(() => {
-      console.log('Logged out successfully.');
+      //console.log('Logged out successfully.');
     }).catch(error => {
       console.error(error);
     });

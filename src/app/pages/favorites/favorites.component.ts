@@ -76,8 +76,7 @@ export class FavoritesComponent implements OnInit {
           existingFavorite.propertyIDs = updatedPropertyIDs;
           if (this.router.url === '/favorites') {
           this.favoritesService.updateFavoriteProperty(existingFavorite).then(() => {
-            console.log('Property removed from favorites successfully.');
-            console.log(this.router.url)
+            //console.log('Property removed from favorites successfully.');
             this.loadFavoriteProperties();
           }).catch((error: any) => {
             console.error('Error updating favorites:', error);

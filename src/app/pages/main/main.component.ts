@@ -172,7 +172,6 @@ export class MainComponent implements OnInit {
     }
 
     this.favoritePropertyIDs.push(propertyID);
-    console.log(this.favoritePropertyIDs)
 
 
     if (this.router.url === '/main') {
@@ -185,7 +184,7 @@ export class MainComponent implements OnInit {
           if (existingFavorites) {
             existingFavorites.propertyIDs.push(propertyID);
             this.favoritesService.updateFavoriteProperty(existingFavorites).then(() => {
-              console.log('Property added to existing favorites successfully.');
+              //console.log('Property added to existing favorites successfully.');
             }).catch((error: any) => {
               console.error('Error updating favorites:', error);
               this.favoritePropertyIDs.pop();

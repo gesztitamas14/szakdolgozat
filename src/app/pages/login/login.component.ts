@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit, OnDestroy{
       this.router.navigateByUrl('/main');
       this.loading = false;
     }).catch(error => {
-      this.loginError = 'Hiba a bejelentkezés során. Kérjük, ellenőrizze az adatait!'; // Hibaüzenet beállítása
+      this.loginError = 'Hiba a bejelentkezés során. Kérjük, ellenőrizze az adatait!';
       this.loading = false;
       console.error(error);
     });
