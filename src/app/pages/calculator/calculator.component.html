@@ -1,2 +1,36 @@
-
-<div><p>calculator works!</p></div>
+<div class="calculator-container">
+    <h2>Pénzügyi kalkulátor</h2>
+    <form (ngSubmit)="onCalculate()">
+      <mat-form-field>
+        <mat-label>Ingatlan ára</mat-label>
+        <input matInput type="number" [(ngModel)]="propertyPrice" name="propertyPrice">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Önerő</mat-label>
+        <input matInput type="number" [(ngModel)]="downPayment" name="downPayment">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Hitelösszeg</mat-label>
+        <input matInput type="number" [(ngModel)]="loanAmount" name="loanAmount">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Kamatláb (%)</mat-label>
+        <input matInput type="number" [(ngModel)]="interestRate" name="interestRate">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Futamidő (év)</mat-label>
+        <input matInput type="number" [(ngModel)]="loanTerm" name="loanTerm">
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit">Számol</button>
+    </form>
+  
+    <div *ngIf="monthlyPayment">
+      <p>Havi törlesztőrészlet: {{ monthlyPayment | currency:'HUF' }}</p>
+    </div>
+  </div>
+  

@@ -32,6 +32,13 @@ export class AppComponent implements OnInit{
   userCache: { [key: string]: User } = {};
   chatPartnerNames: { [id: string]: string } = {};
   filteredMessages: ChatMessage[] = [];
+  showCalculator = false;
+  propertyPrice: number| null = null;
+  downPayment: number| null = null;
+  loanAmount: number| null = null;
+  interestRate: number| null = null;
+  loanTerm: number| null = null;
+  monthlyPayment: number | null = null;
   
 
 
@@ -41,6 +48,29 @@ export class AppComponent implements OnInit{
         changes.some(change => change.mqAlias === 'xs' || change.mqAlias === 'sm' || change.mqAlias === 'md')
       )
     );
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Bezárja a pénzügyi kalkulátort, ha navigációs esemény történik
+        this.showCalculator = false;
+      }
+    });
+  }
+  toggleCalculator() {
+    this.showCalculator = !this.showCalculator;
+  }
+  isValidForm() {
+    return this.propertyPrice! > 0 && this.downPayment! >= 0 && 
+           this.loanAmount! >= 0 && this.interestRate! > 0 && 
+           this.loanTerm! > 0;
+  }
+  calculateMonthlyPayment() {
+    if (this.isValidForm()) {
+      const monthlyInterestRate = this.interestRate! / 100 / 12;
+      const numberOfPayments = this.loanTerm! * 12;
+      this.monthlyPayment = this.loanAmount! *
+                            monthlyInterestRate /
+                            (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+    }
   }
 
   ngOnInit(){

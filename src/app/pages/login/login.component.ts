@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy{
     
   }
   async login() {
-    this.loginError = null; // Hibaüzenet törlése
+    this.loginError = null;
     const emailValue: string = this.email.value || '';
     const passwordValue: string = this.password.value || '';
     this.loading = true;

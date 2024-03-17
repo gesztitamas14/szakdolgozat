@@ -34,6 +34,7 @@ import { ForgotPasswordDialogComponent } from './pages/forgot-password-dialog/fo
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+
 MatListModule
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ MatListModule
     //PropertyDetailsComponent,
     //ContactComponent,
     MenuComponent,
-    ForgotPasswordDialogComponent
+    ForgotPasswordDialogComponent,
   ],
   imports: [
     BrowserModule,

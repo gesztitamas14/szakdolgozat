@@ -1,20 +1,24 @@
 mat-toolbar {
-    background-color: var(--color-secondary);
-    color: var(--color-contrast);
-    height: 64px;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    justify-content: space-between;
-    width: 100%;
-  }
-  mat-sidenav {
-    background-color: #e0e0e0;
-  }
-
-  mat-toolbar {
-    background-color: #e0e0e0;
+  background-color: var(--color-secondary);
+  color: var(--color-contrast);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20%;
+  box-sizing: border-box;
+  width: 100%;
 }
+
+
+mat-sidenav {
+  background-color: #e0e0e0;
+}
+
+mat-toolbar {
+  background-color: #e0e0e0;
+}
+
 mat-toolbar mat-icon {
   vertical-align: middle;
   height: 30px;
@@ -27,80 +31,86 @@ mat-toolbar mat-icon {
 }
 
 button {
-    background-color: var(--color-dark-accent);
-  }
-  
-  /* Link és navigációs elemek stílusai */
-  .navigation-items {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-  }
-  
-  .navigation-items li {
-    margin: 0 10px;
-  }
-  
-  a {
-    text-decoration: none;
-    color: var(--color-accent);
-  }
-  
-  a:hover, a:active {
-    color: var(--color-dark-accent);
-  }
-  .content-wrapper {
-    max-width: 100%;
-    margin: 0 auto;
-  }
+  background-color: var(--color-dark-accent);
+}
 
-  .toolbar-content {
-  max-width: 80%;
+/* Link és navigációs elemek stílusai */
+.navigation-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* Jobbra igazítja a menüelemeket */
+  flex: 1;
+}
+
+.navigation-items li {
+  margin: 0 10px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-accent);
+}
+
+a:hover,
+a:active {
+  color: var(--color-dark-accent);
+}
+
+.content-wrapper {
+  max-width: 100%;
   margin: 0 auto;
+}
+
+.toolbar-content {
+  width: 80%;
+  /* A tartalom szélessége */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-right: 10%;
+  cursor: pointer;
 }
 
 .toolbar-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--color-accent);
-    margin-left: 18%;
-  }
+  flex: 1;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
 
-  .chat-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    background-color: var(--color-secondary);
-  }
-  
-  .chat-window {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 300px;
-    height: 400px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .close-chat {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: var(--color-secondary);
-  }
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: var(--color-secondary);
+}
+
+.chat-window {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.close-chat {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  background-color: transparent;
+}
 
 .chat-partners {
   margin-bottom: 20px;
@@ -127,6 +137,7 @@ button {
   display: flex;
   flex-direction: column;
 }
+
 .message {
   margin: 5px;
   padding: 10px;
@@ -156,4 +167,99 @@ button {
 .send-message-form input {
   flex-grow: 1;
   margin-right: 10px;
+}
+
+.no-messages {
+  text-align: center;
+  color: #666;
+}
+
+.chat-header {
+  background-color: #eeeeee;
+  /* világosszürke háttér */
+  color: #333;
+  /* sötétebb szövegszín */
+  padding: 8px 16px;
+  /* horizontális és vertikális padding */
+  font-size: 16px;
+  /* nagyobb betűméret */
+  font-weight: bold;
+  /* félkövér szöveg */
+  width: 100%;
+  /* kivonjuk a bezáró gomb és az oldal padding szélességét */
+  box-sizing: border-box;
+  /* a paddingot és bordert is beleértve a szélességbe */
+  border-bottom: 1px solid #ddd;
+  /* elválasztó vonal alul */
+}
+
+
+/* Pénzügyi kalkulátor */
+.show-calculator {
+  background-color: #f3f3f3;
+  border: 1px solid var(--color-dark-accent);
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  width: 59%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calculator-inputs {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.calculator-inputs>div {
+  flex: 1;
+  min-width: 150px;
+  margin-right: 10px;
+}
+
+.show-calculator label {
+  display: block;
+  color: #555;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+
+.show-calculator input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.calculate-button {
+  display: flex;
+  align-items: flex-end;
+  flex-grow: 1;
+  margin-bottom: 11px;
+}
+
+.show-calculator button {
+  background-color: var(--color-dark-accent);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.show-calculator button:hover {
+  background-color: #005a50;
+}
+
+.monthly-payment-result {
+  text-align: center;
+  color: var(--color-dark-accent);
+  font-weight: bold;
+  margin-top: 10px;
 }
