@@ -1,7 +1,7 @@
 mat-toolbar {
   background-color: var(--color-secondary);
   color: var(--color-contrast);
-  height: 64px;
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,6 +33,18 @@ mat-toolbar mat-icon {
 button {
   background-color: var(--color-dark-accent);
 }
+button.menu-button mat-icon {
+  background: var(--color-secondary);
+  color: var(--color-dark-accent);
+}
+
+button.menu-button {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
 
 /* Link és navigációs elemek stílusai */
 .navigation-items {
@@ -42,7 +54,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  /* Jobbra igazítja a menüelemeket */
   flex: 1;
 }
 
@@ -106,10 +117,8 @@ a:active {
 }
 
 .close-chat {
-  position: absolute;
-  top: 10px;
-  right: 5px;
   background-color: transparent;
+  margin-left: auto;
 }
 
 .chat-partners {
@@ -136,6 +145,8 @@ a:active {
 .messages {
   display: flex;
   flex-direction: column;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .message {
@@ -158,15 +169,47 @@ a:active {
 .send-message-form {
   position: absolute;
   bottom: 0;
+  left: 0;
   width: 100%;
-  background-color: white;
+  display: flex;
+  align-items: center;
   padding: 15px;
   box-sizing: border-box;
+  background-color: white;
+}
+
+.send-message-form .input-container {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.message-header{
+  font-weight: bold;
+}
+
+.back-to-partners {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
 }
 
 .send-message-form input {
-  flex-grow: 1;
-  margin-right: 10px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.send-message-form .send-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #eeeeee;
+  color: #333;
+  font-weight: bold;
 }
 
 .no-messages {
@@ -175,23 +218,27 @@ a:active {
 }
 
 .chat-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #eeeeee;
-  /* világosszürke háttér */
   color: #333;
-  /* sötétebb szövegszín */
+  position: relative;
   padding: 8px 16px;
-  /* horizontális és vertikális padding */
   font-size: 16px;
-  /* nagyobb betűméret */
   font-weight: bold;
-  /* félkövér szöveg */
-  width: 100%;
-  /* kivonjuk a bezáró gomb és az oldal padding szélességét */
-  box-sizing: border-box;
-  /* a paddingot és bordert is beleértve a szélességbe */
   border-bottom: 1px solid #ddd;
-  /* elválasztó vonal alul */
 }
+
+.chat-title-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  width: calc(100% - 80px);
+}
+
 
 
 /* Pénzügyi kalkulátor */

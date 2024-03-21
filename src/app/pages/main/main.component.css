@@ -4,7 +4,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  height: calc(100vh - 273px);
+  height: calc(70vh - 60px);
 }
 
 .property-column {
@@ -64,11 +64,25 @@
 .property-price-per-sqm {
   font-size: 14px;
   color: #888;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow:clip;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .property-address {
   font-size: 18px;
   margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.clamped-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .property-details {
@@ -115,6 +129,7 @@
   flex-wrap: wrap;
   margin-top: 10px;
   justify-content: center;
+  height: 10vh;
 }
 
 .radio-buttons-container {
@@ -134,8 +149,8 @@
 .search-container input {
   padding: 10px;
   margin-right: 5px;
-  width: 300px; /* A szövegdoboz szélességének növelése */
-  height: 50px; /* A szövegdoboz magasságának beállítása */
+  width: 300px;
+  height: 50px;
   border: 1px solid #ccc;
 }
 
@@ -156,7 +171,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  height: 10vh;
+  margin-top: 10px;
 }
 
 .pagination-button,
@@ -178,10 +194,34 @@
   padding: 0;
 }
 
-/* Stílus az ikonhoz a gombon belül */
 .pagination button mat-icon {
   background-color: transparent;
   color: var(--color-dark-accent);
-
 }
 
+
+@media (max-width: 900px) {
+  .property-container {
+    max-width: 80%;
+    height: auto;
+    padding: 10px;
+  }
+
+  .property-column {
+    max-width: 100%;
+    flex-basis: 100%;
+    margin: 10px 0;
+  }
+
+  .property-image-container {
+    height: auto;
+  }
+
+  .property-item {
+    margin: 0;
+    width: auto;
+  }
+
+
+
+}

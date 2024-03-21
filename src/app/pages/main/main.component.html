@@ -53,7 +53,7 @@
             <p *ngIf="property.status==='Eladó'" class="property-price">{{ formatPrice(property.price) }}
               <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
             </p>
-            <p class="property-address">{{ property.location }}</p>
+            <p class="property-address clamped-text">{{ property.location }}</p>
             <div class="property-details">
               <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
               <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
@@ -81,7 +81,7 @@
             <p *ngIf="property.status==='Eladó'" class="property-price">{{ formatPrice(property.price) }}
               <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
             </p>
-            <p class="property-address">{{ property.location }}</p>
+            <p class="property-address clamped-text">{{ property.location }}</p>
             <div class="property-details">
               <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
               <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, of } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService } from './shared/services/auth.service';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ChatMessage } from './shared/models/Messages';
 import { UserService } from './shared/services/user.service';
 import { MessagesService } from './shared/services/messages.service';
@@ -19,8 +19,8 @@ import { ChatService } from './shared/services/chat.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-  page=""
+export class AppComponent implements OnInit {
+  page = ""
   isHandset$: Observable<boolean> | any;
   routes: Array<string> = [];
   loggedInUser?: firebase.default.User | null;
@@ -33,16 +33,18 @@ export class AppComponent implements OnInit{
   chatPartnerNames: { [id: string]: string } = {};
   filteredMessages: ChatMessage[] = [];
   showCalculator = false;
-  propertyPrice: number| null = null;
-  downPayment: number| null = null;
-  loanAmount: number| null = null;
-  interestRate: number| null = null;
-  loanTerm: number| null = null;
+  propertyPrice: number | null = null;
+  downPayment: number | null = null;
+  loanAmount: number | null = null;
+  interestRate: number | null = null;
+  loanTerm: number | null = null;
   monthlyPayment: number | null = null;
-  
+  showEmptyMessage: boolean = false;
 
 
-  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService){
+
+
+  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService) {
     this.isHandset$ = this.mediaObserver.asObservable().pipe(
       map(changes =>
         changes.some(change => change.mqAlias === 'xs' || change.mqAlias === 'sm' || change.mqAlias === 'md')
@@ -50,7 +52,6 @@ export class AppComponent implements OnInit{
     );
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        // Bezárja a pénzügyi kalkulátort, ha navigációs esemény történik
         this.showCalculator = false;
       }
     });
@@ -59,21 +60,21 @@ export class AppComponent implements OnInit{
     this.showCalculator = !this.showCalculator;
   }
   isValidForm() {
-    return this.propertyPrice! > 0 && this.downPayment! >= 0 && 
-           this.loanAmount! >= 0 && this.interestRate! > 0 && 
-           this.loanTerm! > 0;
+    return this.propertyPrice! > 0 && this.downPayment! >= 0 &&
+      this.loanAmount! >= 0 && this.interestRate! > 0 &&
+      this.loanTerm! > 0;
   }
   calculateMonthlyPayment() {
     if (this.isValidForm()) {
       const monthlyInterestRate = this.interestRate! / 100 / 12;
       const numberOfPayments = this.loanTerm! * 12;
       this.monthlyPayment = this.loanAmount! *
-                            monthlyInterestRate /
-                            (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+        monthlyInterestRate /
+        (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
     }
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.chatService.openChatWithUser.subscribe(userId => {
       this.selectChatPartner(userId);
       this.showChat = true;
@@ -87,24 +88,25 @@ export class AppComponent implements OnInit{
     });
     this.routes = this.router.config.map(conf => conf.path) as string[];
 
-    this.router.events.pipe(filter(event=> event instanceof NavigationEnd)).subscribe((evts: any) =>{
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((evts: any) => {
       const currentPage = (evts.urlAfterRedirects as string).split('/')[1] as string;
-      if(this.routes.includes(currentPage)){
-        this.page=currentPage
+      if (this.routes.includes(currentPage)) {
+        this.page = currentPage
       }
     });
-    this.authService.isUserLoggedIn().subscribe(user=>{
+    this.authService.isUserLoggedIn().subscribe(user => {
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
       if (this.loggedInUser) {
         this.loadMessages();
       }
-    }, error=>{
+    }, error => {
       console.error(error);
-      localStorage.setItem('user',JSON.stringify('null'))
+      localStorage.setItem('user', JSON.stringify('null'))
     })
+    this.showEmptyMessage = false;
   }
-  changePage(selectedPage: string){
+  changePage(selectedPage: string) {
     this.router.navigateByUrl(selectedPage)
   }
   prepopulateMessageWithPropertyLink(propertyId: string) {
@@ -112,18 +114,18 @@ export class AppComponent implements OnInit{
     this.newMessage = `Érdeklődöm a következő ingatlan iránt: ${propertyLink}.`;
   }
   hasExistingConversation(partnerId: string): boolean {
-    return this.messages.some(message => 
+    return this.messages.some(message =>
       (message.senderId === this.loggedInUser?.uid && message.receiverId === partnerId) ||
       (message.receiverId === this.loggedInUser?.uid && message.senderId === partnerId)
     );
   }
-  onToggleSidenav(sidenav: MatSidenav){
+  onToggleSidenav(sidenav: MatSidenav) {
     sidenav.toggle();
   }
 
 
-  onClose(event: any, sidenav: MatSidenav){
-    if (event===true){
+  onClose(event: any, sidenav: MatSidenav) {
+    if (event === true) {
       sidenav.close();
     }
   }
@@ -131,21 +133,36 @@ export class AppComponent implements OnInit{
   toggleChat() {
     this.showChat = !this.showChat;
   }
-  
+
   loadMessages() {
     if (this.loggedInUser?.uid) {
-      this.MessagesService.getAllMessages(this.loggedInUser.uid).subscribe(messages => {
-        this.messages = messages;
-        this.chatPartners = this.MessagesService.getUniqueChatPartners(messages, this.loggedInUser?.uid as any);
-        messages.forEach(msg => {
-          this.loadUser(msg.senderId);
-          this.loadUser(msg.receiverId);
-        });
-        this.loadChatPartnerNames();
+      this.authService.isUserLoggedIn().pipe(
+        switchMap(user => {
+          if (user) {
+            return this.MessagesService.getAllMessages(user.uid);
+          } else {
+            return of(null);
+          }
+        })
+      ).subscribe(messages => {
+        if (messages) {
+          this.messages = messages;
+          if (this.messages.length === 0) {
+            this.showEmptyMessage = true;
+          }else{
+            this.showEmptyMessage = false;
+          }
+          this.chatPartners = this.MessagesService.getUniqueChatPartners(messages, this.loggedInUser?.uid as any);
+          messages.forEach(msg => {
+            this.loadUser(msg.senderId);
+            this.loadUser(msg.receiverId);
+          });
+          this.loadChatPartnerNames();
+        }
       });
     }
   }
-  
+
   selectChatPartner(partnerId: string) {
     this.selectedPartner = partnerId;
     this.filteredMessages = this.messages.filter(message =>
@@ -195,5 +212,5 @@ export class AppComponent implements OnInit{
     });
   }
 
-  
+
 }

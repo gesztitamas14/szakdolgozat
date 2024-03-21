@@ -22,7 +22,8 @@
                  name="newPassword" 
                  (focus)="showTooltip = true" 
                  (blur)="showTooltip = false" 
-                 (ngModelChange)="onPasswordInput()">
+                 (ngModelChange)="onPasswordInput()"
+                 autocomplete="off">
         <div class="tooltip" [class.visible]="showTooltip">
             <p *ngIf="!passwordStrength.hasLength">Legalább 8 karakter.</p>
             <p *ngIf="!passwordStrength.hasUpperCase">Legalább egy nagybetű.</p>
@@ -47,7 +48,7 @@
     </div>    
   </div>
 
-  <div class="properties-container">
+  <div *ngIf="activeProperties && activeProperties.length>0"  class="properties-container">
     <h2 *ngIf="activeProperties && activeProperties.length>0">Aktív hirdetések</h2>
     <div class="pagination-controls">
       <button (click)="previousActivePage()" [disabled]="activePage === 1" *ngIf="activePage > 1"><mat-icon>arrow_back</mat-icon></button>
@@ -78,7 +79,7 @@
       </button>
     </div>
     <h2 *ngIf="inactiveProperties && inactiveProperties.length>0">Inaktív hirdetések</h2>
-      <div class="pagination-controls">
+      <div *ngIf="inactiveProperties && inactiveProperties.length>0" class="pagination-controls">
         <button (click)="previousInactivePage()" *ngIf="inactivePage > 1"><mat-icon>arrow_back</mat-icon></button>
         <span>{{ inactivePage }} / {{ totalInactivePages }}</span>
         <button (click)="nextInactivePage()" *ngIf="inactivePage < totalInactivePages"><mat-icon>arrow_forward</mat-icon></button>

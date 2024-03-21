@@ -45,7 +45,7 @@ h1{
 
 .registration-section h2 {
     color: white;
-    background-color: rgba(0, 150, 136, 0.8);
+    background-color: rgba(0, 150, 136, 0.9);
     padding: 10px;
     margin: 0;
     display: inline-block;
@@ -90,18 +90,20 @@ button {
 @media (max-width: 768px) {
     .main_component {
         flex-direction: column;
-        margin-top: 56px;
-        height: calc(100vh - 56px);
+        height: calc(100vh - 64px);
+        
     }
 
-    .login-section,
-    .registration-section {
+    .login-section {
         width: 100%;
-        flex: none;
+        flex: 1;
     }
 
     .registration-section {
         order: -1;
+        width: 100%;
+        flex: 1;
+
     }
 }
 

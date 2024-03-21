@@ -1,5 +1,4 @@
 .profile-container {
-    height: calc(100vh - 124px);
     background-color: var(--color-primary);
     color: var(--color-contrast);
     padding: 20px;
@@ -7,7 +6,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     margin: 20px auto;
-
+    min-height: calc(90vh - 60px);
   }
   h2 {
     color: var(--color-accent);
@@ -102,7 +101,7 @@
 
   .logout-container {
     text-align: center;
-    margin-top: 20px; /* Kívánt margó a felső részen */
+    margin-top: 20px;
   }
   
   .logout-container a {
@@ -144,10 +143,15 @@
     flex-direction: column;
   }
 
-  .profile-container, .properties-container {
+  .properties-container {
+    margin: 0 auto;
     max-width: 100%;
-    flex: none;
+    flex: 1;
   }
+  .profile-container{
+    width: 80%;
+    flex: 1;
+    margin: 0 auto  }
 }
 
 .profileprofileProperty-container {
@@ -219,8 +223,8 @@
 }
 
 .profileProperty-item button {
-  margin-right: 10px; /* Jobb margó minden gombhoz */
-  min-height: 36px; /* Azonos magasság a gombok számára */
+  margin-right: 10px;
+  min-height: 36px;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -232,12 +236,12 @@
 }
 
 .profileProperty-item button:last-child {
-  margin-right: 0; /* Nincs jobb margó az utolsó gombnak */
+  margin-right: 0;
 }
 
 .profileProperty-item button mat-icon {
-  font-size: 30px; /* Ikon méretének beállítása */
-  color: red; /* Ikon színének beállítása */
+  font-size: 30px;
+  color: red;
 }
 
 .pagination-controls {
@@ -258,11 +262,9 @@
   padding: 0;
 }
 
-/* Stílus az ikonhoz a gombon belül */
 .pagination-controls button mat-icon {
   background-color: transparent;
   color: var(--color-dark-accent);
-
 }
 
 
