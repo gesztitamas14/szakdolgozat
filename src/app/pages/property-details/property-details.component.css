@@ -7,7 +7,12 @@ div {
 }
 
 .property-details-container {
-  padding: 5px;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 .property-details p {
@@ -17,12 +22,9 @@ div {
 }
 
 .property-details {
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .property-image {
   max-width: 40%;
@@ -30,12 +32,10 @@ div {
 }
 
 .centered-icon {
+  font-size: 4rem;
+  color: #ccc;
+  text-align: center;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 48px;
-  width: 100px;
-  height: 100px;
 }
 
 .buttons{
@@ -48,22 +48,14 @@ button{
 
 .image-carousel {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 5px;
+  width: 100%;
+  max-height: 500px;
   overflow: hidden;
-  width: 100%; /* A kép konténer szélessége megegyezik a keret szélességével */
-  height: 300px; /* Fix magasság a képek számára */
 }
-
 .property-image {
   width: 100%;
-  max-width: 600px;
   height: auto;
-  margin: 0 auto;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  object-fit: cover;
 }
 
 
@@ -71,25 +63,21 @@ button{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 24px;
-  color: white;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.5);
+  color: white;
   padding: 10px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
   border-radius: 50%;
 }
 
 .left-arrow {
-left: 36%;
+  left: 10px;
 }
 
 .right-arrow {
-right: 36%;
+  right: 10px;
 }
+
 
 .image-carousel:hover .arrow {
 display: flex;
@@ -102,5 +90,219 @@ transform: scale(1.05);
   text-decoration: underline;
   cursor: pointer;
   font-weight: bold;
+}
+
+.property-info {
+  padding: 20px;
+}
+
+.property-info p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+.map-container {
+  width: 60%;
+  height: 400px;
+  margin-top: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .property-details-container {
+    padding: 10px;
+  }
+
+  .image-carousel {
+    max-height: 300px;
+  }
+
+  .property-info p {
+    font-size: 1rem;
+  }
+  .map-container {
+    width: 90%;
+  }
+}
+
+
+.property-details-page {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative; 
+}
+
+.gallery {
+  position: relative;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.thumbnails {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.thumbnails img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.thumbnails img.active {
+  border: 2px solid #007bff;
+}
+
+.details {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.details h2 {
+  margin: 0;
+}
+
+.features {
+  margin: 10px 0;
+}
+
+.feature {
+  display: inline-block;
+  background: #eee;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.feature.new {
+  background: #d4edda;
+}
+
+.feature.garden {
+  background: #fff3cd;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.area, .rooms {
+  font-size: 18px;
+  color: #666;
+}
+
+.description p {
+  margin-top: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  align-items: center;
+  min-height: 50px; /* Adjust based on the button size */
+}
+
+.actions button {
+  margin-right: 10px;
+}
+
+.image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.overlay-content {
+  width: 60%;
+  height: auto;
+}
+
+.overlay-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.advertiser-section {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #ddd;
+}
+
+.advertiser-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.advertiser-info h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.advertiser-info p {
+  margin: 5px 0 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .details {
+    order: -1;
+  }
+
+  .thumbnails {
+    justify-content: center;
+  }
 }
 

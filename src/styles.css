@@ -94,6 +94,7 @@ body {
   padding: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  background-color: #fafafa;
 }
 
 .mat-drawer, .mat-sidenav {

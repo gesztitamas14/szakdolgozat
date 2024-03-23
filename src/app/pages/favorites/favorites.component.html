@@ -1,18 +1,23 @@
 <div class="favorites-container">
   
   <div *ngIf="favoritePropertyDetails.length > 0; else emptyFavorites">
-  <h2>Kedvencek</h2>
-  <div *ngFor="let property of favoritePropertyDetails" class="favorite-item">
-    <h3>{{ property.location }}</h3>
-    <p>Ár: {{ property.price | currency:'HUF' }}</p>
-    <p>Alapterület: {{ property.size }} m²</p>
-    <p>Leírás: {{ property.description }}</p>
-    <div class="property-photos">
-      <img *ngIf="property.photos && property.photos[0] && property.photos[0] !== ''" [src]="property.photos[0]" alt="Property photo">
+  <h2>Kedvenc ingatlanjaid</h2>
+  <div *ngFor="let property of favoritePropertyDetails" class="profileProperty-item" (click)="viewDetails(property.propertyID)">
+    <div class="profileProperty-image-container">
+      <img *ngIf="property.photos && property.photos[0] && property.photos[0] !== ''" 
+           [src]="property.photos[0]" 
+           alt="Property photo" 
+           class="profileProperty-image">
       <mat-icon *ngIf="!property.photos || !property.photos[0] || property.photos[0] === ''">image_not_supported</mat-icon>
     </div>
+    <div class="profileProperty-content">
+      <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó</p>
+      <p *ngIf="property.status==='Eladó'" class="profileProperty-price">{{ formatPrice(property.price) }}</p>
+      <p class="profileProperty-address">{{ property.location }}</p>
+      <p><strong>Alapterület:</strong> {{ property.size }} m²</p>
+      <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
+    </div>
     <div class="property-actions">
-      <button (click)="viewDetails(property.propertyID)">Részletek</button>
       <button (click)="removeFromFavorites(property.propertyID); $event.stopPropagation();" class="remove-button">Eltávolítás</button>
     </div>
   </div>

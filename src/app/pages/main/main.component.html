@@ -18,7 +18,21 @@
         {{ city }}
       </mat-option>
     </mat-autocomplete>
-  </div>  
+  </div>
+  <div class="search-container">
+    <input type="text"
+    [(ngModel)]="userNameSearchTerm"
+    (ngModelChange)="onUserNameSearchTermChange()"
+    [matAutocomplete]="autoUser"
+    placeholder="Keresés felhasználó alapján..."
+    class="search-input">
+
+<mat-autocomplete #autoUser="matAutocomplete" (optionSelected)="onUserSelected($event)">
+ <mat-option *ngFor="let userName of filteredUserNames" [value]="userName">
+     {{ userName }}
+ </mat-option>
+</mat-autocomplete>
+  </div>
 </div>
 <div class="pagination">
   <div class="pagination-button" *ngIf="currentPage > 1; else prevPlaceholder">
@@ -28,7 +42,7 @@
   </div>
   <ng-template #prevPlaceholder><div class="pagination-placeholder"></div></ng-template>
   
-  <span>Oldal {{ currentPage }} / {{ totalPages }}</span>
+  <span *ngIf="totalPages!==0">Oldal {{ currentPage }} / {{ totalPages }}</span>
 
   <div class="pagination-button" *ngIf="currentPage < totalPages; else nextPlaceholder">
     <button (click)="nextPage()">
@@ -38,6 +52,9 @@
   <ng-template #nextPlaceholder><div class="pagination-placeholder"></div></ng-template>
 </div>
 <div class="property-container">
+  <div *ngIf="filteredProperties.length === 0 && selectedUserId" class="no-properties-message">
+    Ennek a felhasználónak még nincsenek hirdetett ingatlanjai.
+  </div>
   <!-- Bal oldali oszlop -->
   <div class="property-column">
     <div *ngFor="let property of leftColumnProperties;">

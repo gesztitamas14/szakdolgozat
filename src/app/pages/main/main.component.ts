@@ -32,10 +32,16 @@ export class MainComponent implements OnInit {
   paginatedProperties: any[] | undefined;
   currentPage: number = 1;
   totalPages: number = 0;
+  userNameToIdMap: Map<string, string> = new Map();
+  userNameSearchTerm: string = '';
+  allUserFullNames: string[] = [];
+  filteredUserNames: string[] = [];
+  selectedUserId: string | null = null;
 
   constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {
+    this.currentPage = 1;
     this.authService.isUserLoggedIn().subscribe(user => {
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
@@ -50,7 +56,38 @@ export class MainComponent implements OnInit {
       localStorage.setItem('user', JSON.stringify('null'))
     })
     this.loadProperties();
+    this.userService.getAll().subscribe(users => {
+      users.forEach(user => {
+        const fullName = `${user.name.firstname} ${user.name.lastname}`;
+        this.allUserFullNames.push(fullName);
+        this.userNameToIdMap.set(fullName.toLowerCase(), user.id);
+      });
+    });
   }
+  onUserNameSearchTermChange() {
+    if (this.userNameSearchTerm.trim() === '') {
+      this.selectedUserId = null;
+      this.filteredUserNames = [];
+    } else {
+ 
+      this.filteredUserNames = this.allUserFullNames.filter(name => {
+        const userId = this.userNameToIdMap.get(name.toLowerCase());
+        const isNotLoggedInUser = userId !== this.loggedInUser?.uid;
+        const matchesSearchTerm = name.toLowerCase().includes(this.userNameSearchTerm.toLowerCase().trim());
+        return isNotLoggedInUser && matchesSearchTerm;
+      });
+    }
+  
+    this.applyFilter();
+  }
+  onUserSelected(event: any) {
+    const userName = event.option.value;
+    const userId = this.userNameToIdMap.get(userName.toLowerCase());
+    if (userId) {
+      this.selectedUserId = userId;
+      this.applyFilter();
+    }
+  }  
 
   loadUserProperties() {
     if (this.loggedInUser?.uid) {
@@ -97,7 +134,9 @@ export class MainComponent implements OnInit {
   
       const cities = properties.map(property => property.location);
       this.allCities = Array.from(new Set(cities));
-  
+
+      this.userNameSearchTerm = '';
+      this.filteredUserNames = [];
       this.applyFilter(); // Ez a sor frissíti az összes oldal számát a betöltött ingatlanok alapján
     });
   }
@@ -130,16 +169,24 @@ export class MainComponent implements OnInit {
 
   applyFilter() {
     this.filteredProperties = this.properties.filter(property => {
-      return (!this.userProperties.includes(property.uploaderID)) &&
-        (!this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase())) &&
-        (!this.propertyStatus || property.status === this.propertyStatus);
+      const matchesLocation = !this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesStatus = !this.propertyStatus || property.status === this.propertyStatus;
+  
+      let matchesUser = true;
+      if (this.selectedUserId) {
+        matchesUser = property.uploaderID === this.selectedUserId;
+      } else if (this.loggedInUser?.uid) {
+        matchesUser = property.uploaderID !== this.loggedInUser.uid;
+      }
+  
+      return matchesLocation && matchesStatus && matchesUser;
     });
   
     this.totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
-    this.currentPage = Math.min(this.currentPage, this.totalPages);
+    this.currentPage = 1; // Reset to first page
     this.fetchProperties();
   }
-
+  
   viewPropertyDetails(propertyID: string) {
     this.router.navigate(['/property-details', propertyID]);
   }

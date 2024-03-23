@@ -1,41 +1,48 @@
-
-<div class="property-details-container">
-    <div *ngIf="selectedProperty" class="property-details">
-      <div *ngIf="selectedProperty?.photos && selectedProperty.photos.length > 0" class="image-carousel">
-        <img [src]="selectedProperty.photos[currentImageIndex]" alt="Property Image" class="property-image">
-        
-        <div class="arrow left-arrow" (click)="previousImage()" *ngIf="currentImageIndex > 0">
-          <mat-icon>chevron_left</mat-icon>
-        </div>
-      
-        <div class="arrow right-arrow" (click)="nextImage()" *ngIf="currentImageIndex < selectedProperty.photos.length - 1">
-          <mat-icon>chevron_right</mat-icon>
-        </div>
-      </div>
-      <mat-icon *ngIf="!selectedProperty?.photos || selectedProperty.photos.length === 0" class="centered-icon">image_not_supported</mat-icon>
-      <p><strong>Cím:</strong> {{ selectedProperty.location }}</p>
-      <p><strong>Ár:</strong> {{ selectedProperty.price }} Ft</p>
-      <p><strong>Méret:</strong> {{ selectedProperty.size }} m²</p>
-      <p><strong>Leírás:</strong> {{ selectedProperty.description }}</p>
-      <p><strong>Státusz:</strong> {{ selectedProperty.status }}</p>
-      <p><strong>Ingatlan típusa:</strong> {{ selectedProperty.features.type }}</p>
-      <p><strong>Fürdőszobák száma:</strong> {{ selectedProperty.features.numberOfBathrooms }}</p>
-      <p><strong>Hálószobák száma:</strong> {{ selectedProperty.features.numberOfRooms }}</p>
-      <p *ngIf="(loggedInUser)"><strong>Hirdető neve:</strong> <span (click)="viewUserProfile(selectedProperty.uploaderID)" class="uploader-name">{{ uploaderFullName }}</span></p>
-      <p *ngIf="!(loggedInUser)"><strong>Hirdető neve:</strong>{{ uploaderFullName }}</p>
+<div class="property-details-page">
+  <div class="advertiser-section">
+<!--     <div class="advertiser-image">
+      <img [src]="advertiserImage" alt="Advertiser's Image">
+    </div> -->
+    <div class="advertiser-info">
+      <h3 *ngIf="(loggedInUser)"><span (click)="viewUserProfile(selectedProperty!.uploaderID)" class="uploader-name">{{ uploaderFullName }}</span></h3>
+      <h3 *ngIf="!(loggedInUser)"><strong>Hirdető neve:</strong>{{ uploaderFullName }}</h3>
       <p>
-        <button *ngIf="loggedInUser?.uid && selectedProperty?.uploaderID !== loggedInUser?.uid" mat-raised-button (click)="openMessageDialog(selectedProperty.uploaderID, selectedProperty.propertyID)">
-          Üzenet küldése
-        </button>
-    </p>
-      <p>
-        <button *ngIf="loggedInUser && loggedInUser?.uid && selectedProperty?.uploaderID !== loggedInUser?.uid" mat-icon-button (click)="toggleFavorite()">
-          {{ isFavorite ? 'Eltávolítás a kedvencek közül' : 'Kedvenc' }}
-        </button>
-      </p>
-      <div>
-        <span class="buttons"><button mat-raised-button color="primary" (click)="goBack()">Vissza</button></span>
+      <p>06302566</p>
+    </div>
+  </div>
+  <div class="card">
+    <div *ngIf="selectedProperty" class="gallery">
+      <img [src]="selectedProperty!.photos[currentImageIndex]" 
+           alt="Main Property Image" 
+           class="main-image"
+           (click)="showImageOverlay(currentImageIndex)">
+      <div class="thumbnails">
+        <img *ngFor="let photo of selectedProperty?.photos; let i = index"
+             [src]="photo"
+             alt="Property Thumbnail"
+             (click)="setCurrentImage(i)"
+             [class.active]="currentImageIndex === i">
       </div>
     </div>
-
+      <div class="image-overlay" *ngIf="isImageOverlayVisible" (click)="hideImageOverlay()">
+        <div class="overlay-content">
+          <img [src]="selectedProperty!.photos[currentImageIndex]" alt="Enlarged Property Image">
+        </div>
+      </div>
+    <div class="details">
+      <h2>{{ selectedProperty?.location }}</h2>
+      <div class="features">
+        <span class="feature new">{{ selectedProperty?.description }}</span>
+      </div>
+      <div class="info">
+        <p class="price">{{ selectedProperty?.price| currency:'HUF' }}</p>
+        <p class="area">Méret: {{ selectedProperty?.size }} m²</p>
+        <p class="rooms">Szobák száma: {{ selectedProperty?.features?.numberOfRooms }} </p>
+      </div>
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="showLocationOnMap(selectedProperty!.location)">Megtekintés térképen</button>
+      </div>
+    </div>
   </div>
+  <div class="map-container" #mapContainer></div>
+</div>

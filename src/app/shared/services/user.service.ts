@@ -19,12 +19,13 @@ export class UserService {
   }
 
   getAll(){
-
+    return this.afs.collection<User>(this.collectionName).valueChanges();
   }
 
-  update(){
-
+  updateUser(userId: string, data: Partial<User>): Promise<void> {
+    return this.afs.collection<User>(this.collectionName).doc(userId).update(data);
   }
+  
 
   delete(){
 
@@ -38,5 +39,10 @@ export class UserService {
       .pipe(
         map((users:any) => (users.length > 0 ? users[0] : undefined))
       );
+  }
+  getUserNameById(userID: string): Observable<string> {
+    return this.getUserById(userID).pipe(
+      map(user => user ? `${user.name.firstname} ${user.name.lastname}` : 'Ismeretlen felhasználó')
+    );
   }
 }

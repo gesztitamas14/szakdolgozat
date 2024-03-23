@@ -1,6 +1,22 @@
 <div class="profile-page-container" *ngIf="loggedInUser && currentUser">
   <div class="profile-container">
     <h2>Profil</h2>
+    <div class="profile-image-container" *ngIf="loggedInUser.uid === currentUser.id">
+      <img [src]="currentUser.imageURL" alt="Profile Image" (click)="toggleUpdateSection()" class="profile-image">
+      <div class="edit-icon">✎</div>
+    </div>
+    <div *ngIf="showUpdateSection" class="show-update-section">
+      <div class="drop-zone" #dropZone (click)="onClickDropZone()" (drop)="onDrop($event)"
+        (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+        Húzza ide a képet vagy kattintson a feltöltéshez
+      </div>
+      <input type="file" #fileInput (change)="onFileSelected($event)" hidden>
+      <img [src]="previewImageURL" *ngIf="previewImageURL" alt="Profilkép">
+      <button mat-raised-button color="primary" (click)="uploadImage()"
+        [disabled]="!selectedFile || uploadButtonDisabled" class="update-button">
+        Profilkép frissítése
+      </button>
+    </div>
     <table class="profile-table">
       <tr>
         <td>Név:</td>
@@ -16,56 +32,58 @@
       </tr>
     </table>
     <form (ngSubmit)="changePassword()" *ngIf="loggedInUser.uid === currentUser.id">
-        <div>
-          <label for="newPassword">Új jelszó</label><br>
-          <input type="password" id="newPassword" [(ngModel)]="newPassword"
-                 name="newPassword" 
-                 (focus)="showTooltip = true" 
-                 (blur)="showTooltip = false" 
-                 (ngModelChange)="onPasswordInput()"
-                 autocomplete="off">
+      <div>
+        <label for="newPassword">Új jelszó</label><br>
+        <input type="password" id="newPassword" [(ngModel)]="newPassword" name="newPassword"
+          (focus)="showTooltip = true" (blur)="showTooltip = false" (ngModelChange)="onPasswordInput()"
+          autocomplete="off">
         <div class="tooltip" [class.visible]="showTooltip">
-            <p *ngIf="!passwordStrength.hasLength">Legalább 8 karakter.</p>
-            <p *ngIf="!passwordStrength.hasUpperCase">Legalább egy nagybetű.</p>
-            <p *ngIf="!passwordStrength.hasNumbers">Legalább egy szám.</p>
-          </div>
+          <p *ngIf="!passwordStrength.hasLength">Legalább 8 karakter.</p>
+          <p *ngIf="!passwordStrength.hasUpperCase">Legalább egy nagybetű.</p>
+          <p *ngIf="!passwordStrength.hasNumbers">Legalább egy szám.</p>
         </div>
-        <div>
-            <label for="confirmPassword">Jelszó megerősítése</label><br>
-            <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" 
-                   name="confirmPassword"
-                   (focus)="showConfirmTooltip = true" 
-                   (blur)="showConfirmTooltip = false"
-                   (ngModelChange)="onConfirmPasswordInput()">
-            <div class="tooltip" [class.visible]="showConfirmTooltip">
-              <p *ngIf="!passwordsMatch">A jelszavak nem egyeznek meg.</p>
-            </div>
-          </div>
-        <button type="submit">Jelszó megváltoztatása</button>
+      </div>
+      <div>
+        <label for="confirmPassword">Jelszó megerősítése</label><br>
+        <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword"
+          (focus)="showConfirmTooltip = true" (blur)="showConfirmTooltip = false"
+          (ngModelChange)="onConfirmPasswordInput()">
+        <div class="tooltip" [class.visible]="showConfirmTooltip">
+          <p *ngIf="!passwordsMatch">A jelszavak nem egyeznek meg.</p>
+        </div>
+      </div>
+      <button type="submit">Jelszó megváltoztatása</button>
     </form>
     <div class="logout-container" *ngIf="loggedInUser.uid === currentUser.id">
       <a routerLink="/login" (click)="logout()">Kijelentkezés</a>
-    </div>    
+    </div>
   </div>
 
-  <div *ngIf="activeProperties && activeProperties.length>0"  class="properties-container">
+  <div *ngIf="activeProperties && activeProperties.length>0" class="properties-container">
     <h2 *ngIf="activeProperties && activeProperties.length>0">Aktív hirdetések</h2>
     <div class="pagination-controls">
-      <button (click)="previousActivePage()" [disabled]="activePage === 1" *ngIf="activePage > 1"><mat-icon>arrow_back</mat-icon></button>
+      <button (click)="previousActivePage()" [disabled]="activePage === 1"
+        *ngIf="activePage > 1"><mat-icon>arrow_back</mat-icon></button>
       <span>{{ activePage }} / {{ totalActivePages }}</span>
-      <button (click)="nextActivePage()" [disabled]="activePage === totalActivePages" *ngIf="activePage < totalActivePages"><mat-icon>arrow_forward</mat-icon></button>
+      <button (click)="nextActivePage()" [disabled]="activePage === totalActivePages"
+        *ngIf="activePage < totalActivePages"><mat-icon>arrow_forward</mat-icon></button>
     </div>
-    <div *ngFor="let property of activeProperties" class="profileProperty-item" (click)="viewPropertyDetails(property.propertyID)">
+    <div *ngFor="let property of activeProperties" class="profileProperty-item"
+      (click)="viewPropertyDetails(property.propertyID)">
       <div class="profileProperty-image-container">
-        <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="profileProperty-image">
-        <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="profileProperty-icon">image_not_supported</mat-icon>
+        <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image"
+          class="profileProperty-image">
+        <mat-icon *ngIf="!property.photos || property.photos.length === 0"
+          class="profileProperty-icon">image_not_supported</mat-icon>
       </div>
       <div class="profileProperty-content">
-        <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó
+        <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer
+          Ft/hó
           <span class="property-price-per-sqm"></span>
         </p>
         <p *ngIf="property.status==='Eladó'" class="profileProperty-price">{{ formatPrice(property.price) }}
-          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft /
+            m²)</span>
         </p>
         <p class="profileProperty-address">{{ property.location }}</p>
         <div class="profileProperty-details">
@@ -73,28 +91,36 @@
           <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
         </div>
       </div>
-      <button mat-button (click)="$event.stopPropagation(); markAsSold(property.propertyID)" *ngIf="loggedInUser.uid === currentUser.id && !property.sold">Eladottnak nyílvánít</button>
-      <button id="mat-button" mat-button (click)="$event.stopPropagation(); deleteProperty(property.propertyID)" *ngIf="loggedInUser.uid === currentUser.id">
+      <button mat-button (click)="$event.stopPropagation(); markAsSold(property.propertyID)"
+        *ngIf="loggedInUser.uid === currentUser.id && !property.sold">Eladottnak nyílvánít</button>
+      <button id="mat-button" mat-button (click)="$event.stopPropagation(); deleteProperty(property.propertyID)"
+        *ngIf="loggedInUser.uid === currentUser.id">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
     <h2 *ngIf="inactiveProperties && inactiveProperties.length>0">Inaktív hirdetések</h2>
-      <div *ngIf="inactiveProperties && inactiveProperties.length>0" class="pagination-controls">
-        <button (click)="previousInactivePage()" *ngIf="inactivePage > 1"><mat-icon>arrow_back</mat-icon></button>
-        <span>{{ inactivePage }} / {{ totalInactivePages }}</span>
-        <button (click)="nextInactivePage()" *ngIf="inactivePage < totalInactivePages"><mat-icon>arrow_forward</mat-icon></button>
-      </div>
-    <div *ngFor="let property of inactiveProperties" class="profileProperty-item" (click)="viewPropertyDetails(property.propertyID)">
+    <div *ngIf="inactiveProperties && inactiveProperties.length>0" class="pagination-controls">
+      <button (click)="previousInactivePage()" *ngIf="inactivePage > 1"><mat-icon>arrow_back</mat-icon></button>
+      <span>{{ inactivePage }} / {{ totalInactivePages }}</span>
+      <button (click)="nextInactivePage()"
+        *ngIf="inactivePage < totalInactivePages"><mat-icon>arrow_forward</mat-icon></button>
+    </div>
+    <div *ngFor="let property of inactiveProperties" class="profileProperty-item"
+      (click)="viewPropertyDetails(property.propertyID)">
       <div class="profileProperty-image-container">
-        <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image" class="profileProperty-image">
-        <mat-icon *ngIf="!property.photos || property.photos.length === 0" class="profileProperty-icon">image_not_supported</mat-icon>
+        <img *ngIf="property.photos && property.photos.length > 0" [src]="property.photos[0]" alt="Property Image"
+          class="profileProperty-image">
+        <mat-icon *ngIf="!property.photos || property.photos.length === 0"
+          class="profileProperty-icon">image_not_supported</mat-icon>
       </div>
       <div class="profileProperty-content">
-        <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer Ft/hó
+        <p *ngIf="property.status==='Kiadó'" class="profileProperty-price">{{ calculateRentPrice(property.price) }}ezer
+          Ft/hó
           <span class="property-price-per-sqm"></span>
         </p>
         <p *ngIf="property.status==='Eladó'" class="profileProperty-price">{{ formatPrice(property.price) }}
-          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft / m²)</span>
+          <span class="property-price-per-sqm">({{ calculatePricePerSqm(property.price, property.size) }} Ft /
+            m²)</span>
         </p>
         <p class="profileProperty-address">{{ property.location }}</p>
         <div class="profileProperty-details">
@@ -102,11 +128,12 @@
           <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
         </div>
       </div>
-      <button mat-button (click)="$event.stopPropagation(); markAsSold(property.propertyID)" *ngIf="loggedInUser.uid === currentUser.id && !property.sold">Eladottnak nyílvánít</button>
-      <button id="mat-button" mat-button (click)="$event.stopPropagation(); deleteProperty(property.propertyID)" *ngIf="loggedInUser.uid === currentUser.id">
+      <button mat-button (click)="$event.stopPropagation(); markAsSold(property.propertyID)"
+        *ngIf="loggedInUser.uid === currentUser.id && !property.sold">Eladottnak nyílvánít</button>
+      <button id="mat-button" mat-button (click)="$event.stopPropagation(); deleteProperty(property.propertyID)"
+        *ngIf="loggedInUser.uid === currentUser.id">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
   </div>
 </div>
-  

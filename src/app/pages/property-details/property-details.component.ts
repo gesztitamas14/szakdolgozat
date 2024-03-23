@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PropertyService } from '../../shared/services/property.service';
 import { Property } from '../../shared/models/Properties';
@@ -11,17 +11,21 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { first } from 'rxjs/operators';
 import { ChatService } from '../../shared/services/chat.service';
 
+declare var google: any;
+
 @Component({
   selector: 'app-property-details',
   templateUrl: './property-details.component.html',
   styleUrls: ['./property-details.component.css']
 })
-export class PropertyDetailsComponent implements OnInit {
+export class PropertyDetailsComponent implements OnInit, AfterViewInit {
+  @ViewChild('mapContainer') mapContainer: ElementRef | undefined;
   selectedProperty: Property | null = null;
   uploaderFullName: string | null = null;
   isFavorite: boolean = false;
   loggedInUser?: firebase.default.User | null;
   currentImageIndex: number = 0;
+  isImageOverlayVisible: boolean = false;
 
 
   constructor(
@@ -35,6 +39,11 @@ export class PropertyDetailsComponent implements OnInit {
     private router: Router,
     private chatService: ChatService,
   ) {}
+
+  ngAfterViewInit(): void {
+  }
+
+
 
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user=>{
@@ -50,6 +59,7 @@ export class PropertyDetailsComponent implements OnInit {
         this.propertyService.getPropertyById(propertyID).subscribe((property) => {
           if (property) {
             this.selectedProperty = property;
+            //this.initializeMap(property.location);
             this.checkIfFavorite(propertyID);
             this.userService.getUserById(property.uploaderID).subscribe((user) => {
               if (user) {
@@ -126,4 +136,37 @@ export class PropertyDetailsComponent implements OnInit {
   goBack() {
     this.location.back();
   }
+
+  setCurrentImage(index: number): void {
+    this.currentImageIndex = index;
+  }
+  showImageOverlay(index: number): void {
+    this.currentImageIndex = index;
+    this.isImageOverlayVisible = true;
+  }
+
+  hideImageOverlay(): void {
+    this.isImageOverlayVisible = false;
+  }
+
+  showLocationOnMap(address: string): void {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: address }, (results: { geometry: { location: any; }; }[], status: string) => {
+      if (status == google.maps.GeocoderStatus.OK) {
+        const map = new google.maps.Map(this.mapContainer?.nativeElement, {
+          center: results[0].geometry.location,
+          zoom: 15
+        });
+
+        new google.maps.Marker({
+          position: results[0].geometry.location,
+          map: map
+        });
+      } else {
+        console.error('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+
 }

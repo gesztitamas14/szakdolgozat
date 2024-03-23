@@ -89,4 +89,18 @@ export class FavoritesComponent implements OnInit {
   browseProperties(){
     this.router.navigate(['/main']);
   }
+  calculatePricePerSqm(price: number, size: number): string {
+    return (price / size).toFixed(1);
+  }
+
+  calculateRentPrice(price: number) {
+    return (price / 1000).toFixed(0);
+  }
+  formatPrice(price: number): string {
+    if (price % 1000000 === 0) {
+      return `${price / 1000000}M Ft`;
+    } else {
+      return `${price} Ft`;
+    }
+  }
 }
