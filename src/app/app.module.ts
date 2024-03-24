@@ -11,7 +11,6 @@ import { PostAdComponent } from './pages/post-ad/post-ad.component';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { CalculatorComponent } from './pages/calculator/calculator.component';
 import { PropertyDetailsComponent } from './pages/property-details/property-details.component';
-import { ContactComponent } from './pages/contact/contact.component';
 import { MenuComponent } from './shared/menu/menu.component';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

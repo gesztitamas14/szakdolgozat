@@ -26,6 +26,9 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   loggedInUser?: firebase.default.User | null;
   currentImageIndex: number = 0;
   isImageOverlayVisible: boolean = false;
+  advertiserImage: string | null = null;
+  advertiserphoneNumber: number |null = null;
+  showMap: boolean =false;
 
 
   constructor(
@@ -59,11 +62,12 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
         this.propertyService.getPropertyById(propertyID).subscribe((property) => {
           if (property) {
             this.selectedProperty = property;
-            //this.initializeMap(property.location);
             this.checkIfFavorite(propertyID);
             this.userService.getUserById(property.uploaderID).subscribe((user) => {
               if (user) {
                 this.uploaderFullName = `${user.name.firstname} ${user.name.lastname}`;
+                this.advertiserImage = user.imageURL as any;
+                this.advertiserphoneNumber = user.phoneNumber;
               }
             });
           } else {
@@ -113,15 +117,15 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
   
 
-  nextImage(): void {
-    if (this.selectedProperty && this.currentImageIndex < this.selectedProperty.photos.length - 1) {
-      this.currentImageIndex++;
+  nextImage() {
+    if (this.selectedProperty && this.selectedProperty.photos.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.selectedProperty.photos.length;
     }
   }
 
-  previousImage(): void {
-    if (this.currentImageIndex > 0) {
-      this.currentImageIndex--;
+  previousImage() {
+    if (this.selectedProperty && this.selectedProperty.photos.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.selectedProperty.photos.length) % this.selectedProperty.photos.length;
     }
   }
 
@@ -150,6 +154,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   showLocationOnMap(address: string): void {
+    this.showMap = true;
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ address: address }, (results: { geometry: { location: any; }; }[], status: string) => {
       if (status == google.maps.GeocoderStatus.OK) {
@@ -168,5 +173,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  hasImages() {
+    return this.selectedProperty && this.selectedProperty.photos && this.selectedProperty.photos.length > 0;
+  }
 
 }

@@ -86,7 +86,6 @@ transform: scale(1.05);
 }
 
 .uploader-name {
-  color: #007bff;
   text-decoration: underline;
   cursor: pointer;
   font-weight: bold;
@@ -137,7 +136,7 @@ transform: scale(1.05);
   max-width: 1200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0,150,136, 0.5);
   border-radius: 8px;
   overflow: hidden;
   position: relative; 
@@ -147,10 +146,15 @@ transform: scale(1.05);
   position: relative;
 }
 
+.gallery div {
+  overflow: hidden;
+}
+
 .main-image {
-  width: 100%;
-  height: auto;
+  height: 80%;
+  width: 90%;
   object-fit: cover;
+  overflow: hidden;
 }
 
 .thumbnails {
@@ -172,7 +176,7 @@ transform: scale(1.05);
 }
 
 .thumbnails img.active {
-  border: 2px solid #007bff;
+  border: 2px solid rgba(0,150,136, 0.5);
 }
 
 .details {
@@ -232,11 +236,26 @@ transform: scale(1.05);
   justify-content: center;
   padding: 10px;
   align-items: center;
-  min-height: 50px; /* Adjust based on the button size */
+  min-height: 50px;
 }
 
-.actions button {
-  margin-right: 10px;
+.actions button{
+  margin-bottom: 50px;
+}
+
+.phone-number{
+  font-weight: bold;
+}
+
+button {
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,150,136, 0.5);
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: #d4edda;
+  color: black;
 }
 
 .image-overlay {
@@ -250,6 +269,29 @@ transform: scale(1.05);
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+.prev-button {
+  left: 15%;
+}
+
+.next-button {
+  right: 15%;
+}
+.overlay-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+}
+.no-image-placeholder {
+  text-align: center;
+  padding: 20px;
 }
 
 .overlay-content {
@@ -267,7 +309,7 @@ transform: scale(1.05);
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #f2f2f2;
+  background-color: #fafafa;
   border-bottom: 1px solid #ddd;
 }
 
@@ -276,7 +318,6 @@ transform: scale(1.05);
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px;
 }
 
 .advertiser-info h3 {
@@ -288,6 +329,7 @@ transform: scale(1.05);
   margin: 5px 0 0;
   font-size: 0.9em;
   color: #555;
+  margin-bottom: 5px;
 }
 
 

@@ -2,8 +2,13 @@
   <div class="profile-container">
     <h2>Profil</h2>
     <div class="profile-image-container" *ngIf="loggedInUser.uid === currentUser.id">
-      <img [src]="currentUser.imageURL" alt="Profile Image" (click)="toggleUpdateSection()" class="profile-image">
+      <img *ngIf="currentUser.imageURL?.length!==0" [src]="currentUser.imageURL" alt="Profile Image" (click)="toggleUpdateSection()" class="profile-image">
+      <img *ngIf="currentUser.imageURL?.length===0" src="https://firebasestorage.googleapis.com/v0/b/ingatlan-szakdolgozat.appspot.com/o/profilePictures%2F1711220961420_free-user-icon-3296-thumb.png?alt=media&token=32b5bb3a-3964-4e6c-80f6-2d40f4e7552c" alt="Profile Image" (click)="toggleUpdateSection()" class="profile-image">
       <div class="edit-icon">✎</div>
+    </div>
+    <div class="profile-image-container" *ngIf="loggedInUser.uid !== currentUser.id">
+      <img *ngIf="currentUser.imageURL?.length!==0" [src]="currentUser.imageURL" alt="Profile Image" class="profile-image">
+      <img *ngIf="currentUser.imageURL?.length===0" src="https://firebasestorage.googleapis.com/v0/b/ingatlan-szakdolgozat.appspot.com/o/profilePictures%2F1711220961420_free-user-icon-3296-thumb.png?alt=media&token=32b5bb3a-3964-4e6c-80f6-2d40f4e7552c" alt="Profile Image" class="profile-image">
     </div>
     <div *ngIf="showUpdateSection" class="show-update-section">
       <div class="drop-zone" #dropZone (click)="onClickDropZone()" (drop)="onDrop($event)"

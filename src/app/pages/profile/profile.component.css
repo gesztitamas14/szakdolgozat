@@ -1,141 +1,151 @@
 .profile-container {
-    background-color: var(--color-primary);
-    color: var(--color-contrast);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 20px auto;
-    min-height: calc(90vh - 60px);
-  }
-  h2 {
-    color: var(--color-accent);
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  
+  background-color: var(--color-primary);
+  color: var(--color-contrast);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 150, 136, 0.5);
+  height: 80vh;
+  overflow: auto;
+  max-width: 50%;
+}
+
+.main-component {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+h2 {
+  color: var(--color-accent);
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
 .profile-container p {
-    margin-bottom: 10px;
-  }
+  margin-bottom: 10px;
+}
 
-  .profile-container button {
-    background-color: var(--color-accent);
-    color: white;
-    margin-top: 20px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+.profile-container button {
+  background-color: var(--color-accent);
+  color: white;
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  .profile-container button:hover {
-    background-color: var(--color-dark-accent);
-  }
-  
-  .profile-container img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    border: 3px solid var(--color-accent);
-  }
-  
-  .profile-container form {
-    margin-top: 20px;
-    background-color: var(--color-secondary);
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  .profile-container input, .profile-container select {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid var(--color-secondary);
-    border-radius: 5px;
-  }
-  .profile-container input[type="password"], .profile-container select {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 2px solid var(--color-dark-accent);
-    border-radius: 5px;
-  }
-  
-  .tooltip {
-    background-color: var(--color-primary   );
-    color: var(--color-contrast);
-    padding: 10px;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-  .tooltip.visible {
-    opacity: 1;
-  }
-  
-  .tooltip p {
-    font-weight: bold;
-    margin: 5px 0;
-  }
+.profile-container button:hover {
+  background-color: var(--color-dark-accent);
+}
 
-  .profile-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .profile-table td {
-    padding: 8px;
-    border-bottom: 1px solid var(--color-secondary);
-  }
-  
-  .profile-table td:first-child {
-    font-weight: bold;
-    width: 30%;
-  }
+.profile-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 3px solid var(--color-accent);
+}
 
-  .logout-container {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .logout-container a {
-    color: var(--color-accent);
-    padding: 8px 12px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .logout-container a:hover {
-    background-color: var(--color-accent);
-    color: var(--color-primary);
-    text-decoration: none;
-  }
+.profile-container form {
+  margin-top: 20px;
+  background-color: var(--color-secondary);
+  padding: 20px;
+  border-radius: 10px;
+}
 
-  .profile-page-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 10px;
-  }
+.profile-container input,
+.profile-container select {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--color-secondary);
+  border-radius: 5px;
+}
+
+.profile-container input[type="password"],
+.profile-container select {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid var(--color-dark-accent);
+  border-radius: 5px;
+}
+
+.tooltip {
+  background-color: var(--color-primary);
+  color: var(--color-contrast);
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.tooltip.visible {
+  opacity: 1;
+}
+
+.tooltip p {
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.profile-table td {
+  padding: 8px;
+  border-bottom: 1px solid var(--color-secondary);
+}
+
+.profile-table td:first-child {
+  font-weight: bold;
+  width: 30%;
+}
+
+.logout-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.logout-container a {
+  color: var(--color-accent);
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-container a:hover {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.profile-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .profile-container {
   flex: 1 1 600px;
-  max-width: 600px;
+  max-width: 30%;
   margin: 10px;
 }
 
 .properties-container {
   flex: 2 1 60%;
   margin: 10px;
-  height: calc(100vh - 124px);
+  width: 40%;
 }
 
 @media (max-width: 768px) {
@@ -145,23 +155,33 @@
 
   .properties-container {
     margin: 0 auto;
-    max-width: 100%;
+    width: 60%;
     flex: 1;
   }
-  .profile-container{
-    width: 80%;
+
+  .profile-container {
+    max-width: 80%;
     flex: 1;
-    margin: 0 auto  }
-}
+    margin: 0 auto;
+    margin-top: 20px
+  }
 
-.profileprofileProperty-container {
-  max-width: 80%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+  .profileProperty-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
+  .profileProperty-image-container,
+  .profileProperty-content {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .profileProperty-item button {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
 
 .profileProperty-item:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -175,7 +195,8 @@
   align-items: center;
 }
 
-.profileProperty-image, .profileProperty-icon {
+.profileProperty-image,
+.profileProperty-icon {
   max-width: 100%;
   max-height: 100%;
 }
@@ -230,7 +251,7 @@
   justify-content: center;
 }
 
-#mat-button{
+#mat-button {
   background: transparent;
   padding: 5px;
 }
@@ -257,7 +278,7 @@
 
 .pagination-controls button {
   background-color: #fafafa;
-  border: none; 
+  border: none;
   border-radius: 0;
   padding: 0;
 }
@@ -283,7 +304,8 @@
   margin-bottom: 10px;
 }
 
-.drop-zone:hover, .drop-zone.dragover {
+.drop-zone:hover,
+.drop-zone.dragover {
   background-color: #f0f0f0;
 }
 
@@ -297,20 +319,23 @@
 /* Component CSS */
 .profile-image-container {
   position: relative;
-  display: inline-block;
-  cursor: pointer;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-image {
   display: block;
   max-width: 100%;
+  cursor: pointer;
 }
 
 .edit-icon {
   display: none;
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 8px;
+  cursor: pointer;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 5px;
@@ -329,4 +354,3 @@
   justify-content: center;
   margin-bottom: 20px;
 }
-

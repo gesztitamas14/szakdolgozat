@@ -5,11 +5,6 @@ import { AuthGuard } from './shared/services/auth.guard';
 const routes: Routes = [
   { path: 'calculator',loadChildren: () => import('./pages/calculator/calculator.module').then(m => m.CalculatorModule)},
   { 
-    path: 'contact',
-    loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule),
-    canActivate: [AuthGuard]
-  },
-  { 
     path: 'favorites',
     loadChildren: () => import('./pages/favorites/favorites.module').then(m => m.FavoritesModule),
     canActivate: [AuthGuard]

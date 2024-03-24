@@ -20,10 +20,12 @@ export class RegistrationComponent implements OnInit{
     email: new FormControl(''),
     password: new FormControl(''),
     rePassword: new FormControl(''),
+    phoneNumber: new FormControl(''),
     name: new FormGroup({
       firstname: new FormControl(''),
       lastname: new FormControl('')
-    })
+    }),
+    imageURL: new FormControl('')
   });
 
   constructor(private userService: UserService, private location: Location, private authService: AuthService, private router: Router){}
@@ -33,32 +35,44 @@ export class RegistrationComponent implements OnInit{
   onSignup() {
     const email = this.signUpForm.get('email')?.value;
     const password = this.signUpForm.get('password')?.value;
-    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    const phoneNumber = this.signUpForm.get('phoneNumber')?.value;
+    
     this.passwordStrength = this.checkPasswordStrength(password as any);
     this.passwordsMatch = this.signUpForm.get('password')?.value === this.signUpForm.get('rePassword')?.value;
+  
     if (!(this.passwordStrength.hasLength && this.passwordStrength.hasUpperCase && this.passwordStrength.hasNumbers)) {
       alert("A jelszónak legalább 8 karakter hosszúnak kell lennie, tartalmaznia kell nagybetűt és számot.");
-    }
-    else if (!emailRegex.test(email as any)) {
-      alert("Az e-mail cím formátuma nem helyes.");
-    }
-    else if (!this.passwordsMatch) {
-      alert("A két jelszó nem egyezik.");
+      return;
     }
   
+    if (!this.passwordsMatch) {
+      alert("A két jelszó nem egyezik.");
+      return;
+    }
+  
+    // Check for a valid email
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    if (!emailRegex.test(email as any)) {
+      alert("Az e-mail cím formátuma nem helyes.");
+      return;
+    }
+  
+    // If all checks pass, proceed with the registration
     if (email && password) {
       this.authService.signup(email, password).then((cred) => {
         const user: User = {
           id: cred.user?.uid as string,
-          username: email as string,
-          email: email.split('@')[0] as string,
+          username: email,
+          email: email.split('@')[0],
           name: {
             firstname: this.signUpForm.get('name.firstname')?.value as string,
             lastname: this.signUpForm.get('name.lastname')?.value as string
           },
+          phoneNumber: phoneNumber as any,
+          imageURL: ""
         };
         this.userService.create(user).then(() => {
-          this.router.navigateByUrl('/contact');
+          this.router.navigateByUrl('/main');
         }).catch(error => {
           console.error(error);
         });
@@ -67,6 +81,7 @@ export class RegistrationComponent implements OnInit{
       });
     }
   }
+  
 
   goBack() {
     this.location.back();

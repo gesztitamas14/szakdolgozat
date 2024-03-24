@@ -229,10 +229,14 @@
     width: auto;
   }
 }
-
-@media (max-width:312px) {
-  .pagination{
-    margin-top: 70px;
+@media (max-width: 600px) {
+  .pagination {
+    margin-top: 60px; 
+  }
+}
+@media (max-width: 600px) {
+  .pagination {
+    margin-top: 140px; 
   }
 }
 

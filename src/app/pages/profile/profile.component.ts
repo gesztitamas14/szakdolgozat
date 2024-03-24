@@ -87,9 +87,11 @@ export class ProfileComponent implements OnInit {
   
   onFileSelected(event: any): void {
     const file = event.target.files[0];
-    if (file) {
+    if (file && this.isImageFile(file)) {
       this.selectedFile = file;
-      this.previewImageURL = URL.createObjectURL(file); // Set preview image URL
+      this.previewImageURL = URL.createObjectURL(file);
+    }else{
+      alert("Only image files are allowed.");
     }
   }
   onDragOver(event: DragEvent): void {
@@ -109,9 +111,18 @@ export class ProfileComponent implements OnInit {
 
     if (event.dataTransfer && event.dataTransfer.files) {
       const file = event.dataTransfer.files[0];
-      this.selectedFile = file;
-      this.previewImageURL = URL.createObjectURL(file); // Set preview image URL
+      if (this.isImageFile(file)) {
+        this.selectedFile = file;
+        this.previewImageURL = URL.createObjectURL(file);
+      } else {
+        alert("Csak kép formátum engedélyezett.");
+      }
     }
+  }
+
+  isImageFile(file: File): boolean {
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    return allowedExtensions.exec(file.name) !== null;
   }
 
   uploadImage(): void {
@@ -147,7 +158,8 @@ export class ProfileComponent implements OnInit {
         }
       );
   
-      this.selectedFile = null; // Reset selected file
+      this.selectedFile = null;
+      this.toggleUpdateSection()
     }
   }
   
