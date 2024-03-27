@@ -9,6 +9,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CeilPipe } from '../../shared/pipes/ceil.pipe';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -25,6 +27,8 @@ import { CeilPipe } from '../../shared/pipes/ceil.pipe';
         MatRadioModule,
         MatOptionModule,
         MatAutocompleteModule,
+        MatFormFieldModule,
+        MatInputModule,
     ]
 })
 export class MainModule { }

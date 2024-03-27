@@ -24,7 +24,7 @@ export class FavoritesComponent implements OnInit {
     this.authService.isUserLoggedIn().subscribe(user => {
       this.loggedInUser = user;
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
-      
+
 
       if (this.loggedInUser?.uid) {
         this.loadFavoriteProperties();
@@ -34,7 +34,7 @@ export class FavoritesComponent implements OnInit {
       localStorage.setItem('user', JSON.stringify('null'));
     });
   }
-  
+
 
   loadFavoriteProperties() {
     this.favoritePropertyDetails = [];
@@ -42,7 +42,7 @@ export class FavoritesComponent implements OnInit {
       this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favoriteProperties => {
         this.favoriteProperties = favoriteProperties;
         this.favoritePropertyDetails = [];
-  
+
         favoriteProperties.forEach(favoriteProperty => {
           favoriteProperty.propertyIDs.forEach(propertyId => {
             this.propertyService.getPropertyById(propertyId).subscribe(propertyDetail => {
@@ -55,38 +55,47 @@ export class FavoritesComponent implements OnInit {
       });
     }
   }
-  
+
 
   viewDetails(propertyId: string) {
-      this.router.navigate(['/property-details', propertyId]);
+    this.router.navigate(['/property-details', propertyId]);
+  }
+
+  removeFromFavoritesHandler(event: MouseEvent, propertyId: string): void {
+    event.stopPropagation();
+    event.preventDefault();
+    this.removeFromFavorites(propertyId);
   }
 
   removeFromFavorites(propertyId: string) {
+    if (!this.loggedInUser?.uid) {
+      console.error('No logged in user.');
+      return;
+    }
     if (this.router.url === '/favorites') {
-      if (!this.loggedInUser?.uid) {
-        console.error('No logged in user.');
-        return;
-      }
-    
+      this.favoritePropertyDetails = this.favoritePropertyDetails.filter(p => p.propertyID !== propertyId);
+
       this.favoritesService.getFavoriteProperties(this.loggedInUser.uid).subscribe(favoriteProperties => {
-        const existingFavorite = favoriteProperties[0];
-    
-        if (existingFavorite && existingFavorite.propertyIDs.includes(propertyId)) {
+        const existingFavorite = favoriteProperties.find(f => f.propertyIDs.includes(propertyId));
+
+        if (existingFavorite) {
           const updatedPropertyIDs = existingFavorite.propertyIDs.filter(id => id !== propertyId);
-          existingFavorite.propertyIDs = updatedPropertyIDs;
-          if (this.router.url === '/favorites') {
-          this.favoritesService.updateFavoriteProperty(existingFavorite).then(() => {
-            //console.log('Property removed from favorites successfully.');
-            this.loadFavoriteProperties();
-          }).catch((error: any) => {
-            console.error('Error updating favorites:', error);
-          });
-        }
+
+          if (updatedPropertyIDs.length === 0 && this.router.url === '/favorites') {
+            this.favoritesService.deleteFavoriteProperty(existingFavorite.favoriteID).catch(error => {
+              console.error('Error deleting empty favorite:', error);
+            });
+          } else if(updatedPropertyIDs.length !== 0 && this.router.url === '/favorites') {
+            existingFavorite.propertyIDs = updatedPropertyIDs;
+            this.favoritesService.updateFavoriteProperty(existingFavorite).catch(error => {
+              console.error('Error updating favorites:', error);
+            });
+          }
         }
       });
     }
   }
-  browseProperties(){
+  browseProperties() {
     this.router.navigate(['/main']);
   }
   calculatePricePerSqm(price: number, size: number): string {

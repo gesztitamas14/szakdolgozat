@@ -117,23 +117,16 @@ h2 {
 }
 
 .logout-container a {
-  color: var(--color-accent);
+  color: var(--color-primary);
   padding: 8px 12px;
   text-decoration: none;
   border-radius: 4px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.logout-container a:hover {
-  background-color: var(--color-accent);
-  color: var(--color-primary);
-  text-decoration: none;
+  background-color:var(--color-accent);
 }
 
 .profile-page-container {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .profile-container {

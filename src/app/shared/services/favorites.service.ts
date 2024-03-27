@@ -9,7 +9,7 @@ import { FavoriteProperty } from '../models/Favorites';
 export class FavoritesService {
   private collectionName = 'Favorites';
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(private afs: AngularFirestore) { }
 
   getFavoriteProperties(userId: string): Observable<FavoriteProperty[]> {
     return this.afs.collection<FavoriteProperty>(this.collectionName, ref => ref.where('userID', '==', userId)).valueChanges();

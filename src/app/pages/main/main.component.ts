@@ -37,6 +37,8 @@ export class MainComponent implements OnInit {
   allUserFullNames: string[] = [];
   filteredUserNames: string[] = [];
   selectedUserId: string | null = null;
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
 
   constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
@@ -69,7 +71,7 @@ export class MainComponent implements OnInit {
       this.selectedUserId = null;
       this.filteredUserNames = [];
     } else {
- 
+
       this.filteredUserNames = this.allUserFullNames.filter(name => {
         const userId = this.userNameToIdMap.get(name.toLowerCase());
         const isNotLoggedInUser = userId !== this.loggedInUser?.uid;
@@ -77,7 +79,7 @@ export class MainComponent implements OnInit {
         return isNotLoggedInUser && matchesSearchTerm;
       });
     }
-  
+
     this.applyFilter();
   }
   onUserSelected(event: any) {
@@ -87,7 +89,7 @@ export class MainComponent implements OnInit {
       this.selectedUserId = userId;
       this.applyFilter();
     }
-  }  
+  }
 
   loadUserProperties() {
     if (this.loggedInUser?.uid) {
@@ -106,7 +108,7 @@ export class MainComponent implements OnInit {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = Math.min(startIndex + this.pageSize, this.filteredProperties.length);
     const currentProperties = this.filteredProperties.slice(startIndex, endIndex);
-  
+
     this.leftColumnProperties = currentProperties.filter((_, index) => index % 2 === 0);
     this.rightColumnProperties = currentProperties.filter((_, index) => index % 2 === 1);
   }
@@ -131,13 +133,13 @@ export class MainComponent implements OnInit {
     this.propertyService.getProperties().subscribe(properties => {
       this.properties = properties;
       this.filteredProperties = properties;
-  
+
       const cities = properties.map(property => property.location);
       this.allCities = Array.from(new Set(cities));
 
       this.userNameSearchTerm = '';
       this.filteredUserNames = [];
-      this.applyFilter(); // Ez a sor frissíti az összes oldal számát a betöltött ingatlanok alapján
+      this.applyFilter();
     });
   }
   nextPage(): void {
@@ -146,14 +148,14 @@ export class MainComponent implements OnInit {
       this.fetchProperties();
     }
   }
-  
+
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.fetchProperties();
     }
   }
-  
+
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
@@ -171,6 +173,8 @@ export class MainComponent implements OnInit {
     this.filteredProperties = this.properties.filter(property => {
       const matchesLocation = !this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesStatus = !this.propertyStatus || property.status === this.propertyStatus;
+      const matchesPrice = (this.minPrice == null || property.price >= this.minPrice) && 
+                           (this.maxPrice == null || property.price <= this.maxPrice);
   
       let matchesUser = true;
       if (this.selectedUserId) {
@@ -179,14 +183,13 @@ export class MainComponent implements OnInit {
         matchesUser = property.uploaderID !== this.loggedInUser.uid;
       }
   
-      return matchesLocation && matchesStatus && matchesUser;
+      return matchesLocation && matchesStatus && matchesPrice && matchesUser;
     });
-  
     this.totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
     this.currentPage = 1; // Reset to first page
     this.fetchProperties();
   }
-  
+
   viewPropertyDetails(propertyID: string) {
     this.router.navigate(['/property-details', propertyID]);
   }
@@ -207,53 +210,46 @@ export class MainComponent implements OnInit {
     return (price / 1000).toFixed(0);
   }
 
-  addToFavorites(propertyID: string) {
+  addToFavorites(event: Event, propertyID: string) {
+    event.stopPropagation();
     if (!this.loggedInUser?.uid) {
-      console.error('No logged in user.');
       return;
     }
 
-    if (this.favoritePropertyIDs.includes(propertyID)) {
-      console.log('Property is already in favorites.');
+    if (this.isFavorite(propertyID)) {
       return;
     }
 
     this.favoritePropertyIDs.push(propertyID);
 
+    this.favoritesService.getFavoriteProperties(this.loggedInUser.uid)
+      .pipe(first())
+      .subscribe(favorites => {
+        let existingFavorites = favorites.find(fav => fav.userID === this.loggedInUser?.uid);
 
-    if (this.router.url === '/main') {
-      this.favoritesService.getFavoriteProperties(this.loggedInUser.uid)
-        .pipe(first())
-        .subscribe(favorites => {
-          let userFavorites = favorites.find(fav => fav.userID === this.loggedInUser!.uid);
-          let existingFavorites = favorites[0];
+        if (existingFavorites) {
+          existingFavorites.propertyIDs.push(propertyID);
+          this.favoritesService.updateFavoriteProperty(existingFavorites).catch((error: any) => {
+            console.error('Error updating favorites:', error);
+            this.favoritePropertyIDs.pop();
+          });
+        } else {
+          const newFavorite: FavoriteProperty = {
+            favoriteID: this.afs.createId(),
+            userID: this.loggedInUser?.uid as any,
+            propertyIDs: [propertyID]
+          };
 
-          if (existingFavorites) {
-            existingFavorites.propertyIDs.push(propertyID);
-            this.favoritesService.updateFavoriteProperty(existingFavorites).then(() => {
-              //console.log('Property added to existing favorites successfully.');
-            }).catch((error: any) => {
-              console.error('Error updating favorites:', error);
-              this.favoritePropertyIDs.pop();
-            });
-          } else {
-            console.log("asdads")
-            const newFavorite: FavoriteProperty = {
-              favoriteID: this.afs.createId(),
-              userID: this.loggedInUser?.uid as any,
-              propertyIDs: [propertyID]
-            };
-
-            this.favoritesService.addFavoriteProperty(newFavorite).then(() => {
-              console.log('New favorite created successfully.');
-            }).catch(error => {
-              console.error('Error creating new favorite:', error);
-              this.favoritePropertyIDs.pop();
-            });
-          }
-        });
-    }
+          this.favoritesService.addFavoriteProperty(newFavorite).then(() => {
+            this.favoritePropertyIDs.push(propertyID);
+          }).catch(error => {
+            console.error('Error creating new favorite:', error);
+            this.favoritePropertyIDs.pop();
+          });
+        }
+      });
   }
+
   isFavorite(propertyID: string): boolean {
     return this.favoritePropertyIDs.includes(propertyID);
   }

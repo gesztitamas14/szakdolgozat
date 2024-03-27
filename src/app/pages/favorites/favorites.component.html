@@ -18,7 +18,10 @@
       <p><strong>Hálószobák száma:</strong> {{ property.features.numberOfRooms }}</p>
     </div>
     <div class="property-actions">
-      <button (click)="removeFromFavorites(property.propertyID); $event.stopPropagation();" class="remove-button">Eltávolítás</button>
+      <button class="remove-button" (click)="removeFromFavoritesHandler($event, property.propertyID)">
+        Eltávolítás
+      </button>
+      
     </div>
   </div>
   </div>
