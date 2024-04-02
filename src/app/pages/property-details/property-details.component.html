@@ -17,21 +17,34 @@
   </div>
   <div class="card">
     <div *ngIf="selectedProperty" class="gallery">
-      <img [src]="selectedProperty!.photos[currentImageIndex]" alt="Main Property Image" class="main-image"
-        (click)="showImageOverlay(currentImageIndex)">
+      <img *ngIf="selectedProperty!.photos.length > 0; else noImageIcon" 
+           [src]="selectedProperty!.photos[currentImageIndex]" 
+           alt="Main Property Image" 
+           class="main-image" 
+           (click)="showImageOverlay(currentImageIndex)">
+      
+      <ng-template #noImageIcon>
+        <div class="no-image-container">
+          <mat-icon class="no-image-icon">image_not_supported</mat-icon>
+        </div>
+      </ng-template>
+    
+      <!-- Thumbnails -->
       <div class="thumbnails">
-        <img *ngFor="let photo of selectedProperty?.photos; let i = index" [src]="photo" alt="Property Thumbnail"
-          (click)="setCurrentImage(i)" [class.active]="currentImageIndex === i">
+        <img *ngFor="let photo of selectedProperty?.photos; let i = index" [src]="photo" 
+             alt="Property Thumbnail" 
+             (click)="setCurrentImage(i)" 
+             [class.active]="currentImageIndex === i">
       </div>
-    </div>
+    </div>    
     <div class="image-overlay" *ngIf="isImageOverlayVisible" (click)="hideImageOverlay()">
       <div class="overlay-content" *ngIf="hasImages(); else noImageTemplate">
         <button class="overlay-nav-button prev-button" (click)="previousImage(); $event.stopPropagation()">
-          &#x3c; <!-- HTML entity for the left arrow -->
+          &#x3c;
         </button>
         <img [src]="selectedProperty!.photos[currentImageIndex]" alt="Enlarged Property Image">
         <button class="overlay-nav-button next-button" (click)="nextImage(); $event.stopPropagation()">
-          &#x3e; <!-- HTML entity for the right arrow -->
+          &#x3e;
         </button>
       </div>
     </div>

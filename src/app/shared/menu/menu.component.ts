@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class MenuComponent implements OnInit, AfterViewInit{
   @Output() onCloseSidenav: EventEmitter<boolean> = new EventEmitter();
   @Output() onLogOut: EventEmitter<boolean> = new EventEmitter();;
 
-  constructor(private appComponent: AppComponent){}
+  constructor(private authService: AuthService, private appComponent: AppComponent){}
 
   ngOnInit(): void {}
   ngAfterViewInit(): void {}
@@ -29,5 +30,11 @@ export class MenuComponent implements OnInit, AfterViewInit{
     if (logout===true){
       this.onLogOut.emit(logout)
     }
+  }
+  logout(_?: boolean) {
+    this.authService.logout().then(() => {
+    }).catch(error => {
+      console.error(error);
+    });
   }
 }

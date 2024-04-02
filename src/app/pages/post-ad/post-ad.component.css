@@ -118,3 +118,13 @@ pointer-events: none;
   margin: 20px auto;
   }
 }
+
+.delete-type {
+  margin-left: 10px;
+  color: red;
+  cursor: pointer;
+}
+
+.delete-type:hover {
+  color: darkred;
+}

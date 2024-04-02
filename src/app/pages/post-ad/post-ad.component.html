@@ -16,19 +16,25 @@
       <textarea id="description" formControlName="description"></textarea>
     </div>
     <div formGroupName="features">
+
       <div>
         <label for="type">Ingatlan típusa:</label>
-        <select id="type" formControlName="type" required>
-          <option value="lakás">Lakás</option>
-          <option value="ház">Ház</option>
-          <option value="telek">Telek</option>
-          <option value="iroda">Iroda</option>
-          <option value="üzlet">Üzlet</option>
-          <option value="garázs">Garázs</option>
-          <option value="szálláshely">Szálláshely</option>
-          <option value="ipari">Ipari és Raktárterület</option>
-          <option value="egyéb">Egyéb</option>
-        </select>
+        <div *ngIf="isADMIN">
+          <button (click)="editPropertyTypes()">Ingatlantípus hozzáadása</button>
+        </div>
+        <ul *ngIf="isADMIN">
+          <li *ngFor="let type of propertyTypes">
+            {{ type }}
+            <span  class="delete-type" (click)="removePropertyType(type, $event)">X</span>
+          </li>
+        </ul>
+        <div>
+          <select id="type" formControlName="type" required>
+            <option *ngFor="let type of propertyTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
       </div>
         <div>
           <label for="numberOfRooms">Hálószobák száma:</label>

@@ -7,6 +7,7 @@ import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { take } from 'rxjs/operators';
+import { PropertyTypesService } from '../../shared/services/property-types.service';
 
 declare var google: any;
 
@@ -21,7 +22,10 @@ export class PostAdComponent implements OnInit{
   photos: string[] = [];
   uploading = false;
   loggedInUser?: firebase.default.User | null;
-  constructor(private fb: FormBuilder, private propertyService: PropertyService, private authService: AuthService, private userService: UserService, private router: Router,private storage: AngularFireStorage) {}
+  isADMIN: boolean = false;
+  propertyTypes: any;
+
+  constructor(private propertyTypesService: PropertyTypesService, private fb: FormBuilder, private propertyService: PropertyService, private authService: AuthService, private userService: UserService, private router: Router,private storage: AngularFireStorage) {}
 
   ngAfterViewInit() {
     this.initPlaceAutocomplete();
@@ -54,11 +58,20 @@ export class PostAdComponent implements OnInit{
     });
     this.authService.isUserLoggedIn().subscribe(user=>{
       this.loggedInUser = user;
+      if(user?.email==='admin@gmail.com'){
+        this.isADMIN=true
+      }
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
     }, (error: any)=>{
       console.error(error);
       localStorage.setItem('user',JSON.stringify('null'))
     })
+    this.propertyTypesService.getPropertyTypes().subscribe(data => {
+      this.propertyTypes = data['type'];
+      console.log(data['type'])
+    });
+
+
   }
   initPlaceAutocomplete() {
     const autocomplete = new google.maps.places.Autocomplete(this.locationInput?.nativeElement);
@@ -129,6 +142,27 @@ export class PostAdComponent implements OnInit{
       });
     }
   }
-  
 
+  editPropertyTypes() {
+    const newType = prompt('Add meg az új ingatlantípust:');
+    if (newType && !this.propertyTypes.includes(newType)) {
+      this.propertyTypesService.addPropertyType(newType).then(() => {
+        console.log('Új ingatlantípus hozzáadva');
+        this.propertyTypes.push(newType);
+      }).catch(error => {
+        console.error('Hiba történt az új ingatlantípus hozzáadásakor');
+      });
+    }
+  }
+
+  removePropertyType(type: string, event: MouseEvent) {
+    event.stopPropagation(); 
+    this.propertyTypesService.removePropertyType(type).then(() => {
+      this.propertyTypes = this.propertyTypes.filter((t: string) => t !== type);
+    }).catch(error => {
+      console.error('Hiba történt az ingatlantípus törlésekor');
+    });
+  }
+  
+  
 }

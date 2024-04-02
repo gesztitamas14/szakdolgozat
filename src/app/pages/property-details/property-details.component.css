@@ -348,3 +348,16 @@ button {
   }
 }
 
+.no-image-icon {
+  color: #888;
+}
+
+.no-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px; /* Növeld a magasságot, hogy biztos elférjen az ikon */
+  width: 100%;
+}
+
+

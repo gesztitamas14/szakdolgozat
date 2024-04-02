@@ -8,4 +8,5 @@ export interface User{
         lastname: string;
     }
     username: string;
+    isAdmin: boolean;
 }

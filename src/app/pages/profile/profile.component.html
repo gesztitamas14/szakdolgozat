@@ -40,9 +40,6 @@
         <td>{{ currentUser.email }}</td>
       </tr>
     </table>
-    <div class="logout-container" *ngIf="loggedInUser.uid === currentUser.id">
-      <a routerLink="/login" (click)="logout()">Kijelentkezés</a>
-    </div>
     <form (ngSubmit)="changePassword()" *ngIf="loggedInUser.uid === currentUser.id">
       <div>
         <label for="newPassword">Új jelszó</label><br>
@@ -66,6 +63,9 @@
       </div>
       <button type="submit">Jelszó megváltoztatása</button>
     </form>
+    <div class="logout-container" *ngIf="loggedInUser.uid === currentUser.id">
+      <a routerLink="/login" (click)="logout()">Kijelentkezés</a>
+    </div>
   </div>
 
   <div *ngIf="activeProperties && activeProperties.length>0" class="properties-container">

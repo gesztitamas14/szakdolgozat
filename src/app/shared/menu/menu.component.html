@@ -19,4 +19,8 @@
     <mat-icon>account_box</mat-icon>
     <span>Profil</span>
   </a>
+  <a mat-list-item [routerLink]="['/main']" (click)="logout()" *ngIf="loggedInUser">
+    <mat-icon>logout</mat-icon>
+    <span>Kijelentkezés</span>
+  </a>
 </mat-nav-list>

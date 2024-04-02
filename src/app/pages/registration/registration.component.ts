@@ -69,7 +69,8 @@ export class RegistrationComponent implements OnInit{
             lastname: this.signUpForm.get('name.lastname')?.value as string
           },
           phoneNumber: phoneNumber as any,
-          imageURL: ""
+          imageURL: "",
+          isAdmin: false,
         };
         this.userService.create(user).then(() => {
           this.router.navigateByUrl('/main');
