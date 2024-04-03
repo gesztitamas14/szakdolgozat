@@ -356,7 +356,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px; /* Növeld a magasságot, hogy biztos elférjen az ikon */
+  height: 50px;
   width: 100%;
 }
 

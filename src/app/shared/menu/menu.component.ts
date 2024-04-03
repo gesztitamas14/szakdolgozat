@@ -33,6 +33,7 @@ export class MenuComponent implements OnInit, AfterViewInit{
   }
   logout(_?: boolean) {
     this.authService.logout().then(() => {
+      
     }).catch(error => {
       console.error(error);
     });

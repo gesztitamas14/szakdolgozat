@@ -131,6 +131,12 @@
   justify-content: center;
   height: 10%;
 }
+.Add-filters-button{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 .price-range-container {
   display: flex;
@@ -299,4 +305,97 @@
   text-align: right;
   color: #666;
   font-style: italic;
+}
+
+.mat-dialog-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* Az elemeket függőlegesen rendezi */
+  gap: 15px; /* Távolság az elemek között */
+}
+
+
+.mat-dialog-actions {
+  padding: 10px;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end; /* Gombokat jobbra igazítja */
+}
+
+.additional-filters input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.additional-filters input[type="radio"]:checked {
+  background: var(--color-dark-accent);
+}
+
+.additional-filters input[type="radio"]:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-dark-accent);
+  display: none;
+}
+
+.additional-filters input[type="radio"]:checked:after {
+  display: block;
+}
+
+.additional-filters label {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Igazítja a rádiógombot és a szöveget */
+}
+
+.additional-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.custom-dialog-container {
+  height: 500px;
+  width: auto;
+}
+.dialog-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0;
+}
+.dialog-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.align-mid-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
 }

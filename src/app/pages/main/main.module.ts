@@ -11,6 +11,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CeilPipe } from '../../shared/pipes/ceil.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -29,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
         MatAutocompleteModule,
         MatFormFieldModule,
         MatInputModule,
+        MatDialogModule,
     ]
 })
 export class MainModule { }

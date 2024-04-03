@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { PropertyService } from '../../shared/services/property.service';
 import { Property } from '../../shared/models/Properties';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { first, map } from 'rxjs/operators';
 import { CeilPipe } from '../../shared/pipes/ceil.pipe';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-main',
@@ -17,6 +18,7 @@ import { CeilPipe } from '../../shared/pipes/ceil.pipe';
   encapsulation: ViewEncapsulation.None
 })
 export class MainComponent implements OnInit {
+  @ViewChild('additionalFiltersTemplate') additionalFiltersTemplate: TemplateRef<any> | undefined;
   properties: Property[] = [];
   loggedInUser?: firebase.default.User | null;
   favoritePropertyIDs: string[] = [];
@@ -39,8 +41,14 @@ export class MainComponent implements OnInit {
   selectedUserId: string | null = null;
   minPrice: number | null = null;
   maxPrice: number | null = null;
+  locationFilter: string = '';
+  filterApartment: boolean = false;
+  filterHouse: boolean = false;
+  minSize: number | null = null;
+  maxSize: number | null = null;
+  numberOfRooms: number | null = null;
 
-  constructor(private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
+  constructor(public dialog: MatDialog, private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {
     this.currentPage = 1;
@@ -171,19 +179,37 @@ export class MainComponent implements OnInit {
 
   applyFilter() {
     this.filteredProperties = this.properties.filter(property => {
+      const activeTypeFilters = [];
+      if (this.filterApartment) {
+        activeTypeFilters.push('lakás');
+      }
+      if (this.filterHouse) {
+        activeTypeFilters.push('ház');
+      }
+  
+      // Ellenőrizzük, hogy az ingatlan típusa megfelel-e bármelyik aktív szűrőnek
+      let matchesType = activeTypeFilters.length === 0 || activeTypeFilters.includes(property.features.type);
+  
+      const matchesSize = 
+        (this.minSize == null || property.size >= this.minSize) &&
+        (this.maxSize == null || property.size <= this.maxSize);
+      const matchesRooms = 
+        this.numberOfRooms == null || property.features.numberOfRooms >= this.numberOfRooms;
       const matchesLocation = !this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesStatus = !this.propertyStatus || property.status === this.propertyStatus;
-      const matchesPrice = (this.minPrice == null || property.price >= this.minPrice) && 
-                           (this.maxPrice == null || property.price <= this.maxPrice);
-  
+      const matchesPrice = (this.minPrice == null || property.price >= this.minPrice) &&
+        (this.maxPrice == null || property.price <= this.maxPrice);
+
+      const matchesLocationFilter = !this.locationFilter ||
+        (this.locationFilter === 'Budapest' && property.location.toLowerCase().includes('budapest')) ||
+        (this.locationFilter === 'Vidék' && !property.location.toLowerCase().includes('budapest'));
       let matchesUser = true;
       if (this.selectedUserId) {
         matchesUser = property.uploaderID === this.selectedUserId;
       } else if (this.loggedInUser?.uid) {
         matchesUser = property.uploaderID !== this.loggedInUser.uid;
       }
-  
-      return matchesLocation && matchesStatus && matchesPrice && matchesUser;
+      return matchesLocation && matchesStatus && matchesPrice && matchesUser && matchesLocationFilter && matchesType && matchesSize && matchesRooms;
     });
     this.totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
     this.currentPage = 1; // Reset to first page
@@ -254,5 +280,9 @@ export class MainComponent implements OnInit {
     return this.favoritePropertyIDs.includes(propertyID);
   }
 
-
+  openAdditionalFilters(): void {
+    this.dialog.open(this.additionalFiltersTemplate as any, {
+      panelClass: 'custom-dialog-container'
+    });
+  }
 }

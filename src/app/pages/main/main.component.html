@@ -35,8 +35,42 @@
       </mat-option>
     </mat-autocomplete>
   </div>
-
+  
 </div>
+<div class="Add-filters-button"><button mat-button (click)="openAdditionalFilters()">További Szűrők</button></div>
+<ng-template #additionalFiltersTemplate>
+  <div class="dialog-header">További Szűrők</div>
+  <div class="dialog-divider"></div>
+  <div class="additional-filters">
+    <div>
+      <label>
+        <input type="radio" name="locationFilter" value="Budapest" [(ngModel)]="locationFilter">
+        Budapest
+      </label>
+    </div>
+    <div>
+      <label>
+        <input type="radio" name="locationFilter" value="Vidék" [(ngModel)]="locationFilter">
+        Vidék
+      </label>
+    </div>
+    <div>
+      <label><input type="checkbox" [(ngModel)]="filterApartment">Lakás</label>
+      <label><input type="checkbox" [(ngModel)]="filterHouse">Ház</label>
+      <!-- További típusok... -->
+    </div>
+    <div>
+      <input type="number" [(ngModel)]="minSize" placeholder="Min méret">
+      <input type="number" [(ngModel)]="maxSize" placeholder="Max méret">
+    </div>
+    <div>
+      <label>Szobák száma:</label>
+      <input type="number" [(ngModel)]="numberOfRooms">
+    </div>
+  </div>
+  <div class="align-mid-button"><button (click)="applyFilter()">OK</button></div>
+  
+</ng-template>
 <div class="pagination">
   <div class="pagination-button" *ngIf="currentPage > 1; else prevPlaceholder">
     <button (click)="previousPage()">
