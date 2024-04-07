@@ -1,45 +1,40 @@
 <div class="main_component">
   <div class="div-flex">
-
-
-    <h1>Regisztrálj be</h1>
     <form [formGroup]="signUpForm" (ngSubmit)="onSignup()">
-      <!-- Email -->
-      <mat-form-field floatLabel="auto">
-        <mat-label>Email cím</mat-label>
-        <input matInput type="email" formControlName="email">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label for="password">Jelszó</mat-label>
-        <input matInput type="password" id="password" formControlName="password">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label for="rePassword">Jelszó újra</mat-label>
-        <input matInput type="password" id="rePassword" formControlName="rePassword">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label for="phoneNumber">Telefonszám</mat-label>
-        <input matInput type="text" id="phoneNumber" formControlName="phoneNumber">
-      </mat-form-field>
-
-      <!-- Name -->
-      <div formGroupName="name" class="subForm">
-        <mat-form-field>
-          <mat-label for="firstname">Keresztnév</mat-label>
-          <input matInput type="text" id="firstname" formControlName="firstname">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label for="lastname">Vezetéknév</mat-label>
-          <input matInput type="text" id="lastname" formControlName="lastname">
-        </mat-form-field>
+      <div class="form-field">
+        <label for="email">Email cím</label>
+        <input type="email" id="email" formControlName="email">
       </div>
-      <div>
-        <span class="buttons"><button mat-raised-button color="primary" type="submit">Regisztráció</button></span>
-        <span class="buttons"><button mat-raised-button color="primary" type="button"
-            (click)="goBack()">Vissza</button></span>
+
+      <div class="form-field">
+        <label for="password">Jelszó</label>
+        <input type="password" id="password" formControlName="password">
+      </div>
+
+      <div class="form-field">
+        <label for="rePassword">Jelszó újra</label>
+        <input type="password" id="rePassword" formControlName="rePassword">
+      </div>
+
+      <div class="form-field">
+        <label for="phoneNumber">Telefonszám</label>
+        <input type="text" id="phoneNumber" formControlName="phoneNumber">
+      </div>
+
+      <div formGroupName="name" class="name-fields">
+        <div class="form-field">
+          <label for="firstname">Keresztnév</label>
+          <input type="text" id="firstname" formControlName="firstname">
+        </div>
+        <div class="form-field">
+          <label for="lastname">Vezetéknév</label>
+          <input type="text" id="lastname" formControlName="lastname">
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button type="submit">Regisztráció</button>
+        <button type="button" (click)="goBack()">Vissza</button>
       </div>
     </form>
   </div>

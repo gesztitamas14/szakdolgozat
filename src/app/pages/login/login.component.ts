@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   }
   openForgotPasswordDialog(): void {
     const dialogRef = this.dialog.open(ForgotPasswordDialogComponent, {
-      width: '100px',
+      width: '60%',
       data: {}
     });
 

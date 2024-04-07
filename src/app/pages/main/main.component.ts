@@ -9,7 +9,8 @@ import { AuthService } from '../../shared/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { first, map } from 'rxjs/operators';
 import { CeilPipe } from '../../shared/pipes/ceil.pipe';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PropertyTypesService } from '../../shared/services/property-types.service';
 
 @Component({
   selector: 'app-main',
@@ -47,8 +48,11 @@ export class MainComponent implements OnInit {
   minSize: number | null = null;
   maxSize: number | null = null;
   numberOfRooms: number | null = null;
+  dialogRef: MatDialogRef<any> | null = null;
+  propertyTypes: string[] = [];
+  selectedPropertyTypes: { [key: string]: boolean } = {};
 
-  constructor(public dialog: MatDialog, private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
+  constructor(private propertyTypesService: PropertyTypesService, private dialog: MatDialog, private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {
     this.currentPage = 1;
@@ -72,6 +76,11 @@ export class MainComponent implements OnInit {
         this.allUserFullNames.push(fullName);
         this.userNameToIdMap.set(fullName.toLowerCase(), user.id);
       });
+    });
+    this.propertyTypesService.getPropertyTypes().subscribe(data => {
+      if (data && data.type) {
+        this.propertyTypes = data.type;
+      }
     });
   }
   onUserNameSearchTermChange() {
@@ -179,21 +188,13 @@ export class MainComponent implements OnInit {
 
   applyFilter() {
     this.filteredProperties = this.properties.filter(property => {
-      const activeTypeFilters = [];
-      if (this.filterApartment) {
-        activeTypeFilters.push('lakás');
-      }
-      if (this.filterHouse) {
-        activeTypeFilters.push('ház');
-      }
-  
-      // Ellenőrizzük, hogy az ingatlan típusa megfelel-e bármelyik aktív szűrőnek
-      let matchesType = activeTypeFilters.length === 0 || activeTypeFilters.includes(property.features.type);
-  
-      const matchesSize = 
+      const matchesType = !Object.keys(this.selectedPropertyTypes).length || 
+      (this.selectedPropertyTypes[property.features.type]);;
+
+      const matchesSize =
         (this.minSize == null || property.size >= this.minSize) &&
         (this.maxSize == null || property.size <= this.maxSize);
-      const matchesRooms = 
+      const matchesRooms =
         this.numberOfRooms == null || property.features.numberOfRooms >= this.numberOfRooms;
       const matchesLocation = !this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesStatus = !this.propertyStatus || property.status === this.propertyStatus;
@@ -281,8 +282,12 @@ export class MainComponent implements OnInit {
   }
 
   openAdditionalFilters(): void {
-    this.dialog.open(this.additionalFiltersTemplate as any, {
+    this.dialogRef = this.dialog.open(this.additionalFiltersTemplate as any, {
       panelClass: 'custom-dialog-container'
     });
+  }
+  applyAndClose() {
+    this.applyFilter();
+    this.dialogRef?.close();
   }
 }

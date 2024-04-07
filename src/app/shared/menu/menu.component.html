@@ -1,4 +1,8 @@
 <mat-nav-list>
+  <a mat-list-item [routerLink]="['/main']">
+    <mat-icon>home</mat-icon>
+    <span>Főoldal</span>
+  </a>
   <a mat-list-item routerLink="/login" (click)="close()" *ngIf="!loggedInUser">
     <mat-icon>login</mat-icon>
     <span>Bejelentkezés/Regisztráció</span>
@@ -11,7 +15,7 @@
     <mat-icon>favorite</mat-icon>
     <span>Kedvencek</span>
   </a>
-  <a mat-list-item routerLink="/calculator" (click)="close()">
+  <a mat-list-item routerLink="/calculator" (click)="close()" *ngIf="loggedInUser">
     <mat-icon>calculate</mat-icon>
     <span>Pénzügyi kalkulátor</span>
   </a>

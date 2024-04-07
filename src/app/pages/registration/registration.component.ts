@@ -79,6 +79,22 @@ export class RegistrationComponent implements OnInit{
         });
       }).catch(error => {
         console.error(error);
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            alert('Ez az email cím már foglalt.');
+            break;
+          case 'auth/invalid-email':
+            alert('Érvénytelen email cím formátum.');
+            break;
+          case 'auth/operation-not-allowed':
+            alert('A regisztráció jelenleg nem engedélyezett.');
+            break;
+          case 'auth/weak-password':
+            alert('A jelszó túl gyenge. Kérjük, válasszon erősebb jelszót.');
+            break;
+          default:
+            alert('Regisztrációs hiba történt. Kérjük, próbálja újra később.');
+        }
       });
     }
   }

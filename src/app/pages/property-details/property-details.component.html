@@ -29,7 +29,6 @@
         </div>
       </ng-template>
     
-      <!-- Thumbnails -->
       <div class="thumbnails">
         <img *ngFor="let photo of selectedProperty?.photos; let i = index" [src]="photo" 
              alt="Property Thumbnail" 
@@ -55,7 +54,7 @@
     </ng-template>
     <div class="details">
       <h2>{{ selectedProperty?.location }}</h2>
-      <div *ngIf="selectedProperty!.description" class="features">
+      <div *ngIf="selectedProperty?.description" class="features">
         <span class="feature new">{{ selectedProperty?.description }}</span>
       </div>
       <div class="info">

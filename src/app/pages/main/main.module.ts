@@ -12,6 +12,7 @@ import { CeilPipe } from '../../shared/pipes/ceil.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -31,6 +32,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatFormFieldModule,
         MatInputModule,
         MatDialogModule,
+        MatSelectModule
     ]
 })
 export class MainModule { }

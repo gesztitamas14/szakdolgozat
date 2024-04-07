@@ -1,36 +1,35 @@
 <div class="calculator-container">
-    <h2>Pénzügyi kalkulátor</h2>
-    <form (ngSubmit)="onCalculate()">
-      <mat-form-field>
-        <mat-label>Ingatlan ára</mat-label>
-        <input matInput type="number" [(ngModel)]="propertyPrice" name="propertyPrice">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <mat-label>Önerő</mat-label>
-        <input matInput type="number" [(ngModel)]="downPayment" name="downPayment">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <mat-label>Hitelösszeg</mat-label>
-        <input matInput type="number" [(ngModel)]="loanAmount" name="loanAmount">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <mat-label>Kamatláb (%)</mat-label>
-        <input matInput type="number" [(ngModel)]="interestRate" name="interestRate">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <mat-label>Futamidő (év)</mat-label>
-        <input matInput type="number" [(ngModel)]="loanTerm" name="loanTerm">
-      </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit">Számol</button>
-    </form>
-  
-    <div *ngIf="monthlyPayment">
-      <p>Havi törlesztőrészlet: {{ monthlyPayment | currency:'HUF' }}</p>
+  <h2>Pénzügyi kalkulátor</h2>
+  <form (ngSubmit)="onCalculate()">
+    <div class="form-field">
+      <label for="propertyPrice">Ingatlan ára</label>
+      <input type="number" id="propertyPrice" [(ngModel)]="propertyPrice" name="propertyPrice">
     </div>
+
+    <div class="form-field">
+      <label for="downPayment">Önerő</label>
+      <input type="number" id="downPayment" [(ngModel)]="downPayment" name="downPayment">
+    </div>
+
+    <div class="form-field">
+      <label for="loanAmount">Hitelösszeg</label>
+      <input type="number" id="loanAmount" [(ngModel)]="loanAmount" name="loanAmount">
+    </div>
+
+    <div class="form-field">
+      <label for="interestRate">Kamatláb (%)</label>
+      <input type="number" id="interestRate" [(ngModel)]="interestRate" name="interestRate">
+    </div>
+
+    <div class="form-field">
+      <label for="loanTerm">Futamidő (év)</label>
+      <input type="number" id="loanTerm" [(ngModel)]="loanTerm" name="loanTerm">
+    </div>
+
+    <button type="submit">Számol</button>
+  </form>
+
+  <div *ngIf="monthlyPayment">
+    <p>Havi törlesztőrészlet: {{ monthlyPayment | currency:'HUF' }}</p>
   </div>
-  
+</div>

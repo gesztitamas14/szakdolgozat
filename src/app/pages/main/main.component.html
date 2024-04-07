@@ -54,12 +54,13 @@
         Vidék
       </label>
     </div>
-    <div>
-      <label><input type="checkbox" [(ngModel)]="filterApartment">Lakás</label>
-      <label><input type="checkbox" [(ngModel)]="filterHouse">Ház</label>
-      <!-- További típusok... -->
+    <div *ngFor="let type of propertyTypes">
+      <label>
+        <input type="checkbox" [(ngModel)]="selectedPropertyTypes[type]">{{ type }}
+      </label>
     </div>
     <div>
+      <label>Méretek:</label>
       <input type="number" [(ngModel)]="minSize" placeholder="Min méret">
       <input type="number" [(ngModel)]="maxSize" placeholder="Max méret">
     </div>
@@ -68,7 +69,7 @@
       <input type="number" [(ngModel)]="numberOfRooms">
     </div>
   </div>
-  <div class="align-mid-button"><button (click)="applyFilter()">OK</button></div>
+  <div class="align-mid-button"><button (click)="applyAndClose()">OK</button></div>
   
 </ng-template>
 <div class="pagination">

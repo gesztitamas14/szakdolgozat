@@ -1,6 +1,5 @@
 export interface Property {
     propertyID: string;
-    address: string;
     price: number;
     size: number;
     description: string;
