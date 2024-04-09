@@ -123,6 +123,7 @@ a:active {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding-bottom: 65px;
 }
 
 .close-chat {
@@ -148,14 +149,12 @@ a:active {
 .selected-chat {
   overflow-y: auto;
   flex-grow: 1;
-  margin-bottom: 60px;
+  max-height: calc(100% - 60px);
 }
-
 .messages {
   display: flex;
   flex-direction: column;
   max-height: 500px;
-  overflow-y: auto;
 }
 
 .message {
@@ -246,6 +245,16 @@ a:active {
   display: flex;
   justify-content: center;
   width: calc(100% - 80px);
+}
+
+.unread-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  border-radius: 50%;
 }
 
 

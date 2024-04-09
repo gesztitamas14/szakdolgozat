@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, of } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -12,6 +13,10 @@ import { MessagesService } from './shared/services/messages.service';
 import * as firebase from 'firebase/compat';
 import { User } from './shared/models/User';
 import { ChatService } from './shared/services/chat.service';
+import { NotificationService } from './shared/services/notification.service';
+import { Notification } from './shared/models/Notifications';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
 
 
 @Component({
@@ -19,7 +24,8 @@ import { ChatService } from './shared/services/chat.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewChecked {
+  @ViewChild('scrollContainer') private scrollContainer: ElementRef | undefined;
   page = ""
   isHandset$: Observable<boolean> | any;
   routes: Array<string> = [];
@@ -40,11 +46,10 @@ export class AppComponent implements OnInit {
   loanTerm: number | null = null;
   monthlyPayment: number | null = null;
   showEmptyMessage: boolean = false;
+  hasUnreadMessages = false;
+  lastMessageTime: number | null = null; 
 
-
-
-
-  constructor(private chatService: ChatService, private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService) {
+  constructor(private changeDetectorRef: ChangeDetectorRef,private afs: AngularFirestore, private notificationService: NotificationService, private chatService: ChatService, private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService) {
     this.isHandset$ = this.mediaObserver.asObservable().pipe(
       map(changes =>
         changes.some(change => change.mqAlias === 'xs' || change.mqAlias === 'sm' || change.mqAlias === 'md')
@@ -56,22 +61,17 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  toggleCalculator() {
-    this.showCalculator = !this.showCalculator;
+
+  ngAfterViewChecked() {
   }
-  isValidForm() {
-    return this.propertyPrice! > 0 && this.downPayment! >= 0 &&
-      this.loanAmount! >= 0 && this.interestRate! > 0 &&
-      this.loanTerm! > 0;
-  }
-  calculateMonthlyPayment() {
-    if (this.isValidForm()) {
-      const monthlyInterestRate = this.interestRate! / 100 / 12;
-      const numberOfPayments = this.loanTerm! * 12;
-      this.monthlyPayment = this.loanAmount! *
-        monthlyInterestRate /
-        (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
-    }
+
+
+  scrollToBottom(): void {
+    try {
+      if (this.scrollContainer!== undefined){
+        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) { }
   }
 
   ngOnInit() {
@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
       localStorage.setItem('user', JSON.stringify(this.loggedInUser));
       if (this.loggedInUser) {
         this.loadMessages();
+        this.checkForUnreadMessages();
       }
     }, error => {
       console.error(error);
@@ -106,19 +107,29 @@ export class AppComponent implements OnInit {
     })
     this.showEmptyMessage = false;
   }
+
+  toggleCalculator() {
+    this.showCalculator = !this.showCalculator;
+  }
+  isValidForm() {
+    return this.propertyPrice! > 0 && this.downPayment! >= 0 &&
+      this.loanAmount! >= 0 && this.interestRate! > 0 &&
+      this.loanTerm! > 0;
+  }
+  calculateMonthlyPayment() {
+    if (this.isValidForm()) {
+      const monthlyInterestRate = this.interestRate! / 100 / 12;
+      const numberOfPayments = this.loanTerm! * 12;
+      this.monthlyPayment = this.loanAmount! *
+        monthlyInterestRate /
+        (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+    }
+  }
+
   changePage(selectedPage: string) {
     this.router.navigateByUrl(selectedPage)
   }
-  prepopulateMessageWithPropertyLink(propertyId: string) {
-    const propertyLink = `localhost:4200/property-details/${propertyId}`;
-    this.newMessage = `Érdeklődöm a következő ingatlan iránt: ${propertyLink}.`;
-  }
-  hasExistingConversation(partnerId: string): boolean {
-    return this.messages.some(message =>
-      (message.senderId === this.loggedInUser?.uid && message.receiverId === partnerId) ||
-      (message.receiverId === this.loggedInUser?.uid && message.senderId === partnerId)
-    );
-  }
+
   onToggleSidenav(sidenav: MatSidenav) {
     sidenav.toggle();
   }
@@ -132,6 +143,28 @@ export class AppComponent implements OnInit {
 
   toggleChat() {
     this.showChat = !this.showChat;
+    if (this.loggedInUser && this.showChat) {
+      this.notificationService.getNotificationsForUser(this.loggedInUser.uid).subscribe(notifications => {
+        const unreadNotificationIds = notifications.filter(notification => notification.type === 'message' && !notification.read)
+          .map(notification => notification.id);
+        if (unreadNotificationIds.length > 0 && this.showChat) {
+          this.notificationService.markNotificationsAsRead(unreadNotificationIds).then(() => {
+          }).catch(error => {
+          });
+        }
+      });
+    }
+  }
+
+  prepopulateMessageWithPropertyLink(propertyId: string) {
+    const propertyLink = `localhost:4200/property-details/${propertyId}`;
+    this.newMessage = `Érdeklődöm a következő ingatlan iránt: ${propertyLink}.`;
+  }
+  hasExistingConversation(partnerId: string): boolean {
+    return this.messages.some(message =>
+      (message.senderId === this.loggedInUser?.uid && message.receiverId === partnerId) ||
+      (message.receiverId === this.loggedInUser?.uid && message.senderId === partnerId)
+    );
   }
 
   loadMessages() {
@@ -149,7 +182,7 @@ export class AppComponent implements OnInit {
           this.messages = messages;
           if (this.messages.length === 0) {
             this.showEmptyMessage = true;
-          }else{
+          } else {
             this.showEmptyMessage = false;
           }
           this.chatPartners = this.MessagesService.getUniqueChatPartners(messages, this.loggedInUser?.uid as any);
@@ -168,7 +201,10 @@ export class AppComponent implements OnInit {
     this.filteredMessages = this.messages.filter(message =>
       message.senderId === partnerId || message.receiverId === partnerId
     );
+    this.changeDetectorRef.detectChanges(); // Trigger a detection cycle
+    this.scrollToBottom();
   }
+
   sendMessage() {
     if (this.newMessage.trim() && this.selectedPartner) {
       const chatMessage: ChatMessage = {
@@ -180,6 +216,20 @@ export class AppComponent implements OnInit {
       this.MessagesService.sendMessage(chatMessage).then(() => {
         this.newMessage = '';
         this.filteredMessages.push(chatMessage);
+        const notificationId = this.afs.createId();
+
+        const notification: Notification = {
+          id: notificationId,
+          userID: this.selectedPartner as any,
+          type: 'message',
+          message: 'Új üzeneted érkezett',
+          createdAt: new Date(),
+          read: false
+        };
+
+        this.notificationService.addNotification(notification as any).catch(error => {
+        });
+      }).catch(error => {
       });
     }
   }
@@ -211,5 +261,15 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  checkForUnreadMessages() {
+    if (this.loggedInUser) {
+      this.notificationService.getNotificationsForUser(this.loggedInUser.uid).subscribe(notifications => {
+        this.hasUnreadMessages = notifications.some(notification =>
+          notification.type === 'message' && !notification.read);
+      });
+    }
+  }
+
 
 }

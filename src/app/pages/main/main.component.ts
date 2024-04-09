@@ -133,13 +133,12 @@ export class MainComponent implements OnInit {
   onSearchTermChange() {
     if (!this.searchTerm) {
       this.loadProperties();
-      this.filteredCities = this.allCities.slice(0, 5); // Korlátozza az elemek számát 5-re
+      this.filteredCities = this.allCities.slice(0, 5);
     } else {
       this.filteredCities = this.allCities.filter(city =>
         city.toLowerCase().includes(this.searchTerm.toLowerCase())
-      ).slice(0, 5); // Csak az első 5 találatot mutatja
+      ).slice(0, 5);
 
-      // Alkalmazza a szűrést a keresési feltétel alapján
       this.applyFilter();
       this.divideProperties();
     }
@@ -188,8 +187,8 @@ export class MainComponent implements OnInit {
 
   applyFilter() {
     this.filteredProperties = this.properties.filter(property => {
-      const matchesType = !Object.keys(this.selectedPropertyTypes).length || 
-      (this.selectedPropertyTypes[property.features.type]);;
+      const matchesType = !Object.keys(this.selectedPropertyTypes).length ||
+        (this.selectedPropertyTypes[property.features.type]);;
 
       const matchesSize =
         (this.minSize == null || property.size >= this.minSize) &&
@@ -210,10 +209,17 @@ export class MainComponent implements OnInit {
       } else if (this.loggedInUser?.uid) {
         matchesUser = property.uploaderID !== this.loggedInUser.uid;
       }
-      return matchesLocation && matchesStatus && matchesPrice && matchesUser && matchesLocationFilter && matchesType && matchesSize && matchesRooms;
+      return matchesLocation &&
+       matchesStatus &&
+        matchesPrice &&
+         matchesUser &&
+          matchesLocationFilter &&
+           matchesType && 
+            matchesSize &&
+             matchesRooms;
     });
     this.totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
-    this.currentPage = 1; // Reset to first page
+    this.currentPage = 1;
     this.fetchProperties();
   }
 

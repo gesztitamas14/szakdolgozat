@@ -57,6 +57,7 @@
       <!-- Chat gomb -->
       <button *ngIf="loggedInUser" mat-icon-button class="chat-icon" (click)="toggleChat()">
         <mat-icon>chat</mat-icon>
+        <span class="unread-indicator" *ngIf="hasUnreadMessages"></span>
       </button>
 
       <div class="chat-window" *ngIf="showChat && loggedInUser">
@@ -81,7 +82,7 @@
         <div *ngIf="showEmptyMessage" class="no-messages">
           Nincsenek üzenetek.
         </div>
-        <div class="selected-chat" *ngIf="selectedPartner">
+        <div class="selected-chat" *ngIf="selectedPartner" #scrollContainer>
           <div class="messages">
             <div *ngFor="let message of filteredMessages" class="message"
               [ngClass]="{'sent': message.senderId === loggedInUser.uid, 'received': message.senderId !== loggedInUser.uid}">
