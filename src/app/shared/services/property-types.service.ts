@@ -27,4 +27,5 @@ export class PropertyTypesService {
       type: arrayRemove(type)
     });
   }
+  
 }

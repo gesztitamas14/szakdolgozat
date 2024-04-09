@@ -44,5 +44,16 @@ export class MessagesService {
     });
     return Array.from(partnerIds);
   }
+
+  markMessagesAsRead(messageIds: string[]): Promise<void> {
+    const batch = this.afs.firestore.batch();
+  
+    messageIds.forEach(messageId => {
+      const messageRef = this.afs.collection<ChatMessage>(this.collectionName).doc(messageId).ref;
+      batch.update(messageRef, { read: true });
+    });
+  
+    return batch.commit();
+  }
   
 }

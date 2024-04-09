@@ -48,6 +48,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
   showEmptyMessage: boolean = false;
   hasUnreadMessages = false;
   lastMessageTime: number | null = null; 
+  unreadMessagesMap: Map<string, boolean> = new Map();
 
   constructor(private changeDetectorRef: ChangeDetectorRef,private afs: AngularFirestore, private notificationService: NotificationService, private chatService: ChatService, private router: Router, private authService: AuthService, private mediaObserver: MediaObserver, private MessagesService: MessagesService, private userService: UserService) {
     this.isHandset$ = this.mediaObserver.asObservable().pipe(
@@ -192,6 +193,12 @@ export class AppComponent implements OnInit, AfterViewChecked {
           });
           this.loadChatPartnerNames();
         }
+        this.unreadMessagesMap.clear();
+        messages?.forEach(msg => {
+          if (msg.receiverId === this.loggedInUser?.uid && !msg.read) {
+            this.unreadMessagesMap.set(msg.senderId, true);
+          }
+        });
       });
     }
   }
@@ -201,7 +208,20 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.filteredMessages = this.messages.filter(message =>
       message.senderId === partnerId || message.receiverId === partnerId
     );
-    this.changeDetectorRef.detectChanges(); // Trigger a detection cycle
+  
+    const unreadMessageIds = this.filteredMessages.filter(message =>
+      message.senderId === partnerId &&
+      message.receiverId === this.loggedInUser?.uid &&
+      !message.read
+    ).map(message => message.id);
+  
+    if (unreadMessageIds.length > 0) {
+      this.MessagesService.markMessagesAsRead(unreadMessageIds as any).then(() => {
+      }).catch(error => {
+      });
+    }
+  
+    this.changeDetectorRef.detectChanges();
     this.scrollToBottom();
   }
 
@@ -211,7 +231,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
         senderId: this.loggedInUser?.uid as string,
         receiverId: this.selectedPartner,
         message: this.newMessage,
-        timestamp: new Date()
+        timestamp: new Date(),
+        read: false
       };
       this.MessagesService.sendMessage(chatMessage).then(() => {
         this.newMessage = '';

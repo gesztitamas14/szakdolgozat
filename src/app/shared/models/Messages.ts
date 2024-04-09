@@ -4,5 +4,6 @@ export interface ChatMessage {
   receiverId: string;
   message: string;
   timestamp: Date;
+  read: boolean;
 }
 

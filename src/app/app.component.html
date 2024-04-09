@@ -76,6 +76,7 @@
           <ul>
             <li *ngFor="let partnerId of chatPartners" (click)="selectChatPartner(partnerId)">
               {{ chatPartnerNames[partnerId] || 'Ismeretlen felhasználó' }}
+              <span class="unread-indicator-partner" *ngIf="unreadMessagesMap.get(partnerId)"></span>
             </li>
           </ul>
         </div>
