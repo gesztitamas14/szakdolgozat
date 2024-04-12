@@ -94,6 +94,9 @@
   </ng-template>
 </div>
 <div class="property-container">
+  <div *ngIf="filteredProperties.length === 0 && !selectedUserId" class="no-properties-message">
+    Nincs a feltételeknek megfelelő hirdetett ingatlan.
+  </div>
   <div *ngIf="filteredProperties.length === 0 && selectedUserId" class="no-properties-message">
     Ennek a felhasználónak még nincsenek hirdetett ingatlanjai.
   </div>

@@ -187,41 +187,30 @@ export class MainComponent implements OnInit {
 
   applyFilter() {
     this.filteredProperties = this.properties.filter(property => {
-      const matchesType = !Object.keys(this.selectedPropertyTypes).length ||
-        (this.selectedPropertyTypes[property.features.type]);;
-
-      const matchesSize =
-        (this.minSize == null || property.size >= this.minSize) &&
-        (this.maxSize == null || property.size <= this.maxSize);
-      const matchesRooms =
-        this.numberOfRooms == null || property.features.numberOfRooms >= this.numberOfRooms;
+      const noTypesSelected = Object.keys(this.selectedPropertyTypes).every(key => !this.selectedPropertyTypes[key]);
+  
+      const matchesType = noTypesSelected || this.selectedPropertyTypes[property.features.type];
+  
+      const matchesSize = (this.minSize == null || property.size >= this.minSize) &&
+                          (this.maxSize == null || property.size <= this.maxSize);
+      const matchesRooms = this.numberOfRooms == null || property.features.numberOfRooms >= this.numberOfRooms;
       const matchesLocation = !this.searchTerm || property.location.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesStatus = !this.propertyStatus || property.status === this.propertyStatus;
       const matchesPrice = (this.minPrice == null || property.price >= this.minPrice) &&
-        (this.maxPrice == null || property.price <= this.maxPrice);
-
+                           (this.maxPrice == null || property.price <= this.maxPrice);
       const matchesLocationFilter = !this.locationFilter ||
-        (this.locationFilter === 'Budapest' && property.location.toLowerCase().includes('budapest')) ||
-        (this.locationFilter === 'Vidék' && !property.location.toLowerCase().includes('budapest'));
-      let matchesUser = true;
-      if (this.selectedUserId) {
-        matchesUser = property.uploaderID === this.selectedUserId;
-      } else if (this.loggedInUser?.uid) {
-        matchesUser = property.uploaderID !== this.loggedInUser.uid;
-      }
-      return matchesLocation &&
-       matchesStatus &&
-        matchesPrice &&
-         matchesUser &&
-          matchesLocationFilter &&
-           matchesType && 
-            matchesSize &&
-             matchesRooms;
+                                    (this.locationFilter === 'Budapest' && property.location.toLowerCase().includes('budapest')) ||
+                                    (this.locationFilter === 'Vidék' && !property.location.toLowerCase().includes('budapest'));
+  
+      return matchesLocation && matchesStatus && matchesPrice && matchesType && 
+             matchesSize && matchesRooms && matchesLocationFilter;
     });
+  
     this.totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
     this.currentPage = 1;
     this.fetchProperties();
   }
+  
 
   viewPropertyDetails(propertyID: string) {
     this.router.navigate(['/property-details', propertyID]);
