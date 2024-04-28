@@ -118,8 +118,11 @@ export class MainComponent implements OnInit {
     }
   }
   divideProperties() {
-    this.leftColumnProperties = this.filteredProperties.filter((_, index) => index % 2 === 0);
-    this.rightColumnProperties = this.filteredProperties.filter((_, index) => index % 2 === 1);
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = Math.min(startIndex + this.pageSize, this.filteredProperties.length);
+    const currentProperties = this.filteredProperties.slice(startIndex, endIndex);
+    this.leftColumnProperties = currentProperties.filter((_, index) => index % 2 === 0);
+    this.rightColumnProperties = currentProperties.filter((_, index) => index % 2 === 1);
   }
   fetchProperties(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
@@ -140,7 +143,7 @@ export class MainComponent implements OnInit {
       ).slice(0, 5);
 
       this.applyFilter();
-      this.divideProperties();
+      this.fetchProperties();
     }
   }
 
@@ -182,7 +185,7 @@ export class MainComponent implements OnInit {
 
   searchProperties() {
     this.applyFilter();
-    this.divideProperties();
+    this.fetchProperties();
   }
 
   applyFilter() {
@@ -202,14 +205,41 @@ export class MainComponent implements OnInit {
                                     (this.locationFilter === 'Budapest' && property.location.toLowerCase().includes('budapest')) ||
                                     (this.locationFilter === 'Vidék' && !property.location.toLowerCase().includes('budapest'));
   
-      return matchesLocation && matchesStatus && matchesPrice && matchesType && 
-             matchesSize && matchesRooms && matchesLocationFilter;
+      let matchesUser = true;
+      if (this.selectedUserId) {
+        matchesUser = property.uploaderID === this.selectedUserId;
+      } else if (this.loggedInUser?.uid) {
+        matchesUser = property.uploaderID !== this.loggedInUser.uid;
+      }
+         return matchesLocation && matchesStatus && matchesPrice && matchesType && 
+             matchesSize && matchesRooms && matchesLocationFilter && matchesUser;
     });
   
     this.totalPages = Math.ceil(this.filteredProperties.length / this.pageSize);
     this.currentPage = 1;
+    
     this.fetchProperties();
   }
+
+  clearFilters() {
+    this.propertyStatus = '';
+    this.minPrice = null;
+    this.maxPrice = null;
+    this.searchTerm = '';
+    this.locationFilter = '';
+    this.minSize = null;
+    this.maxSize = null;
+    this.numberOfRooms = null;
+    this.userNameSearchTerm = '';
+  
+    Object.keys(this.selectedPropertyTypes).forEach(key => {
+      this.selectedPropertyTypes[key] = false;
+    });
+  
+    this.applyFilter();
+    this.dialogRef?.close();
+  }
+  
   
 
   viewPropertyDetails(propertyID: string) {

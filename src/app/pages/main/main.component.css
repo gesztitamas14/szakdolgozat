@@ -195,6 +195,10 @@
   margin-bottom: 20px;
 }
 
+.clear-filters:hover{
+  cursor: pointer;
+}
+
 .search-container input {
   padding: 10px;
   margin-right: 5px;

@@ -68,7 +68,11 @@
       <label>Szobák száma:</label>
       <input type="number" [(ngModel)]="numberOfRooms">
     </div>
+    <div>
+      <a class="clear-filters" (click)="clearFilters()">Keresési feltételek törlése</a>
+    </div>  
   </div>
+
   <div class="align-mid-button"><button (click)="applyAndClose()">OK</button></div>
   
 </ng-template>
