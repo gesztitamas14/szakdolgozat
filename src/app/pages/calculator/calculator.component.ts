@@ -14,7 +14,6 @@ export class CalculatorComponent {
   monthlyPayment: number;
 
   constructor() {
-    // Alapértékek inicializálása
     this.propertyPrice = 0;
     this.downPayment = 0;
     this.loanAmount = 0;
@@ -26,6 +25,7 @@ export class CalculatorComponent {
   onCalculate(): void {
     // Éves kamatláb átváltása havi kamatlábbá
     const monthlyInterestRate = this.interestRate / 100 / 12;
+
     // A futamidő átváltása hónapok számába
     const numberOfPayments = this.loanTerm * 12;
 

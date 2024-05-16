@@ -1,4 +1,4 @@
-import { Component,Renderer2, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PropertyService } from '../../shared/services/property.service';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
   ImageURL: string | null = null;
   selectedFile: File | null = null;
   showUpdateSection = false;
+
   // Az aktív/inaktív ingatlanok listájának jelenlegi oldalszáma.
   activePage: number = 1;
   inactivePage: number = 1;
@@ -45,18 +46,19 @@ export class ProfileComponent implements OnInit {
   // Ez a lista nem változik a lapozás során, így mindig az eredeti, teljes listából tudunk kiválasztani.
   originalActiveProperties: Property[] = [];
   originalInactiveProperties: Property[] = [];
+
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
   @ViewChild('dropZone') dropZoneElement: ElementRef | undefined;
   isUploading: boolean = false;
   uploadButtonDisabled: boolean = false;
   previewImageURL: string | null = null;
-  
+
 
   constructor(private renderer: Renderer2, private storage: AngularFireStorage, private userService: UserService, private authService: AuthService, private propertyService: PropertyService, private route: ActivatedRoute, private router: Router) { }
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user => {
       this.loggedInUser = user;
-  
+
       this.route.paramMap.subscribe(params => {
         const userId = params.get('userId');
         if (userId) {
@@ -82,15 +84,13 @@ export class ProfileComponent implements OnInit {
   toggleUpdateSection(): void {
     this.showUpdateSection = !this.showUpdateSection;
   }
-  
 
-  
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file && this.isImageFile(file)) {
       this.selectedFile = file;
       this.previewImageURL = URL.createObjectURL(file);
-    }else{
+    } else {
       alert("Only image files are allowed.");
     }
   }
@@ -98,7 +98,7 @@ export class ProfileComponent implements OnInit {
     event.preventDefault();
     this.renderer.addClass(this.dropZoneElement?.nativeElement, 'dragover');
   }
-  
+
   onDragLeave(event: DragEvent): void {
     event.preventDefault();
     this.renderer.removeClass(this.dropZoneElement?.nativeElement, 'dragover');
@@ -129,11 +129,11 @@ export class ProfileComponent implements OnInit {
     if (this.selectedFile) {
       this.isUploading = true;
       this.uploadButtonDisabled = true;
-  
+
       const filePath = `profilePictures/${new Date().getTime()}_${this.selectedFile.name}`;
       const fileRef = this.storage.ref(filePath);
       const uploadTask = this.storage.upload(filePath, this.selectedFile);
-  
+
       uploadTask.snapshotChanges().pipe(
         finalize(() => fileRef.getDownloadURL().subscribe(
           (url) => {
@@ -157,14 +157,14 @@ export class ProfileComponent implements OnInit {
           }
         }
       );
-  
+
       this.selectedFile = null;
       this.toggleUpdateSection()
     }
   }
-  
 
-  
+
+
   onClickDropZone(): void {
     this.fileInput?.nativeElement.click();
   }
@@ -174,12 +174,12 @@ export class ProfileComponent implements OnInit {
       console.error("Invalid image URL. Update aborted.");
       return;
     }
-  
+
     this.userService.updateUser(userId, { imageURL: imageUrl })
-      .then(() => console.log("Profile image updated successfully."))
-      .catch(error => console.error("Error updating profile image:", error));
+      .then()
+      .catch();
   }
-  
+
 
   loadUserProperties(userId: string) {
     this.propertyService.getUserProperties(userId).subscribe(properties => {

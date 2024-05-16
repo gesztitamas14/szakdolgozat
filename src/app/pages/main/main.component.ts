@@ -54,6 +54,10 @@ export class MainComponent implements OnInit {
 
   constructor(private propertyTypesService: PropertyTypesService, private dialog: MatDialog, private afs: AngularFirestore, private propertyService: PropertyService, private router: Router, private favoritesService: FavoritesService, private userService: UserService, private authService: AuthService) { }
 
+  /**
+ * Initializes the component by setting the initial page, loading properties, handling user authentication,
+ * fetching additional user and property information.
+ */
   ngOnInit() {
     this.currentPage = 1;
     this.authService.isUserLoggedIn().subscribe(user => {
@@ -83,6 +87,9 @@ export class MainComponent implements OnInit {
       }
     });
   }
+
+  // Responds to changes in the username search term,
+  // updating the filtered user names based on the search criteria.
   onUserNameSearchTermChange() {
     if (this.userNameSearchTerm.trim() === '') {
       this.selectedUserId = null;
@@ -99,6 +106,8 @@ export class MainComponent implements OnInit {
 
     this.applyFilter();
   }
+
+  // Sets the selected user ID when a user is selected from the filtered list.
   onUserSelected(event: any) {
     const userName = event.option.value;
     const userId = this.userNameToIdMap.get(userName.toLowerCase());
@@ -108,6 +117,7 @@ export class MainComponent implements OnInit {
     }
   }
 
+  // Loads properties uploaded by the logged-in user and applies filters to them.
   loadUserProperties() {
     if (this.loggedInUser?.uid) {
       this.propertyService.getUserProperties(this.loggedInUser.uid)
@@ -117,6 +127,8 @@ export class MainComponent implements OnInit {
         });
     }
   }
+
+  // Divides the currently filtered properties into two columns for display purposes.
   divideProperties() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = Math.min(startIndex + this.pageSize, this.filteredProperties.length);
@@ -124,6 +136,8 @@ export class MainComponent implements OnInit {
     this.leftColumnProperties = currentProperties.filter((_, index) => index % 2 === 0);
     this.rightColumnProperties = currentProperties.filter((_, index) => index % 2 === 1);
   }
+
+  // Fetches and divides properties into two columns based on the current page and page size.
   fetchProperties(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = Math.min(startIndex + this.pageSize, this.filteredProperties.length);
@@ -133,6 +147,7 @@ export class MainComponent implements OnInit {
     this.rightColumnProperties = currentProperties.filter((_, index) => index % 2 === 1);
   }
 
+  // Handles changes in the general search term, reloading properties or filtering cities based on the term.
   onSearchTermChange() {
     if (!this.searchTerm) {
       this.loadProperties();
@@ -147,7 +162,7 @@ export class MainComponent implements OnInit {
     }
   }
 
-
+  // Fetches all properties from the service, extracts unique cities, and resets filters.
   loadProperties() {
     this.propertyService.getProperties().subscribe(properties => {
       this.properties = properties;
@@ -161,6 +176,8 @@ export class MainComponent implements OnInit {
       this.applyFilter();
     });
   }
+
+  // Navigation between pages
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -182,12 +199,12 @@ export class MainComponent implements OnInit {
     }
   }
 
-
   searchProperties() {
     this.applyFilter();
     this.fetchProperties();
   }
 
+  // Applies various filters to the property list and updates pagination and display based on the results.
   applyFilter() {
     this.filteredProperties = this.properties.filter(property => {
       const noTypesSelected = Object.keys(this.selectedPropertyTypes).every(key => !this.selectedPropertyTypes[key]);
@@ -221,6 +238,7 @@ export class MainComponent implements OnInit {
     this.fetchProperties();
   }
 
+  // clear filters
   clearFilters() {
     this.propertyStatus = '';
     this.minPrice = null;
@@ -240,8 +258,6 @@ export class MainComponent implements OnInit {
     this.dialogRef?.close();
   }
   
-  
-
   viewPropertyDetails(propertyID: string) {
     this.router.navigate(['/property-details', propertyID]);
   }
