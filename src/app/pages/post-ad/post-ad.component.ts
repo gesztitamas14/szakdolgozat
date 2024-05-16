@@ -68,7 +68,6 @@ export class PostAdComponent implements OnInit{
     })
     this.propertyTypesService.getPropertyTypes().subscribe(data => {
       this.propertyTypes = data['type'];
-      console.log(data['type'])
     });
 
 
@@ -147,7 +146,6 @@ export class PostAdComponent implements OnInit{
     const newType = prompt('Add meg az új ingatlantípust:');
     if (newType && !this.propertyTypes.includes(newType)) {
       this.propertyTypesService.addPropertyType(newType).then(() => {
-        console.log('Új ingatlantípus hozzáadva');
         this.propertyTypes.push(newType);
       }).catch(error => {
         console.error('Hiba történt az új ingatlantípus hozzáadásakor');
